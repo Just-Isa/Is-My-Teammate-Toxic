@@ -23,7 +23,7 @@ async function getGame(gameID: string, region: string) {
       })
     .then((response) => {
         if (!response.ok) {
-            userService.userState.errorMessage = response.statusText;
+            gameState.errorMessage = response.statusText;
             return;
         }
         return response.json();
@@ -33,7 +33,7 @@ async function getGame(gameID: string, region: string) {
         console.log(gameState.gameDetails);
     })
     .catch((e) => {
-        userService.userState.errorMessage = e;
+        gameState.errorMessage = e;
     });
 }
 

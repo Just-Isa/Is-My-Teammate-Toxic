@@ -1,6 +1,5 @@
 package com.kilic.ismyteammatetoxic.api.controller;
 
-import java.io.Console;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,15 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
-import com.kilic.ismyteammatetoxic.config.YAMLConfig;
 import com.kilic.ismyteammatetoxic.service.LolGameService;
 
 @RestController
 @RequestMapping("api")
 public class LolGameRestController {
-
-        @Autowired
-        private YAMLConfig config;
 
         @Autowired
         private LolGameService lolGameService;

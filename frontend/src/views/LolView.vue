@@ -16,15 +16,15 @@
         <tr>
           <th>Game</th>
           <th>Date</th>
-          <th>Bate pings</th>
-          <th>Toxic Name</th>
+          <th>Duration</th>
+          <th>Bait Pings</th>
         </tr>
       </thead>
       <tbody >
           <tr v-for="g in userService.userState.LolGames">
             <td>{{ g }}</td>
             <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
-            <td v-if="lolGameService.gameState.gameDetails[g]">UNDERWAY</td>
+            <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
             <td v-if="lolGameService.gameState.gameDetails[g]">UNDERWAY</td>
             <td v-if="!lolGameService.gameState.gameDetails[g]">  
     <button v-on:click="lolGameService.getGame(g, userService.userState.userRegion)">
