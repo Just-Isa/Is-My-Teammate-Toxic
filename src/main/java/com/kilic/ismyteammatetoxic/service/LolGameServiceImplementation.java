@@ -11,7 +11,6 @@ import com.kilic.ismyteammatetoxic.SecretFile;
 import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
 
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
-import no.stelar7.api.r4j.basic.calling.DataCall;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
@@ -27,7 +26,6 @@ public class LolGameServiceImplementation implements LolGameService {
 
     @Override
     public List<String> getMatchHistory(String summonerName, String userRegion) {
-        DataCall.setCacheProvider(fileCache.get());
         Summoner sum = Summoner.byName(LeagueShard.valueOf(userRegion), summonerName);
         List<String> matches = sum.getLeagueGames().get();
 
