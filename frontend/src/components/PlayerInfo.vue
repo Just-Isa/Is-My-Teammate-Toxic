@@ -5,9 +5,9 @@
             <br>
             Name -> {{ userService.userState.user.name }} 
             <br>
-            Level -> {{ userService.userState.user.summonerLevel }} 
+            Level -> {{ userService.userState.user.level }} 
             <br>
-            Region -> {{ userService.userState.userRegion }}
+            Region -> {{ userService.userState.user.platform }}
         </div>
     </div>
     <br>

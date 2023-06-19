@@ -23,9 +23,9 @@
       <tbody >
           <tr v-for="g in userService.userState.LolGames">
             <td>{{ g }}</td>
-            <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameCreation }}</td>
-            <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].playerInfo.countBaitPings }}</td>
-            <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].playerInfo.ammountDeathsPre15Min }}</td>
+            <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
+            <td v-if="lolGameService.gameState.gameDetails[g]">UNDERWAY</td>
+            <td v-if="lolGameService.gameState.gameDetails[g]">UNDERWAY</td>
             <td v-if="!lolGameService.gameState.gameDetails[g]">  
     <button v-on:click="lolGameService.getGame(g, userService.userState.userRegion)">
       load more details
@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import PlayerInfo from "@/components/PlayerInfo.vue";
 import { useUserService } from "@/services/UserService";
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useLolGameService } from "@/services/LolGameService";
 
 const lolGameService = useLolGameService();
@@ -48,14 +48,11 @@ const userService = useUserService();
 const inputName = ref("");
 const selectedRegion = ref("");
 const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":"NA"};
-const gameDetails = computed(() => {
-  return userService.userState.LolGames
-});
 
 async function getUserFromService() {
     if(inputName.value) {
-      await userService.getUserDTO(inputName.value, selectedRegion.value)
-      await userService.getLolGames(20);
+      await userService.getUserDTO(inputName.value, regions[selectedRegion.value])
+      userService.getMatchHistory();
     } else {
         console.log("No Name given")
     }

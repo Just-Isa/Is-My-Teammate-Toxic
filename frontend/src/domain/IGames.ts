@@ -42,24 +42,20 @@ interface IRelevantPlayerInfo {
 }
 
 export interface IGameInfo {
-    gameCreation: string,
+    dateOfGame: string,
     gameDuration: number,
-    playerInfo: RelevantPlayerInfo
 }
 
 export class GameInfo implements IGameInfo {
     gameCreation: string;
     gameDuration: number;
-    playerInfo: RelevantPlayerInfo;
 
     constructor(
         gameCreation: string,
         gameDuration: number,
-        playerInfo: RelevantPlayerInfo
     ){
         this.gameCreation = gameCreation;
         this.gameDuration = gameDuration;
-        this.playerInfo = playerInfo;
     }
 }
 

@@ -10,7 +10,7 @@ export interface IUserState {
 }
 
 const userState  = reactive<IUserState>({
-   user: new User("", "", "", 0, "", 0, 0),
+   user: new User("", "", "", 0, "", 0, "", 0),
    userRegion: "",
    LolGames : [],
    TFTGames : [],
@@ -18,14 +18,13 @@ const userState  = reactive<IUserState>({
 });
 
 const regionDict: {[code:string]:string} = {
-    "euw1":"europe",
-    "na1":"americas",
-    "eun1":"europe"
+    "EUW":"EUW1",
+    "NA":"NA1",
+    "EUN":"EUN1"
 }
 
 async function getUserDTO(username: string, region: string){
-    const KEY = "?api_key=RGAPI-9657b1a9-d822-434a-a315-977997030281";
-    const DEST = "https://"+region+".api.riotgames.com/lol/summoner/v4/summoners/by-name/" + username + KEY
+    const DEST = "/api/user/"+username+"?region="+region;
     return fetch(DEST, {
         method: "GET",
       })
@@ -40,7 +39,7 @@ async function getUserDTO(username: string, region: string){
         userState.user = jsondata;
     })
     .then(() => {
-        userState.userRegion = regionDict[region]
+        userState.userRegion = regionDict[region] ? regionDict[region] : "";
     })
     .catch((e) => {
         userState.errorMessage = e;
@@ -49,33 +48,12 @@ async function getUserDTO(username: string, region: string){
 
 //number of games capped to 5 for now
 function getTFTGames(amountOfGames: number) {
-    const KEY = "&api_key=RGAPI-9657b1a9-d822-434a-a315-977997030281";
-    const DEST = "https://"+userState.userRegion+".api.riotgames.com/tft/match/v1/matches/by-puuid/" + 
-        userState.user.puuid + "/ids?count="+ amountOfGames + KEY 
-    return fetch(DEST, {
-        method: "GET",
-      })
-    .then((response) => {
-        if (!response.ok) {
-            userState.errorMessage = response.statusText;
-            return;
-        }
-        return response.json();
-    })
-    .then((jsondata) => {
-        userState.TFTGames = jsondata;
-    })
-    .catch((e) => {
-        userState.errorMessage = e;
-    });
+
 }
 
 //number of games capped to 5 for now
-async function getLolGames(amountOfGames: number) {
-    
-    const KEY = "&api_key=RGAPI-9657b1a9-d822-434a-a315-977997030281";
-    const DEST = "https://"+userState.userRegion+".api.riotgames.com/lol/match/v5/matches/by-puuid/" + 
-        userState.user.puuid + "/ids?count="+ amountOfGames + KEY 
+async function getMatchHistory() {
+    const DEST = "/api/lol/matchhistory/"+userState.user.name+"?region="+userState.userRegion;
     return fetch(DEST, {
         method: "GET",
       })
@@ -100,6 +78,6 @@ export function useUserService() {
         userState: readonly(userState), 
         getUserDTO, 
         getTFTGames, 
-        getLolGames
+        getMatchHistory
     }
 }

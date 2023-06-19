@@ -11,12 +11,17 @@ java {
 	sourceCompatibility = '20'
 }
 
-repositories {
-	mavenCentral()
+allprojects {
+	repositories {
+		mavenCentral()
+		maven { url "https://jitpack.io" }
+	}
 }
 
 dependencies {
+	implementation 'com.merakianalytics.orianna:orianna:4.0.0-rc8'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.github.stelar7:R4J:2.2.11'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

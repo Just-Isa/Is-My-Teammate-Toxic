@@ -5,7 +5,8 @@ export interface IUser {
     profileIconId: number,
     puuid: string,
     revisionDate: number,
-    summonerLevel: number,
+    level: number,
+    platform: string
 }
 
 export class User implements IUser {
@@ -15,7 +16,8 @@ export class User implements IUser {
     profileIconId: number;
     puuid: string;
     revisionDate: number;
-    summonerLevel: number;
+    level: number;
+    platform: string;
 
     constructor(
         accountId: string,
@@ -24,7 +26,8 @@ export class User implements IUser {
         profileIconId: number,
         puuid: string,
         revisionDate: number,
-        summonerLevel: number,
+        platform: string,
+        level: number,
     ){
         this.accountId = accountId;
         this.id = id;
@@ -32,6 +35,7 @@ export class User implements IUser {
         this.profileIconId = profileIconId;
         this.puuid = puuid;
         this.revisionDate = revisionDate;
-        this.summonerLevel = summonerLevel;
+        this.level = level;
+        this.platform = platform;
     }
 }
