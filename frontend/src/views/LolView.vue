@@ -27,7 +27,7 @@
             <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
             <td v-if="lolGameService.gameState.gameDetails[g]">UNDERWAY</td>
             <td v-if="!lolGameService.gameState.gameDetails[g]">  
-    <button v-on:click="lolGameService.getGame(g, userService.userState.userRegion)">
+    <button v-on:click="lolGameService.getGame(g)">
       load more details
     </button></td>
           </tr>
@@ -61,11 +61,13 @@ async function getUserFromService() {
 watch(lolGameService.amountOfGames, async (newVal, oldVal) => {
     if (newVal > 5 ) {
       userService.userState.LolGames.slice(0, 5).forEach(game => {
-        lolGameService.getGame(game, userService.userState.userRegion);
+        lolGameService.getGame(game);
+        lolGameService.getRelevantPlayerInfo(game)
       });
     } else if (newVal > 1 && newVal< 5) {
       userService.userState.LolGames.slice(0, userService.userState.LolGames.length).forEach(game => {
-        lolGameService.getGame(game, userService.userState.userRegion);
+        lolGameService.getGame(game);
+        lolGameService.getRelevantPlayerInfo(game);
       });
     }
       userService.getTFTGames(20);

@@ -44,18 +44,22 @@ interface IRelevantPlayerInfo {
 export interface IGameInfo {
     dateOfGame: string,
     gameDuration: number,
+    relevantPlayerInfo: IRelevantPlayerInfo
 }
 
 export class GameInfo implements IGameInfo {
     dateOfGame: string;
     gameDuration: number;
+    relevantPlayerInfo: IRelevantPlayerInfo;
 
     constructor(
         dateOfGame: string,
         gameDuration: number,
+        relevantPlayerInfo: IRelevantPlayerInfo
     ){
         this.dateOfGame = dateOfGame;
         this.gameDuration = gameDuration;
+        this.relevantPlayerInfo = relevantPlayerInfo;
     }
 }
 

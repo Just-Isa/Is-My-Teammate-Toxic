@@ -1,7 +1,6 @@
-import { GameInfo, IGameInfo, RelevantPlayerInfo } from "@/domain/IGames";
+import { IGameInfo } from "@/domain/IGames";
 import { computed, reactive, readonly, ref, watch } from "vue";
 import { useUserService } from "./UserService";
-import { getTimestampData } from "./PlayerInfoService";
 
 const userService = useUserService();
 const amountOfGames = computed(() => userService.userState.LolGames.length);
@@ -16,7 +15,7 @@ const gameState = reactive<IGameState>({
     errorMessage: ""
 });
 
-async function getGame(gameID: string, region: string) {
+async function getGame(gameID: string) {
     const DEST = "/api/lol/game/"+gameID+"?region="+userService.userState.userRegion;
     return fetch(DEST, {
         method: "GET",
@@ -30,17 +29,36 @@ async function getGame(gameID: string, region: string) {
     })
     .then((jsondata) => {
         gameState.gameDetails[gameID] = jsondata;
-        console.log(gameState.gameDetails);
     })
     .catch((e) => {
         gameState.errorMessage = e;
     });
 }
 
+async function getRelevantPlayerInfo(gameID: string) {
+    const DEST = "/api/lol/game/"+gameID+"/timeline?region="+userService.userState.userRegion+"&summonerName="+userService.userState.user.name;
+    return fetch(DEST, {
+        method: "GET",
+      })
+    .then((response) => {
+        if (!response.ok) {
+            gameState.errorMessage = response.statusText;
+            return;
+        }
+        return response.json();
+    })
+    .then((jsondata) => {
+        console.log(jsondata);
+    })
+    .catch((e) => {
+        gameState.errorMessage = e;
+    });
+}
 
 export function useLolGameService() {
     return {
         getGame,
+        getRelevantPlayerInfo,
         gameState: readonly(gameState),
         amountOfGames: amountOfGames
     }

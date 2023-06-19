@@ -1,5 +1,6 @@
 package com.kilic.ismyteammatetoxic.api.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -39,9 +40,10 @@ public class LolGameRestController {
         }
 
         @GetMapping("/lol/game/{gameID}/timeline")
-        public @ResponseBody void getLolMatchTimeline(
+        public @ResponseBody void getRelevantPlayerInfo(
                         @PathVariable String gameID,
-                        @RequestParam String region) {
-
+                        @RequestParam String summonerName,
+                        @RequestParam String region) throws IOException {
+                lolGameService.getRelevantPlayerInfo(summonerName, gameID, region);
         }
 }
