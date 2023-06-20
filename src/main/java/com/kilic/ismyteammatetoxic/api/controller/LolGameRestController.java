@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
+import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
 import com.kilic.ismyteammatetoxic.service.LolGameService;
 
 @RestController
@@ -40,10 +41,10 @@ public class LolGameRestController {
         }
 
         @GetMapping("/lol/game/{gameID}/timeline")
-        public @ResponseBody void getRelevantPlayerInfo(
+        public @ResponseBody GetRelevantPlayerInfoDTO getRelevantPlayerInfo(
                         @PathVariable String gameID,
                         @RequestParam String summonerName,
                         @RequestParam String region) throws IOException {
-                lolGameService.getRelevantPlayerInfo(summonerName, gameID, region);
+                return lolGameService.getRelevantPlayerInfo(summonerName, gameID, region);
         }
 }

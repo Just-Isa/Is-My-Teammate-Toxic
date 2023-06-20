@@ -48,6 +48,7 @@ async function getRelevantPlayerInfo(gameID: string) {
         return response.json();
     })
     .then((jsondata) => {
+        console.log("game: " + gameID);
         console.log(jsondata);
     })
     .catch((e) => {
