@@ -30,6 +30,9 @@ async function getGame(gameID: string) {
     .then((jsondata) => {
         gameState.gameDetails[gameID] = jsondata;
     })
+    .then(() => {
+        getRelevantPlayerInfo(gameID);
+    })
     .catch((e) => {
         gameState.errorMessage = e;
     });
@@ -48,13 +51,25 @@ async function getRelevantPlayerInfo(gameID: string) {
         return response.json();
     })
     .then((jsondata) => {
-        console.log("game: " + gameID);
-        console.log(jsondata);
+        gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
     })
     .catch((e) => {
         gameState.errorMessage = e;
     });
 }
+
+watch(() => userService.userState.LolGames.length, (newValue, oldValue) => {
+    if (newValue > 5 ) {
+        userService.userState.LolGames.slice(0, 5).forEach(game => {
+          getGame(game);
+        });
+      } else if (newValue > 1 && newValue< 5) {
+        userService.userState.LolGames.slice(0, userService.userState.LolGames.length).forEach(game => {
+            getGame(game);
+        });
+      }
+        userService.getTFTGames(20);
+});
 
 export function useLolGameService() {
     return {

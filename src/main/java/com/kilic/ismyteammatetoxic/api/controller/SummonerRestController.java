@@ -11,17 +11,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.merakianalytics.orianna.Orianna;
-
+import com.kilic.ismyteammatetoxic.SecretFile;
 import com.kilic.ismyteammatetoxic.api.dto.GetSummonerDTO;
-import com.kilic.ismyteammatetoxic.config.YAMLConfig;
 import com.kilic.ismyteammatetoxic.service.SummonerServiceImplementation;
 
 @RestController
 @RequestMapping("api")
 public class SummonerRestController {
-
-    @Autowired
-    private YAMLConfig config;
 
     @Autowired
     SummonerServiceImplementation summService;
@@ -33,7 +29,7 @@ public class SummonerRestController {
             @PathVariable String summonerName,
             @RequestParam String region) {
 
-        Orianna.setRiotAPIKey(config.getApiKey());
+        Orianna.setRiotAPIKey(SecretFile.LEAGUE_KEY);
         return summService.getUser(summonerName, region);
     }
 }

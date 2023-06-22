@@ -24,6 +24,7 @@ import com.google.gson.JsonParser;
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.EventType;
+import no.stelar7.api.r4j.basic.constants.types.lol.LaneType;
 import no.stelar7.api.r4j.basic.constants.types.lol.SpellSlotType;
 import no.stelar7.api.r4j.basic.utils.Utils;
 import no.stelar7.api.r4j.impl.R4J;
@@ -75,20 +76,42 @@ public class LolGameServiceImplementation implements LolGameService {
 
         LOLMatch match = mb.getMatch();
         LOLTimeline timeline = tb.getTimeline();
-
         List<TimelineDamageData> wierdEntries = new ArrayList<>();
 
         var wrapper = new Object() {
-            int participantId = -1;
+            MatchParticipant matchParticipant;
+            int kills = -1;
+            int deaths = -1;
+            int assists = -1;
+            String championName = "";
+            LaneType lane;
+            boolean win;
         };
 
-        for (int i = 0; i < match.getParticipants().size(); i++) {
-            if (match.getParticipants().get(i).getPuuid().equals(sum.getPUUID())) {
-                wrapper.participantId = match.getParticipants().get(i).getParticipantId();
-                return GetRelevantPlayerInfoDTO.from(match.getParticipants().get(i).getChampionName());
+        for (MatchParticipant participant : match.getParticipants()) {
+            if (participant.getPuuid().equals(sum.getPUUID())) {
+                wrapper.matchParticipant = participant;
+                break;
             }
         }
-        return null;
+
+        // Match related metadata
+        if (wrapper.matchParticipant != null) {
+            wrapper.championName = wrapper.matchParticipant.getChampionName();
+            wrapper.deaths = wrapper.matchParticipant.getDeaths();
+            wrapper.kills = wrapper.matchParticipant.getKills();
+            wrapper.lane = wrapper.matchParticipant.getLane();
+            wrapper.win = wrapper.matchParticipant.didWin();
+            wrapper.assists = wrapper.matchParticipant.getAssists();
+        }
+        return GetRelevantPlayerInfoDTO.from(
+                wrapper.championName, 0,
+                wrapper.kills,
+                wrapper.deaths,
+                wrapper.assists,
+                wrapper.lane,
+                wrapper.win);
+
         /*
          * if (wrapper.participantId != -1) {
          * logger.info("participantID = {}", wrapper.participantId);

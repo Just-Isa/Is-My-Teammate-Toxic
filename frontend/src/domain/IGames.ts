@@ -1,44 +1,22 @@
-export interface IUser {
-    accountId: string,
-    id : string,
-    name: string,
-    profileIconId: number,
-    puuid: string,
-    revisionDate: number,
-    summonerLevel: number,
+enum LaneType {
+    AFK,
+    BOT,
+    INVALID,
+    JUNGLE,
+    MID,
+    NONE,
+    TOP,
+    UTILITY
 }
 
-export class User implements IUser {
-    accountId: string;
-    id : string;
-    name: string;
-    profileIconId: number;
-    puuid: string;
-    revisionDate: number;
-    summonerLevel: number;
-
-    constructor(
-        accountId: string,
-        id : string,
-        name: string,
-        profileIconId: number,
-        puuid: string,
-        revisionDate: number,
-        summonerLevel: number,
-    ){
-        this.accountId = accountId;
-        this.id = id;
-        this.name = name;
-        this.profileIconId = profileIconId;
-        this.puuid = puuid;
-        this.revisionDate = revisionDate;
-        this.summonerLevel = summonerLevel;
-    }
-}
-
-interface IRelevantPlayerInfo {
-    countBaitPings: number,
-    ammountDeathsPre15Min: number,
+export interface IRelevantPlayerInfo {
+    champName: string,
+    baitPings: number,
+    kills: number,
+    deaths: number,
+    assists: number,
+    lane: LaneType,
+    win: boolean
 }
 
 export interface IGameInfo {
@@ -64,14 +42,29 @@ export class GameInfo implements IGameInfo {
 }
 
 export class RelevantPlayerInfo implements IRelevantPlayerInfo {
-    countBaitPings: number;
-    ammountDeathsPre15Min: number;
+    champName: string;
+    baitPings: number;
+    kills: number;
+    deaths: number;
+    assists: number;
+    lane: LaneType;
+    win: boolean;
     
     constructor (
-        countBaitPings: number,
-        ammountDeathsPre15Min: number,
+        champName: string,
+        baitPings: number,
+        kills: number,
+        deaths: number,
+        assists: number,
+        lane: LaneType,
+        win: boolean
     ) {
-        this.countBaitPings = countBaitPings;
-        this.ammountDeathsPre15Min = ammountDeathsPre15Min;
+        this.champName = champName;
+        this.baitPings = baitPings;
+        this.kills = kills;
+        this.deaths = deaths;
+        this.assists = assists;
+        this.lane = lane;
+        this.win = win;
     }
 }

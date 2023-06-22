@@ -17,7 +17,8 @@
           <th>Game</th>
           <th>Date</th>
           <th>Duration</th>
-          <th>Bait Pings</th>
+          <th>Champ</th>
+          <th>K/D/A</th>
         </tr>
       </thead>
       <tbody >
@@ -25,11 +26,23 @@
             <td>{{ g }}</td>
             <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
             <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
-            <td v-if="lolGameService.gameState.gameDetails[g]">UNDERWAY</td>
+            <td v-if="
+              lolGameService.gameState.gameDetails[g] && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName }}
+            </td>
+            <td v-if="
+              lolGameService.gameState.gameDetails[g] && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} / 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} / 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}  
+            </td>
             <td v-if="!lolGameService.gameState.gameDetails[g]">  
-    <button v-on:click="lolGameService.getGame(g)">
-      load more details
-    </button></td>
+              <button v-on:click="lolGameService.getGame(g)">
+                load more details
+              </button>
+            </td>
           </tr>
       </tbody>
     </table>
@@ -52,24 +65,10 @@ const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":
 async function getUserFromService() {
     if(inputName.value) {
       await userService.getUserDTO(inputName.value, regions[selectedRegion.value])
-      userService.getMatchHistory();
+      await userService.getMatchHistory();
     } else {
         console.log("No Name given")
     }
 }
 
-watch(lolGameService.amountOfGames, async (newVal, oldVal) => {
-    if (newVal > 5 ) {
-      userService.userState.LolGames.slice(0, 5).forEach(game => {
-        lolGameService.getGame(game);
-        lolGameService.getRelevantPlayerInfo(game)
-      });
-    } else if (newVal > 1 && newVal< 5) {
-      userService.userState.LolGames.slice(0, userService.userState.LolGames.length).forEach(game => {
-        lolGameService.getGame(game);
-        lolGameService.getRelevantPlayerInfo(game);
-      });
-    }
-      userService.getTFTGames(20);
-});
 </script>
