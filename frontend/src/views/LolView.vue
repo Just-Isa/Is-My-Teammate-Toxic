@@ -10,20 +10,26 @@
   <button v-on:click="getUserFromService">Search</button>
   <PlayerInfo />
   
-  <div v-if="userService.userState.LolGames.length">
+  <div v-if="lolGameService.matchHistoryState.LolGames.length">
     <table style="margin-left: auto; margin-right: auto; border-spacing:15px 0;">
       <thead >
         <tr>
-          <th>Game</th>
+          <th>Queue</th>
           <th>Date</th>
           <th>Duration</th>
           <th>Champ</th>
           <th>K/D/A</th>
+          <th>Lane or AFK</th>
+          <th>Win</th>
         </tr>
       </thead>
       <tbody >
-          <tr v-for="g in userService.userState.LolGames">
-            <td>{{ g }}</td>
+          <tr v-for="g in lolGameService.matchHistoryState.LolGames">
+            <td v-if="
+              lolGameService.gameState.gameDetails[g] && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType }} 
+            </td>
             <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
             <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
             <td v-if="
@@ -38,11 +44,22 @@
                 {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} / 
                 {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}  
             </td>
+            <td v-if="
+              lolGameService.gameState.gameDetails[g] && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
+            </td>
+            <td v-if="
+              lolGameService.gameState.gameDetails[g] && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win }}
+            </td>
             <td v-if="!lolGameService.gameState.gameDetails[g]">  
               <button v-on:click="lolGameService.getGame(g)">
                 load more details
               </button>
             </td>
+            
           </tr>
       </tbody>
     </table>
@@ -65,7 +82,7 @@ const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":
 async function getUserFromService() {
     if(inputName.value) {
       await userService.getUserDTO(inputName.value, regions[selectedRegion.value])
-      await userService.getMatchHistory();
+      await lolGameService.getMatchHistory();
     } else {
         console.log("No Name given")
     }

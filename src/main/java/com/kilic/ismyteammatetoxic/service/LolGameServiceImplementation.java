@@ -24,7 +24,9 @@ import com.google.gson.JsonParser;
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.EventType;
+import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.basic.constants.types.lol.LaneType;
+import no.stelar7.api.r4j.basic.constants.types.lol.MatchlistMatchType;
 import no.stelar7.api.r4j.basic.constants.types.lol.SpellSlotType;
 import no.stelar7.api.r4j.basic.utils.Utils;
 import no.stelar7.api.r4j.impl.R4J;
@@ -47,7 +49,9 @@ public class LolGameServiceImplementation implements LolGameService {
     @Override
     public List<String> getMatchHistory(String summonerName, String userRegion) {
         Summoner sum = Summoner.byName(LeagueShard.valueOf(userRegion), summonerName);
-        List<String> matches = sum.getLeagueGames().get();
+        List<String> matches = sum
+                .getLeagueGames()
+                .get();
 
         return matches;
     }
@@ -85,6 +89,7 @@ public class LolGameServiceImplementation implements LolGameService {
             int assists = -1;
             String championName = "";
             LaneType lane;
+            GameQueueType gameType;
             boolean win;
         };
 
@@ -103,6 +108,7 @@ public class LolGameServiceImplementation implements LolGameService {
             wrapper.lane = wrapper.matchParticipant.getLane();
             wrapper.win = wrapper.matchParticipant.didWin();
             wrapper.assists = wrapper.matchParticipant.getAssists();
+            wrapper.gameType = match.getQueue();
         }
         return GetRelevantPlayerInfoDTO.from(
                 wrapper.championName, 0,
@@ -110,7 +116,8 @@ public class LolGameServiceImplementation implements LolGameService {
                 wrapper.deaths,
                 wrapper.assists,
                 wrapper.lane,
-                wrapper.win);
+                wrapper.win,
+                wrapper.gameType);
 
         /*
          * if (wrapper.participantId != -1) {

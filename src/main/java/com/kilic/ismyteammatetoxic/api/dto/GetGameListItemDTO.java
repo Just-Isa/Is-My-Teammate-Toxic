@@ -2,9 +2,10 @@ package com.kilic.ismyteammatetoxic.api.dto;
 
 import java.util.Calendar;
 
+import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 
-public record GetGameListItemDTO(String dateOfGame, String gameDuration) {
+public record GetGameListItemDTO(String dateOfGame, String gameDuration, GameQueueType queueType) {
     public static GetGameListItemDTO from(LOLMatch match) {
         String dur = match.getGameDurationAsDuration()
                 .toString()
@@ -20,6 +21,6 @@ public record GetGameListItemDTO(String dateOfGame, String gameDuration) {
                 + Integer.toString(cal.get(Calendar.MONTH)) + " / "
                 + Integer.toString(cal.get(Calendar.YEAR));
 
-        return new GetGameListItemDTO(dateString, dur);
+        return new GetGameListItemDTO(dateString, dur, match.getQueue());
     }
 }
