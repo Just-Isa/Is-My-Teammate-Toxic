@@ -6,13 +6,17 @@ import { useUserService } from "./UserService";
 const userService = useUserService();
 const toxicityInMatches = computed(() => {
     var toxicity = 0;
+    var toxicNameAmount = 0;
     Object.values(gameState.gameDetails).forEach(element => {
         if(element.relevantPlayerInfo && element.relevantPlayerInfo.toxicityDTO && element.relevantPlayerInfo.toxicityDTO.toxicityLevel) 
         {
-            toxicity = toxicity + element.relevantPlayerInfo.toxicityDTO.toxicityLevel;
+            if (element.relevantPlayerInfo.toxicityDTO.toxicityValues.filter(x => x.toLowerCase().includes("toxicname")) && toxicNameAmount == 0) {
+                toxicity += element.relevantPlayerInfo.toxicityDTO.toxicityLevel;
+                toxicNameAmount += 1; 
+            }
         } 
     });
-    return toxicity / Object.keys(gameState.gameDetails).length;
+    return toxicity  / Object.keys(gameState.gameDetails).length;
 });
 
 interface IGameState {
@@ -97,7 +101,6 @@ async function getRelevantPlayerInfo(gameID: string) {
     })
     .then((jsondata : RelevantPlayerInfo) => {
         gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
-        console.log(gameState.gameDetails[gameID]);
     })
     .catch((e) => {
         gameState.errorMessage = e;
