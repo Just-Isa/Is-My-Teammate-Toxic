@@ -16,7 +16,7 @@ const toxicityInMatches = computed(() => {
             }
         } 
     });
-    return toxicity  / Object.keys(gameState.gameDetails).length;
+    return (toxicity  / Object.keys(gameState.gameDetails).length).toFixed(2);
 });
 
 interface IGameState {

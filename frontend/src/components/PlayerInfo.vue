@@ -9,7 +9,7 @@
             <br>
             Region -> {{ userService.userState.user.platform }}
             <br>
-            Average Toxicity in the last {{ Object.keys(lolGameService.gameState.gameDetails).length }} games -> {{ lolGameService.toxicityInMatches }}
+            Average Toxicity in  {{ Object.keys(lolGameService.gameState.gameDetails).length }} games -> {{ lolGameService.toxicityInMatches }}
             <br>
         </div>
     </div>
