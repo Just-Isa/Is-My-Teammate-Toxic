@@ -8,29 +8,22 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.metrics.buffering.StartupTimeline.TimelineEvent;
 import org.springframework.stereotype.Service;
 
 import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetToxicityDTO;
 import com.kilic.ismyteammatetoxic.domain.ToxicityValue;
-import com.merakianalytics.orianna.types.core.staticdata.Champion;
 
 import java.util.Map;
 
-import no.stelar7.api.r4j.basic.constants.types.lol.EventType;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
-import no.stelar7.api.r4j.impl.lol.builders.champion.ChampionBuilder;
-import no.stelar7.api.r4j.impl.lol.raw.ChampionAPI;
+import no.stelar7.api.r4j.basic.constants.types.lol.LaneType;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLTimeline;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineFrame;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineFrameEvent;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineParticipantFrame;
-import no.stelar7.api.r4j.pojo.lol.staticdata.champion.StaticChampionList;
-import no.stelar7.api.r4j.pojo.lol.staticdata.item.Item;
-import no.stelar7.api.r4j.pojo.lol.staticdata.item.ItemList;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
 @Service
@@ -54,8 +47,9 @@ public class ToxicityCalculationServiceImplementation {
             "FR"
     };
 
-    public GetToxicityDTO claculateToxicityLevel(LOLMatch match, LOLTimeline timeline,
-            GetRelevantPlayerInfoDTO relevantPlayerInfoDTO, Summoner sum, MatchParticipant participant) {
+    public GetToxicityDTO calculateToxicityLevel(LOLMatch match, LOLTimeline timeline,
+            int kills, int deaths, int assists, boolean win, LaneType lane, Summoner sum,
+            MatchParticipant participant) {
 
         List<ToxicityValue> toxicityValues = new ArrayList<>();
         List<TimelineFrame> pre10MinFrames = new ArrayList<>();
@@ -190,7 +184,8 @@ public class ToxicityCalculationServiceImplementation {
 
         // check for inting
         if (match.getQueue() != GameQueueType.ARAM) {
-            toxicityValues = interCheck(toxicityValues, relevantPlayerInfoDTO, match, deathspre10, deathspost10Pre2Min);
+            toxicityValues = interCheck(toxicityValues, kills, deaths, assists, match, deathspre10,
+                    deathspost10Pre2Min);
         }
 
         // Toxic Name check
@@ -199,7 +194,7 @@ public class ToxicityCalculationServiceImplementation {
         }
 
         // Check if player went AFK or PICKED TROLL
-        toxicityValues = this.afkOrTrollCheck(toxicityValues, relevantPlayerInfoDTO, match, participant);
+        toxicityValues = this.afkOrTrollCheck(toxicityValues, deaths, kills, assists, win, lane, match, participant);
 
         // ---------------------------------------------------------------------------------------------
 
@@ -208,12 +203,12 @@ public class ToxicityCalculationServiceImplementation {
             toxicity += value.value;
         }
 
-        logger.info("{}", GetToxicityDTO.from(toxicity, toxicityValues));
+        logger.info("{}", toxicityValues);
 
         return GetToxicityDTO.from(toxicity, toxicityValues);
     }
 
-    private List<ToxicityValue> interCheck(List<ToxicityValue> values, GetRelevantPlayerInfoDTO relevantPlayerInfoDTO,
+    private List<ToxicityValue> interCheck(List<ToxicityValue> values, int kills, int deaths, int assists,
             LOLMatch match, int deathspre10, int deathspost10Pre2Min) {
         if (deathspre10 > 10) {
             values.add(ToxicityValue.EARLYINTER);
@@ -221,19 +216,20 @@ public class ToxicityCalculationServiceImplementation {
         if (deathspost10Pre2Min > 20) {
             values.add(ToxicityValue.INTER);
         }
-        if (relevantPlayerInfoDTO.deaths() >= 20
-                && (relevantPlayerInfoDTO.kills() <= 5 && relevantPlayerInfoDTO.assists() <= 5)) {
+        if (deaths >= 20
+                && (kills <= 5 && assists <= 5)) {
             values.add(ToxicityValue.FEEDING);
-        } else if (relevantPlayerInfoDTO.deaths() > 10
-                && (relevantPlayerInfoDTO.kills() <= 3 && relevantPlayerInfoDTO.assists() <= 3)) {
+        } else if (deaths > 10
+                && (kills <= 3 && assists <= 3)) {
             values.add(ToxicityValue.BADSCORE);
         }
         return values;
     }
 
     private List<ToxicityValue> afkOrTrollCheck(List<ToxicityValue> values,
-            GetRelevantPlayerInfoDTO relevantPlayerInfoDTO, LOLMatch match, MatchParticipant participant) {
-        switch (relevantPlayerInfoDTO.lane()) {
+            int deaths, int kills, int assists, boolean win, LaneType lane, LOLMatch match,
+            MatchParticipant participant) {
+        switch (lane) {
             case AFK:
                 values.add(ToxicityValue.AFK);
                 break;
@@ -252,12 +248,12 @@ public class ToxicityCalculationServiceImplementation {
             case UTILITY:
                 break;
             default:
-                if (relevantPlayerInfoDTO.deaths() == 0 || match.getQueue() == GameQueueType.ARAM) {
+                if (deaths == 0 || match.getQueue() == GameQueueType.ARAM) {
                     break;
                 }
-                if (relevantPlayerInfoDTO.win()
-                        && ((relevantPlayerInfoDTO.kills() + (relevantPlayerInfoDTO.assists() * 0.5))
-                                / relevantPlayerInfoDTO.deaths()) > 0.8) {
+                if (win
+                        && ((kills + (assists * 0.5))
+                                / deaths) > 0.8) {
                     values.add(ToxicityValue.TROLLBUTWIN);
                     break;
                 }

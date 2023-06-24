@@ -7,7 +7,7 @@
     <select v-model="selectedRegion" placeholder="NA">
       <option v-for="key, value in Object.entries(regions)" :selected="key[1] == 'EUW'" :value="key[0]">{{key[1]}}</option>
     </select> |
-  <button v-on:click="getUserFromService">Search</button>
+  <button v-on:click="getUserFromService">Search</button> |
   <PlayerInfo />
   
   <div v-if="lolGameService.matchHistoryState.LolGames.length">
@@ -21,6 +21,7 @@
           <th>K/D/A</th>
           <th>Lane or AFK</th>
           <th>Win</th>
+          <th>toxicityValues</th>
         </tr>
       </thead>
       <tbody >
@@ -59,7 +60,15 @@
                 load more details
               </button>
             </td>
-            
+            <td v-if="
+              lolGameService.gameState.gameDetails[g] && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO && 
+              lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0"> 
+              <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues">
+                {{ v }} 
+              </p>
+            </td>
           </tr>
       </tbody>
     </table>

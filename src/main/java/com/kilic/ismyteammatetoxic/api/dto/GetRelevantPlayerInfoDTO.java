@@ -11,7 +11,8 @@ public record GetRelevantPlayerInfoDTO(
         int assists,
         LaneType lane,
         boolean win,
-        GameQueueType gameQueueType) {
+        GameQueueType gameQueueType,
+        GetToxicityDTO toxicityDTO) {
     public static GetRelevantPlayerInfoDTO from(
             String champString,
             int baitpings,
@@ -20,8 +21,10 @@ public record GetRelevantPlayerInfoDTO(
             int assists,
             LaneType lane,
             boolean win,
-            GameQueueType gameQueueType) {
-        return new GetRelevantPlayerInfoDTO(champString, baitpings, kills, deaths, assists, lane, win, gameQueueType);
+            GameQueueType gameQueueType,
+            GetToxicityDTO toxicityDTO) {
+        return new GetRelevantPlayerInfoDTO(champString, baitpings, kills, deaths, assists, lane, win, gameQueueType,
+                toxicityDTO);
     }
 
 }

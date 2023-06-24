@@ -99,10 +99,15 @@ public class LolGameServiceImplementation implements LolGameService {
                     wrapper.matchParticipant.getAssists(),
                     wrapper.matchParticipant.getLane(),
                     wrapper.matchParticipant.didWin(),
-                    match.getQueue());
-
-            GetToxicityDTO toxicityDTO = toxicityCalculationService.claculateToxicityLevel(match, timeline,
-                    relevantPlayerInfoDTO, sum, wrapper.matchParticipant);
+                    match.getQueue(),
+                    toxicityCalculationService.calculateToxicityLevel(match, timeline,
+                            wrapper.matchParticipant.getKills(),
+                            wrapper.matchParticipant.getDeaths(),
+                            wrapper.matchParticipant.getAssists(),
+                            wrapper.matchParticipant.didWin(),
+                            wrapper.matchParticipant.getLane(),
+                            sum,
+                            wrapper.matchParticipant));
 
             return relevantPlayerInfoDTO;
         }

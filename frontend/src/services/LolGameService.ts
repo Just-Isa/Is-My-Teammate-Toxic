@@ -1,8 +1,19 @@
-import { GameQueueType, IGameInfo, LaneType, RelevantPlayerInfo } from "@/domain/IGames";
+import { IGetToxicitiyDTO } from "@/domain/ICalculation";
+import { IGameInfo, RelevantPlayerInfo } from "@/domain/IGames";
 import { computed, reactive, readonly, ref, watch } from "vue";
 import { useUserService } from "./UserService";
 
 const userService = useUserService();
+const toxicityInMatches = computed(() => {
+    var toxicity = 0;
+    Object.values(gameState.gameDetails).forEach(element => {
+        if(element.relevantPlayerInfo && element.relevantPlayerInfo.toxicityDTO && element.relevantPlayerInfo.toxicityDTO.toxicityLevel) 
+        {
+            toxicity = toxicity + element.relevantPlayerInfo.toxicityDTO.toxicityLevel;
+        } 
+    });
+    return toxicity / Object.keys(gameState.gameDetails).length;
+});
 
 interface IGameState {
     gameDetails: {[gameid:string]: IGameInfo},
@@ -63,7 +74,6 @@ async function getGame(gameID: string) {
                 console.log("detected other game type: " + jsondata.queueType + "ignoring for calculation");
                 break;
             }
-        console.log(matchHistoryState);
     })
     .then(() => {
         getRelevantPlayerInfo(gameID);
@@ -87,10 +97,7 @@ async function getRelevantPlayerInfo(gameID: string) {
     })
     .then((jsondata : RelevantPlayerInfo) => {
         gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
-        if (jsondata.lane == LaneType.INVALID || jsondata.lane == LaneType.NONE)
-        {
-            gameState.gameDetails[gameID].relevantPlayerInfo.lane = LaneType.TROLL;
-        }
+        console.log(gameState.gameDetails[gameID]);
     })
     .catch((e) => {
         gameState.errorMessage = e;
@@ -119,16 +126,15 @@ async function getMatchHistory() {
 }
 
 watch(() => matchHistoryState.LolGames.length, (newValue, oldValue) => {
-    if (newValue > 5 ) {
-        matchHistoryState.LolGames.slice(0, 5).forEach(game => {
+    if (newValue > 10 ) {
+        matchHistoryState.LolGames.slice(0, 10).forEach(game => {
           getGame(game);
         });
-      } else if (newValue > 1 && newValue< 5) {
+      } else if (newValue > 1 && newValue< 10) {
         matchHistoryState.LolGames.slice(0, matchHistoryState.LolGames.length).forEach(game => {
             getGame(game);
         });
       }
-        userService.getTFTGames(20);
 });
 
 export function useLolGameService() {
@@ -136,6 +142,7 @@ export function useLolGameService() {
         getGame,
         getRelevantPlayerInfo,
         getMatchHistory,
+        toxicityInMatches,
         gameState: readonly(gameState),
         matchHistoryState: readonly(matchHistoryState)
     }

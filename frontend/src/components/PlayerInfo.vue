@@ -8,6 +8,9 @@
             Level -> {{ userService.userState.user.level }} 
             <br>
             Region -> {{ userService.userState.user.platform }}
+            <br>
+            Average Toxicity in the last {{ Object.keys(lolGameService.gameState.gameDetails).length }} games -> {{ lolGameService.toxicityInMatches }}
+            <br>
         </div>
     </div>
     <br>
@@ -15,7 +18,9 @@
 
 <script setup lang="ts">
 import { useUserService } from '@/services/UserService';
+import { useLolGameService } from '@/services/LolGameService';
 
 const userService = useUserService();
+const lolGameService = useLolGameService();
 
 </script>

@@ -1,3 +1,5 @@
+import { IGetToxicitiyDTO } from "./ICalculation";
+
 export enum LaneType {
     AFK,
     BOT,
@@ -106,6 +108,7 @@ export interface IRelevantPlayerInfo {
     lane: LaneType,
     win: boolean,
     gameQueueType: GameQueueType
+    toxicityDTO: IGetToxicitiyDTO
 }
 
 export interface IGameInfo {
@@ -149,6 +152,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
     lane: LaneType;
     win: boolean;
     gameQueueType: GameQueueType;
+    toxicityDTO: IGetToxicitiyDTO;
     
     constructor (
         champName: string,
@@ -158,7 +162,9 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
         assists: number,
         lane: LaneType,
         win: boolean,
-        gameQueueType: GameQueueType
+        gameQueueType: GameQueueType,
+        toxicityDTO: IGetToxicitiyDTO
+
     ) {
         this.champName = champName;
         this.baitPings = baitPings;
@@ -168,5 +174,6 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
         this.lane = lane;
         this.win = win;
         this.gameQueueType = gameQueueType;
+        this.toxicityDTO = toxicityDTO;
     }
 }
