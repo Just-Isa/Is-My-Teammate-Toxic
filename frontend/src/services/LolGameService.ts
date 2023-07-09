@@ -109,31 +109,37 @@ async function getRelevantPlayerInfo(gameID: string) {
 
 //number of games capped to 5 for now
 async function getMatchHistory() {
-    const DEST = "/api/lol/matchhistory/"+userService.userState.user.name+"?region="+userService.userState.userRegion;
-    return fetch(DEST, {
-        method: "GET",
-      })
-    .then((response) => {
-        if (!response.ok) {
-            gameState.errorMessage = response.statusText;
-            return;
-        }
-        return response.json();
-    })
-    .then((jsondata) => {
-        matchHistoryState.LolGames = jsondata;
-    })
-    .catch((e) => {
-        gameState.errorMessage = e;
-    });
+    try {
+        const DEST = "/api/lol/matchhistory/"+userService.userState.user.name+"?region="+userService.userState.userRegion;
+        return fetch(DEST, {
+            method: "GET",
+          })
+        .then((response) => {
+            if (!response.ok) {
+                gameState.errorMessage = response.statusText;
+                return;
+            }
+            return response.json();
+        })
+        .then((jsondata) => {
+            matchHistoryState.LolGames = jsondata;
+        })
+        .catch((e) => {
+            gameState.errorMessage = e;
+        });
+    } catch (error) {
+        console.log(error);
+        return;
+    }
 }
 
-watch(() => matchHistoryState.LolGames.length, (newValue, oldValue) => {
-    if (newValue > 10 ) {
+
+watch(() => matchHistoryState.LolGames, (newValue, oldValue) => {
+    if (newValue.length > 10 ) {
         matchHistoryState.LolGames.slice(0, 10).forEach(game => {
           getGame(game);
         });
-      } else if (newValue > 1 && newValue< 10) {
+      } else if (newValue.length > 1 && newValue.length < 10) {
         matchHistoryState.LolGames.slice(0, matchHistoryState.LolGames.length).forEach(game => {
             getGame(game);
         });

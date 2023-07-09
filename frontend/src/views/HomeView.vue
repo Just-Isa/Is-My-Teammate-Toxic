@@ -1,14 +1,16 @@
 <template>
   <h1>HOME</h1>
+  <Navigation></Navigation>
+
   <div class="tft">
     <img alt="Vue logo" src="../assets/logo.png" />
   </div>
-  <PlayerInfo />
   <br>
 </template>
 
 <script setup lang="ts">
 import PlayerInfo from "@/components/PlayerInfo.vue";
+import Navigation from "@/components/Navigation.vue";
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -1,19 +1,27 @@
 <template>
-    <br>
-    <div v-if="userService.userState.user.puuid">
-        <div style="font-size: large;">
-            <br>
-            Name -> {{ userService.userState.user.name }} 
-            <br>
-            Level -> {{ userService.userState.user.level }} 
-            <br>
-            Region -> {{ userService.userState.user.platform }}
-            <br>
-            Average Toxicity in  {{ Object.keys(lolGameService.gameState.gameDetails).length }} games -> {{ lolGameService.toxicityInMatches }}
-            <br>
+    <v-card
+        class="mx-auto"
+        max-width="344"
+        variant="outlined"
+        v-if="userService.userState.user.puuid"
+    >
+        <v-card-item>
+        <div>
+            <div class="text-overline mb-1">
+            Player info
+            </div>
+            <div class="text-h6 mb-1">
+                {{ userService.userState.user.name }} 
+            </div>
+            <div class="text-h6 mb-1">
+            Level {{ userService.userState.user.level }} 
+            </div>
+            <div class="text-h6 mb-1">
+            toxicity in {{ Object.keys(lolGameService.gameState.gameDetails).length }} games  {{ lolGameService.toxicityInMatches }}
+            </div>
         </div>
-    </div>
-    <br>
+        </v-card-item>
+    </v-card>
 </template>
 
 <script setup lang="ts">
