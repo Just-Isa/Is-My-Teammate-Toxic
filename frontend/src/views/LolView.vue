@@ -1,6 +1,5 @@
 <template>
   <Navigation class="navbar"></Navigation>
-  <h1 class="header-league">LEAGUE</h1>
   <div class="top-bar">
     <v-row>
       <v-col cols="4"></v-col>
@@ -24,10 +23,10 @@
   <v-row>
     <v-col cols="1"></v-col>
     <v-col cols="11">
-    <div v-if="lolGameService.matchHistoryState">
+    <div v-if="lolGameService.matchHistoryState.LolGames.length > 0">
       <v-table
         fixed-header
-        height="500px"
+        height="600px"
         class="main-data-table"
         >
         <thead >
@@ -92,8 +91,10 @@
       </v-table>
     </div>
     </v-col>
-  <v-col cols="1"></v-col>
   </v-row>
+  <div class="footer bg-deep-purple">
+    <p>Shoutouts to Racer & Phen (and simpleflips ig)</p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -124,8 +125,20 @@ async function getUserFromService() {
 
 <style>
 
+.footer {
+  z-index: 0;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  color: black;
+  text-align: center;
+  line-height: 30px;
+}
+
 .main-data-table {
-  width: 80%;
+  width: 90%;
   margin-left: 100px;
 }
 
@@ -149,6 +162,7 @@ async function getUserFromService() {
 }
 
 .top-bar {
+  margin-top: 50px;
   display: flex;
   justify-content: space-around;
 }
