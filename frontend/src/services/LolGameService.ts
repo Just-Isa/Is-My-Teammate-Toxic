@@ -87,6 +87,10 @@ async function getGame(gameID: string) {
     });
 }
 
+function resetPlayerInfo() {
+    gameState.gameDetails = {};
+}
+
 async function getRelevantPlayerInfo(gameID: string) {
     const DEST = "/api/lol/game/"+gameID+"/timeline?region="+userService.userState.userRegion+"&summonerName="+userService.userState.user.name;
     return fetch(DEST, {
@@ -151,6 +155,7 @@ export function useLolGameService() {
         getGame,
         getRelevantPlayerInfo,
         getMatchHistory,
+        resetPlayerInfo,
         toxicityInMatches,
         gameState: readonly(gameState),
         matchHistoryState: readonly(matchHistoryState)

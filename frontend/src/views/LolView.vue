@@ -136,16 +136,19 @@ const userService = useUserService();
 const inputName = ref("");
 const inputRegion = ref("");
 const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":"NA"};
+
 const gameType: {[code: string] : string;} = 
   {
     "TEAM_BUILDER_DRAFT_UNRANKED_5X5":"Normal", 
     "TEAM_BUILDER_RANKED_SOLO":"Ranked Solo/Duo",
     "ARAM":"ARAM",
-    "BOT_5X5_INTRO":"Bot game"
+    "BOT_5X5_INTRO":"Bot game",
+    "RANKED_FLEX_SR":"Ranked Flex"
   }
 
 async function getUserFromService() {
     if(inputName.value) {
+      lolGameService.resetPlayerInfo();
       await userService.getUserDTO(inputName.value, inputRegion.value)
       await lolGameService.getMatchHistory();
     } else {

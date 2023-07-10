@@ -33,6 +33,7 @@ async function getUserDTO(username: string, region: string){
     })
     .then((jsondata) => {
         userState.user = jsondata;
+        
     })
     .then(() => {
         userState.userRegion = regionDict[region] ? regionDict[region] : "";
