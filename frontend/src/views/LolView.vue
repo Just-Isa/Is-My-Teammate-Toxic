@@ -65,7 +65,7 @@
               <td v-if="
                 lolGameService.gameState.gameDetails[g] && 
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType }} 
+                  {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }} 
               </td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
@@ -126,7 +126,6 @@
 import searchweb from 'vue-material-design-icons/SearchWeb.vue';
 import { useLolGameService } from "@/services/LolGameService";
 import { useUserService } from "@/services/UserService";
-import ToggleTheme from '@/components/ToggleTheme.vue';
 import PlayerInfo from "@/components/PlayerInfo.vue";
 import Navigation from "@/components/Navigation.vue";
 import { ref } from 'vue';
@@ -137,6 +136,13 @@ const userService = useUserService();
 const inputName = ref("");
 const inputRegion = ref("");
 const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":"NA"};
+const gameType: {[code: string] : string;} = 
+  {
+    "TEAM_BUILDER_DRAFT_UNRANKED_5X5":"Normal", 
+    "TEAM_BUILDER_RANKED_SOLO":"Ranked Solo/Duo",
+    "ARAM":"ARAM",
+    "BOT_5X5_INTRO":"Bot game"
+  }
 
 async function getUserFromService() {
     if(inputName.value) {
@@ -146,11 +152,9 @@ async function getUserFromService() {
         console.log("No Name given")
     }
 }
-
 </script>
 
 <style>
-
 .win-circle {
   height: 25px;
   width: 25px;

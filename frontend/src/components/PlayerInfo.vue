@@ -6,8 +6,8 @@
         v-if="userService.userState.user.puuid"
     >
         <v-card-item>
-        <div>
-            <div class="text-overline mb-1">
+        <div v-bind:class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class' ]">
+            <div class="text-overline mb-1" color="white">
             Player info
             </div>
             <div class="text-h6 mb-1">
@@ -27,8 +27,24 @@
 <script setup lang="ts">
 import { useUserService } from '@/services/UserService';
 import { useLolGameService } from '@/services/LolGameService';
+import { useTheme } from 'vuetify/lib/framework.mjs';
 
+const theme = useTheme()
+
+function switchTheme() {
+    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+}
 const userService = useUserService();
 const lolGameService = useLolGameService();
 
 </script>
+
+<style>
+.dark-text-class {
+    color: black;
+}
+
+.light-text-class {
+    color: white;
+}
+</style>
