@@ -4,16 +4,34 @@
     <v-row>
       <v-col cols="4"></v-col>
       <v-col cols="2" class="summoner-col">
-        <v-text-field variant="solo-filled" class="summoner-name-input" type="text" required v-model="inputName" label="Summoner" style="text-align: center;"/> 
+        <v-text-field 
+          variant="solo-filled" 
+          class="summoner-name-input" 
+          type="text" 
+          required 
+          v-model="inputName" 
+          label="Summoner" 
+          style="text-align: center;"
+        /> 
       </v-col>
-      <!-- <select v-model="selectedRegion" placeholder="NA">
-        <option v-for="key, value in Object.entries(regions)" :selected="key[1] == 'EUW'" :value="key[0]">{{key[1]}}</option>
-      </select> --> 
       <v-col cols="1" class="region-col">
-        <v-select class="select-region" variant="solo-filled" v-model="inputRegion" :items="Object.values(regions)"></v-select>
+        <v-select 
+          class="select-region" 
+          variant="solo-filled" 
+          v-model="inputRegion" 
+          :items="Object.values(regions)">
+        </v-select>
       </v-col>
       <v-col cols="1" class="search-button-col">
-        <v-btn icon size="large" variant="elevated" class="search-button" v-on:click="getUserFromService"><searchweb/></v-btn> 
+        <v-btn 
+          icon 
+          size="large" 
+          theme="dark" 
+          variant="elevated" 
+          class="search-button" 
+          v-on:click="getUserFromService">
+            <searchweb/>  
+        </v-btn> 
       </v-col>
       <v-col cols="4"></v-col>
   </v-row>
@@ -29,16 +47,17 @@
         height="600px"
         class="main-data-table"
         >
-        <thead >
-          <tr>
-            <th>Queue</th>
-            <th>Date</th>
-            <th>Duration</th>
-            <th>Champ</th>
-            <th>K/D/A</th>
-            <th>Lane or AFK</th>
-            <th>Win</th>
-            <th>toxicityValues</th>
+        <thead>
+          <tr class="main-data-table-th">
+            <th class="text-center">Queue</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">Duration</th>
+            <th class="text-center">Champ</th>
+            <th class="text-center">K/D/A</th>
+            <th class="text-center">Lane or AFK</th>
+            <th class="text-center">Win</th>
+            <th class="text-center"
+            >toxicityValues</th>
           </tr>
         </thead>
         <tbody>
@@ -69,13 +88,19 @@
               </td>
               <td v-if="
                 lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win }}
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win == true">
+                  <span class="win-circle"></span> 
+              </td>
+              <td v-else-if="
+                lolGameService.gameState.gameDetails[g] && 
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win == false">
+                  <span class="lose-circle"></span> 
               </td>
               <td v-if="!lolGameService.gameState.gameDetails[g]">  
-                <button v-on:click="lolGameService.getGame(g)">
-                  load more details
-                </button>
+                <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">Load more details</v-btn>
+
               </td>
               <td v-if="
                 lolGameService.gameState.gameDetails[g] && 
@@ -98,12 +123,13 @@
 </template>
 
 <script setup lang="ts">
-import PlayerInfo from "@/components/PlayerInfo.vue";
-import { useUserService } from "@/services/UserService";
-import { ref } from 'vue';
-import { useLolGameService } from "@/services/LolGameService";
 import searchweb from 'vue-material-design-icons/SearchWeb.vue';
+import { useLolGameService } from "@/services/LolGameService";
+import { useUserService } from "@/services/UserService";
+import ToggleTheme from '@/components/ToggleTheme.vue';
+import PlayerInfo from "@/components/PlayerInfo.vue";
 import Navigation from "@/components/Navigation.vue";
+import { ref } from 'vue';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
@@ -125,6 +151,22 @@ async function getUserFromService() {
 
 <style>
 
+.win-circle {
+  height: 25px;
+  width: 25px;
+  background-color: greenyellow;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.lose-circle {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .footer {
   z-index: 0;
   position: fixed;
@@ -138,8 +180,13 @@ async function getUserFromService() {
 }
 
 .main-data-table {
+  margin-top: 20px;
   width: 90%;
   margin-left: 100px;
+}
+
+.main-data-table-th {
+  
 }
 
 .summoner-col {

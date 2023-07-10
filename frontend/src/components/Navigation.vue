@@ -10,6 +10,7 @@
           <v-list color="transparent" class="drawer-list">
             <v-btn icon title="Home" value="" size="x-large" v-on:click="goToHome"><homegroup class="home-icon"/></v-btn>
             <v-btn icon title="League" value="lol" size="x-large" v-on:click="goToLeague"><sizel class="league-icon"/></v-btn>
+            <toggle-theme class="swap-themes"/>
           </v-list>
         </v-navigation-drawer>
         <v-main></v-main>
@@ -21,6 +22,7 @@
 import router from "@/router/index";
 import sizel from "vue-material-design-icons/SizeL.vue";
 import homegroup from "vue-material-design-icons/HomeGroup.vue"
+import ToggleTheme from "./ToggleTheme.vue";
 
 function goToLeague() {
     router.push('/lol')
@@ -56,6 +58,11 @@ function goToHome() {
   margin-top: auto;
   margin-bottom: 7px;
   transform: scale(2);
+}
+
+.swap-themes {
+  margin-top: 200%;
+  margin-bottom: 7px;
 }
 
 .league-icon {
