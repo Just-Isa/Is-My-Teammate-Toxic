@@ -5,8 +5,16 @@ import com.kilic.ismyteammatetoxic.domain.ToxicityValue;
 
 public record GetToxicityDTO(
         float toxicityLevel,
-        List<ToxicityValue> toxicityValues) {
-    public static GetToxicityDTO from(float toxicityLevel, List<ToxicityValue> toxicityValues) {
-        return new GetToxicityDTO(toxicityLevel, toxicityValues);
+        List<ToxicityValue> toxicityValues,
+        List<GetDeathPositionAndTimestampDTO> deathsPre10min,
+        List<GetDeathPositionAndTimestampDTO> deathsPost10minPre2min,
+        List<GetDeathPositionAndTimestampDTO> deaths2minBeforeEnd) {
+    public static GetToxicityDTO from(float toxicityLevel,
+            List<ToxicityValue> toxicityValues,
+            List<GetDeathPositionAndTimestampDTO> deathsPre10min,
+            List<GetDeathPositionAndTimestampDTO> deathsPost10minPre2min,
+            List<GetDeathPositionAndTimestampDTO> deaths2minBeforeEnd) {
+        return new GetToxicityDTO(toxicityLevel, toxicityValues, deathsPre10min, deathsPost10minPre2min,
+                deaths2minBeforeEnd);
     }
 }

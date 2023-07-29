@@ -89,6 +89,7 @@ public class LolGameServiceImplementation implements LolGameService {
                     wrapper.matchParticipant.getDeaths(),
                     wrapper.matchParticipant.getAssists(),
                     wrapper.matchParticipant.getLane(),
+                    wrapper.matchParticipant.getTeam(),
                     wrapper.matchParticipant.didWin(),
                     match.getQueue(),
                     toxicityCalculationService.calculateToxicityLevel(match, timeline,

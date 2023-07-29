@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.kilic.ismyteammatetoxic.api.dto.GetDeathPositionAndTimestampDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetToxicityDTO;
 import com.kilic.ismyteammatetoxic.domain.ToxicityValue;
 
@@ -22,7 +23,6 @@ import no.stelar7.api.r4j.pojo.lol.match.v5.LOLTimeline;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineFrame;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineFrameEvent;
-import no.stelar7.api.r4j.pojo.lol.match.v5.TimelinePosition;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
 @Service
@@ -53,12 +53,13 @@ public class ToxicityCalculationServiceImplementation {
         List<ToxicityValue> toxicityValues = new ArrayList<>();
 
         List<TimelineFrame> pre10MinFrames = new ArrayList<>();
-        List<TimelinePosition> pre10MinDeathPositions = new ArrayList<>();
-        List<TimelineFrame> post10pre2minBeforeEndFrames = new ArrayList<>();
-        List<TimelinePosition> post10pre2minBeforeEndDeathPositions = new ArrayList<>();
+        List<GetDeathPositionAndTimestampDTO> pre10MinDeathPositions = new ArrayList<>();
 
-        List<TimelinePosition> last2MinDeathPositions = new ArrayList<>();
+        List<TimelineFrame> post10pre2minBeforeEndFrames = new ArrayList<>();
+        List<GetDeathPositionAndTimestampDTO> post10pre2minBeforeEndDeathPositions = new ArrayList<>();
+
         List<TimelineFrame> last2MinFrames = new ArrayList<>();
+        List<GetDeathPositionAndTimestampDTO> last2MinDeathPositions = new ArrayList<>();
 
         // starts at 0, goes up from there
         float toxicity = 0;
@@ -105,14 +106,14 @@ public class ToxicityCalculationServiceImplementation {
                 last2MinFrames.add(frame);
             }
         }
-
         // first 10 min calc
         for (TimelineFrame frame : pre10MinFrames) {
             for (TimelineFrameEvent event : frame.getEvents()) {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
-                            pre10MinDeathPositions.add(event.getPosition());
+                            pre10MinDeathPositions.add(
+                                    GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
                             deathspre10++;
                         }
                         break;
@@ -133,7 +134,8 @@ public class ToxicityCalculationServiceImplementation {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
-                            post10pre2minBeforeEndDeathPositions.add(event.getPosition());
+                            post10pre2minBeforeEndDeathPositions.add(
+                                    GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
                             deathspost10Pre2Min++;
                         }
                         break;
@@ -156,7 +158,8 @@ public class ToxicityCalculationServiceImplementation {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
-                            last2MinDeathPositions.add(event.getPosition());
+                            last2MinDeathPositions.add(
+                                    GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
                             deathsPre2MinBeforeEnd++;
                         }
                         break;
@@ -188,7 +191,7 @@ public class ToxicityCalculationServiceImplementation {
         }
 
         // check for inting
-        if (match.getQueue() != GameQueueType.ARAM) {
+        if (match.getQueue() != GameQueueType.ARAM && match.getQueue() != GameQueueType.CHERRY) {
             toxicityValues = interCheck(toxicityValues, kills, deaths, assists, match, deathspre10,
                     deathspost10Pre2Min);
         }
@@ -210,10 +213,13 @@ public class ToxicityCalculationServiceImplementation {
 
         logger.info("{}", toxicityValues);
 
+        logger.info("\n\n");
+        logger.info("Name = {}", participant.getSummonerName());
         logger.info("pre10min = {}", pre10MinDeathPositions);
         logger.info("inbetween = {}", post10pre2minBeforeEndDeathPositions);
         logger.info("2minbeforeend = {}", last2MinDeathPositions);
-        return GetToxicityDTO.from(toxicity, toxicityValues);
+        return GetToxicityDTO.from(toxicity, toxicityValues, pre10MinDeathPositions,
+                post10pre2minBeforeEndDeathPositions, last2MinDeathPositions);
     }
 
     private List<ToxicityValue> interCheck(List<ToxicityValue> values, int kills, int deaths, int assists,

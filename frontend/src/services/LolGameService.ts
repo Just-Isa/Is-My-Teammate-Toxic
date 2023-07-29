@@ -1,5 +1,4 @@
-import { IGetToxicitiyDTO } from "@/domain/ICalculation";
-import { IGameInfo, LaneType, RelevantPlayerInfo } from "@/domain/IGames";
+import { IGameInfo, RelevantPlayerInfo } from "@/domain/IGames";
 import { computed, reactive, readonly, ref, watch } from "vue";
 import { useUserService } from "./UserService";
 
@@ -89,7 +88,6 @@ function resetPlayerInfo() {
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
-    console.log(gameID)
     const DEST = "/api/lol/game/"+gameID+"/timeline?region="+userService.userState.userRegion+"&summonerName="+userService.userState.user.name;
     return fetch(DEST, {
         method: "GET",
@@ -103,6 +101,7 @@ async function getRelevantPlayerInfo(gameID: string) {
     })
     .then((jsondata : RelevantPlayerInfo) => {
         gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
+        console.log(gameState.gameDetails[gameID].relevantPlayerInfo)
     })
     .catch((e) => {
         gameState.errorMessage = e;

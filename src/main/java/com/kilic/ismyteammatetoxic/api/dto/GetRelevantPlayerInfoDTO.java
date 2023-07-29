@@ -2,6 +2,7 @@ package com.kilic.ismyteammatetoxic.api.dto;
 
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.basic.constants.types.lol.LaneType;
+import no.stelar7.api.r4j.basic.constants.types.lol.TeamType;
 
 public record GetRelevantPlayerInfoDTO(
         String champName,
@@ -10,6 +11,7 @@ public record GetRelevantPlayerInfoDTO(
         int deaths,
         int assists,
         LaneType lane,
+        TeamType team,
         boolean win,
         GameQueueType gameQueueType,
         GetToxicityDTO toxicityDTO) {
@@ -20,10 +22,12 @@ public record GetRelevantPlayerInfoDTO(
             int deaths,
             int assists,
             LaneType lane,
+            TeamType team,
             boolean win,
             GameQueueType gameQueueType,
             GetToxicityDTO toxicityDTO) {
-        return new GetRelevantPlayerInfoDTO(champString, baitpings, kills, deaths, assists, lane, win, gameQueueType,
+        return new GetRelevantPlayerInfoDTO(champString, baitpings, kills, deaths, assists, lane, team, win,
+                gameQueueType,
                 toxicityDTO);
     }
 

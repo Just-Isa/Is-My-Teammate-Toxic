@@ -13,6 +13,13 @@ export enum LaneType {
     NOLANE
 }
 
+export enum TeamType {
+    SUBTEAM,
+    BLUE,
+    RED,
+    AI
+}
+
 export enum GameQueueType {
     CUSTOM,
     CHERRY,
@@ -108,6 +115,7 @@ export interface IRelevantPlayerInfo {
     deaths: number,
     assists: number,
     lane: LaneType,
+    team: TeamType,
     win: boolean,
     gameQueueType: GameQueueType
     toxicityDTO: IGetToxicitiyDTO
@@ -152,6 +160,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
     deaths: number;
     assists: number;
     lane: LaneType;
+    team: TeamType;
     win: boolean;
     gameQueueType: GameQueueType;
     toxicityDTO: IGetToxicitiyDTO;
@@ -163,6 +172,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
         deaths: number,
         assists: number,
         lane: LaneType,
+        team: TeamType,
         win: boolean,
         gameQueueType: GameQueueType,
         toxicityDTO: IGetToxicitiyDTO
@@ -174,6 +184,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
         this.deaths = deaths;
         this.assists = assists;
         this.lane = lane;
+        this.team  = team;
         this.win = win;
         this.gameQueueType = gameQueueType;
         this.toxicityDTO = toxicityDTO;
