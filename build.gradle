@@ -21,7 +21,7 @@ allprojects {
 dependencies {
 	implementation 'com.merakianalytics.orianna:orianna:4.0.0-rc8'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.github.stelar7:R4J:2.2.11'
+	implementation 'com.github.stelar7:R4J:2.2.21'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

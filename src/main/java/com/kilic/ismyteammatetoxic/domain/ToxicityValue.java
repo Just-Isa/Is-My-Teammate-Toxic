@@ -10,6 +10,7 @@ public enum ToxicityValue {
     TOXICNAME(10),
     TROLL(5),
     BADSCORE(3),
+    BOUGHTACCOUNT(3),
     TROLLBUTWIN(2);
 
     public final float value;

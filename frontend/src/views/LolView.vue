@@ -83,7 +83,7 @@
               </td>
               <td v-if="
                 lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo" >
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
               </td>
               <td v-if="
@@ -129,6 +129,7 @@ import { useUserService } from "@/services/UserService";
 import PlayerInfo from "@/components/PlayerInfo.vue";
 import Navigation from "@/components/Navigation.vue";
 import { ref } from 'vue';
+import { LaneType } from '@/domain/IGames';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
@@ -143,7 +144,8 @@ const gameType: {[code: string] : string;} =
     "TEAM_BUILDER_RANKED_SOLO":"Ranked Solo/Duo",
     "ARAM":"ARAM",
     "BOT_5X5_INTRO":"Bot game",
-    "RANKED_FLEX_SR":"Ranked Flex"
+    "RANKED_FLEX_SR":"Ranked Flex",
+    "CHERRY":"Arena"
   }
 
 async function getUserFromService() {

@@ -1,28 +1,15 @@
 import { IGetToxicitiyDTO } from "@/domain/ICalculation";
-import { IGameInfo, RelevantPlayerInfo } from "@/domain/IGames";
+import { IGameInfo, LaneType, RelevantPlayerInfo } from "@/domain/IGames";
 import { computed, reactive, readonly, ref, watch } from "vue";
 import { useUserService } from "./UserService";
 
-const userService = useUserService();
-const toxicityInMatches = computed(() => {
-    var toxicity = 0;
-    var toxicNameAmount = 0;
-    Object.values(gameState.gameDetails).forEach(element => {
-        if(element.relevantPlayerInfo && element.relevantPlayerInfo.toxicityDTO && element.relevantPlayerInfo.toxicityDTO.toxicityLevel) 
-        {
-            if (element.relevantPlayerInfo.toxicityDTO.toxicityValues.filter(x => x.toLowerCase().includes("toxicname")) && toxicNameAmount == 0) {
-                toxicity += element.relevantPlayerInfo.toxicityDTO.toxicityLevel;
-                toxicNameAmount += 1; 
-            }
-        } 
-    });
-    return (toxicity  / Object.keys(gameState.gameDetails).length).toFixed(2);
-});
 
 interface IGameState {
     gameDetails: {[gameid:string]: IGameInfo},
     errorMessage: string;
 }
+
+const userService = useUserService();
 
 const gameState = reactive<IGameState>({
     gameDetails: {},
@@ -32,18 +19,22 @@ const gameState = reactive<IGameState>({
 interface IMatchHistoryState {
    LolGames : string[],
    AramGames: string[],
+   ArenaGames: string[],
    SoloDuoRankedGames: string[],
    FlexRankedGames: string[],
    NormalGames: string[],
+   BotGames: string[],
    TFTGames : string[],
 }
 
 const matchHistoryState = reactive<IMatchHistoryState>({
     LolGames: [],
     AramGames: [],
+    ArenaGames: [],
     SoloDuoRankedGames: [],
     FlexRankedGames: [],
     NormalGames: [],
+    BotGames: [],
     TFTGames: []
 });
 
@@ -74,6 +65,12 @@ async function getGame(gameID: string) {
             case "RANKED_FLEX_SR":
                 matchHistoryState.FlexRankedGames.push(gameID);
                 break;
+            case "BOT_5X5_INTRO":
+                matchHistoryState.BotGames.push(gameID);
+                break;
+            case "CHERRY":
+                matchHistoryState.ArenaGames.push(gameID);
+                break;
             default:
                 console.log("detected other game type: " + jsondata.queueType + "ignoring for calculation");
                 break;
@@ -92,6 +89,7 @@ function resetPlayerInfo() {
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
+    console.log(gameID)
     const DEST = "/api/lol/game/"+gameID+"/timeline?region="+userService.userState.userRegion+"&summonerName="+userService.userState.user.name;
     return fetch(DEST, {
         method: "GET",
@@ -139,25 +137,47 @@ async function getMatchHistory() {
 
 
 watch(() => matchHistoryState.LolGames, (newValue, oldValue) => {
-    if (newValue.length > 10 ) {
-        matchHistoryState.LolGames.slice(0, 10).forEach(game => {
+    if (newValue.length > 20 ) {
+        matchHistoryState.LolGames.slice(0, 20).forEach(game => {
           getGame(game);
         });
-      } else if (newValue.length > 1 && newValue.length < 10) {
+      } else if (newValue.length > 1 && newValue.length < 20) {
         matchHistoryState.LolGames.slice(0, matchHistoryState.LolGames.length).forEach(game => {
             getGame(game);
         });
       }
 });
 
+// COMPUTEDS
+const boughtAccount = computed(() => {
+    return matchHistoryState.BotGames.length >= 10;
+});
+
+const toxicityInMatches = computed(() => {
+    var toxicity = 0;
+    var toxicNameAmount = 0;
+    Object.values(gameState.gameDetails).forEach(element => {
+        if(element.relevantPlayerInfo && element.relevantPlayerInfo.toxicityDTO && element.relevantPlayerInfo.toxicityDTO.toxicityLevel) 
+        {
+            if ( toxicNameAmount == 0 && element.relevantPlayerInfo.toxicityDTO.toxicityValues.filter(x => x.toLowerCase().includes("toxicname")) ) {
+                toxicity += element.relevantPlayerInfo.toxicityDTO.toxicityLevel;
+                toxicNameAmount += 1; 
+            }
+        } 
+    });
+    return (toxicity  / Object.keys(gameState.gameDetails).length).toFixed(2);
+});
+
+// EXPORT
 export function useLolGameService() {
     return {
-        getGame,
         getRelevantPlayerInfo,
         getMatchHistory,
         resetPlayerInfo,
-        toxicityInMatches,
+        getGame,
+        matchHistoryState: readonly(matchHistoryState),
         gameState: readonly(gameState),
-        matchHistoryState: readonly(matchHistoryState)
+        toxicityInMatches,
+        boughtAccount
     }
 }

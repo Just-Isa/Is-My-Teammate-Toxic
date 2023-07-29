@@ -1,11 +1,6 @@
 package com.kilic.ismyteammatetoxic.service;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -14,14 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.stream.JsonWriter;
 import com.kilic.ismyteammatetoxic.SecretFile;
 import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
-import com.kilic.ismyteammatetoxic.api.dto.GetToxicityDTO;
-import com.merakianalytics.orianna.types.core.match.Event;
-import com.merakianalytics.orianna.types.core.match.Match.Participant;
-import com.google.gson.JsonParser;
 
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
@@ -48,6 +38,7 @@ public class LolGameServiceImplementation implements LolGameService {
         Summoner sum = Summoner.byName(LeagueShard.valueOf(userRegion), summonerName);
         List<String> matches = sum
                 .getLeagueGames()
+                .withCount(30)
                 .get();
 
         return matches;

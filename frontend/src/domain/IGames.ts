@@ -9,11 +9,13 @@ export enum LaneType {
     NONE,
     TOP,
     UTILITY,
-    TROLL
+    TROLL,
+    NOLANE
 }
 
 export enum GameQueueType {
     CUSTOM,
+    CHERRY,
     NORMAL_3X3_BLIND_PICK_OLD,
     NORMAL_5X5_BLIND_PICK_OLD,
     NORMAL_5X5_DRAFT,

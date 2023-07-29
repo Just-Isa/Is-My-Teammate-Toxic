@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetToxicityDTO;
 import com.kilic.ismyteammatetoxic.domain.ToxicityValue;
 
@@ -23,7 +22,7 @@ import no.stelar7.api.r4j.pojo.lol.match.v5.LOLTimeline;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineFrame;
 import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineFrameEvent;
-import no.stelar7.api.r4j.pojo.lol.match.v5.TimelineParticipantFrame;
+import no.stelar7.api.r4j.pojo.lol.match.v5.TimelinePosition;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
 @Service
@@ -52,9 +51,15 @@ public class ToxicityCalculationServiceImplementation {
             MatchParticipant participant) {
 
         List<ToxicityValue> toxicityValues = new ArrayList<>();
+
         List<TimelineFrame> pre10MinFrames = new ArrayList<>();
+        List<TimelinePosition> pre10MinDeathPositions = new ArrayList<>();
         List<TimelineFrame> post10pre2minBeforeEndFrames = new ArrayList<>();
+        List<TimelinePosition> post10pre2minBeforeEndDeathPositions = new ArrayList<>();
+
+        List<TimelinePosition> last2MinDeathPositions = new ArrayList<>();
         List<TimelineFrame> last2MinFrames = new ArrayList<>();
+
         // starts at 0, goes up from there
         float toxicity = 0;
         // deaths
@@ -88,8 +93,6 @@ public class ToxicityCalculationServiceImplementation {
             }
         }
         for (TimelineFrame frame : timeline.getFrames()) {
-            TimelineParticipantFrame participantFrame = frame.getParticipantFrames()
-                    .get(Integer.toString(participant.getParticipantId()));
 
             if (frame.getTimestamp() < 600000) {
                 pre10MinFrames.add(frame);
@@ -103,19 +106,19 @@ public class ToxicityCalculationServiceImplementation {
             }
         }
 
-        // first 15 min calc
+        // first 10 min calc
         for (TimelineFrame frame : pre10MinFrames) {
             for (TimelineFrameEvent event : frame.getEvents()) {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
+                            pre10MinDeathPositions.add(event.getPosition());
                             deathspre10++;
                         }
                         break;
                     case ITEM_PURCHASED:
                         if (itemsBoughtpre10.get(event.getItemId()) != null) {
                             itemsBoughtpre10.merge(event.getItemId(), 1, Integer::sum);
-
                             break;
                         }
                         itemsBoughtpre10.put(event.getItemId(), 1);
@@ -130,6 +133,7 @@ public class ToxicityCalculationServiceImplementation {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
+                            post10pre2minBeforeEndDeathPositions.add(event.getPosition());
                             deathspost10Pre2Min++;
                         }
                         break;
@@ -146,12 +150,13 @@ public class ToxicityCalculationServiceImplementation {
                 }
             }
         }
-        // last 5 min calc
+        // last 2 min calc
         for (TimelineFrame frame : last2MinFrames) {
             for (TimelineFrameEvent event : frame.getEvents()) {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
+                            last2MinDeathPositions.add(event.getPosition());
                             deathsPre2MinBeforeEnd++;
                         }
                         break;
@@ -205,6 +210,9 @@ public class ToxicityCalculationServiceImplementation {
 
         logger.info("{}", toxicityValues);
 
+        logger.info("pre10min = {}", pre10MinDeathPositions);
+        logger.info("inbetween = {}", post10pre2minBeforeEndDeathPositions);
+        logger.info("2minbeforeend = {}", last2MinDeathPositions);
         return GetToxicityDTO.from(toxicity, toxicityValues);
     }
 
