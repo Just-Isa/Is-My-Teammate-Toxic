@@ -90,13 +90,23 @@
                 lolGameService.gameState.gameDetails[g] && 
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win == true">
-                  <span class="win-circle"></span> 
+                  <span class="win-circle">
+                    <v-tooltip
+                      activator="parent"
+                      location="end"
+                    >Player won!</v-tooltip>
+                  </span> 
               </td>
               <td v-else-if="
                 lolGameService.gameState.gameDetails[g] && 
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win == false">
-                  <span class="lose-circle"></span> 
+                  <span class="lose-circle">
+                    <v-tooltip
+                      activator="parent"
+                      location="end"
+                    >Player lost!</v-tooltip>
+                  </span> 
               </td>
               <td v-if="!lolGameService.gameState.gameDetails[g]">  
                 <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">Load more details</v-btn>
@@ -110,6 +120,14 @@
                 <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues">
                   {{ v }} 
                 </p>
+              </td>
+              <td v-else>
+                <span class="win-circle">
+                  <v-tooltip
+                    activator="parent"
+                    location="end"
+                  >No Toxicity found!</v-tooltip>
+                </span> 
               </td>
             </tr>
         </tbody>
