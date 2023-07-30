@@ -30,8 +30,6 @@ public class SummonerRestController {
             @RequestParam String region) {
 
         Orianna.setRiotAPIKey(SecretFile.LEAGUE_KEY);
-        logger.info(summonerName);
-        logger.info(region);
 
         return summService.getUser(summonerName, region);
     }

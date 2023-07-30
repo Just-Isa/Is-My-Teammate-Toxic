@@ -27,7 +27,6 @@ var relevantGame = computed(() => {
 function testButton() {
     console.log(relevantGame);
 }
-console.log(props.gameID)
 
 </script>
 

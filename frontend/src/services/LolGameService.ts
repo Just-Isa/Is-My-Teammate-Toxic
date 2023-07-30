@@ -65,6 +65,7 @@ async function getGame(gameID: string) {
                 matchHistoryState.FlexRankedGames.push(gameID);
                 break;
             case "BOT_5X5_INTRO":
+                console.log("hiii")
                 matchHistoryState.BotGames.push(gameID);
                 break;
             case "CHERRY":
@@ -85,6 +86,18 @@ async function getGame(gameID: string) {
 
 function resetPlayerInfo() {
     gameState.gameDetails = {};
+}
+
+function resetGames() {
+    matchHistoryState.BotGames = [];
+    matchHistoryState.AramGames = [];
+    matchHistoryState.ArenaGames = [];
+    matchHistoryState.FlexRankedGames = [];
+    matchHistoryState.SoloDuoRankedGames = [];
+    matchHistoryState.NormalGames = [];
+    matchHistoryState.LolGames = [];
+    matchHistoryState.TFTGames = [];
+
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
@@ -172,6 +185,7 @@ export function useLolGameService() {
         getRelevantPlayerInfo,
         getMatchHistory,
         resetPlayerInfo,
+        resetGames,
         getGame,
         matchHistoryState: readonly(matchHistoryState),
         gameState: readonly(gameState),

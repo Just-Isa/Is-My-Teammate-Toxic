@@ -19,8 +19,9 @@
             <div class="text-h6 mb-1">
             toxicity in {{ Object.keys(lolGameService.gameState.gameDetails).length }} games  {{ lolGameService.toxicityInMatches }}
             </div>
-            <div class="text-h6 mb-1" v-if="lolGameService.boughtAccount">
+            <div class="text-h6 mb-1" v-if="lolGameService.boughtAccount.value == true">
                 Probably a bought Account
+                {{ lolGameService.boughtAccount.value }}
             </div>
         </div>
         </v-card-item>

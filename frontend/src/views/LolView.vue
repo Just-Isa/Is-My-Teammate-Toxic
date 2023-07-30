@@ -2,39 +2,24 @@
   <div class="complete-content-container" id="complete-content-container"  style="display: none;"></div>
   <Navigation class="navbar"></Navigation>
   <div v-for="g in lolGameService.matchHistoryState.LolGames">
+    <!-- DEATH HEATMAP -->
     <div v-if="
-              lolGameService.gameState.gameDetails[g] && 
-              lolGameService.gameState.gameDetails[g].relevantPlayerInfo && 
-              (
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd ||
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min ||
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min
-              )"
-              class="heatmap-container" 
-              :id="'heatmap-container-'+g" 
-              style="display: none;">
-            <v-btn v-on:click="hideHeatmap(g)" class="close-heatmap" color="white" variant="outlined">close</v-btn>
-            <!-- DEATHS PRE 2 MIN -->
-            <DeathHeatmap :deaths="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd" when="late-deaths"></DeathHeatmap>
-            <!-- DEATHS POST 10 MIN AND PRE 2 MIN -->
-            <DeathHeatmap :deaths="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min" when="midgame-deaths"></DeathHeatmap>
-            <!-- DEATHS PRE 10 MIN -->
-            <DeathHeatmap :deaths="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min" when="early-deaths"></DeathHeatmap>
-            <div v-if="              
-              teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] == 'Red'
-              ">
-              <baseB style="transform: translate(15px , 705px); font-size: 25px; width:220px; color: lightblue;"/>  
-            </div>
-            <div v-else-if="
-              teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] == 'Blue'
-              ">
-              <baseB style="transform: translate(715px,  10px); font-size: 25px; color: red;"/>  
-            </div>
-            <div v-else style="color: white;">
-              {{ teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] }}
-            </div>
-            
+          lolGameService.gameState.gameDetails[g] && 
+          lolGameService.gameState.gameDetails[g].relevantPlayerInfo && 
+          (
+            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd ||
+            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min ||
+            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min
+          )">
+        <DeathHeatmap 
+          :g="g" 
+          :teamColor="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team"
+          :deaths-post10min-pre2min="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min"
+          :deaths-pre10min="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min"
+          :deaths2min-before-end="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd">
+        </DeathHeatmap>  
     </div>
+    <!---------------->
   </div>
   <div class="top-bar">
     <v-row>
@@ -98,32 +83,27 @@
         <tbody>
             <tr v-for="g in lolGameService.matchHistoryState.LolGames">
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                checkGameStateAndPlayerInfoExist(g)"> 
                   {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }} 
               </td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                checkGameStateAndPlayerInfoExist(g)"> 
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName }}
               </td>
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo"> 
+                checkGameStateAndPlayerInfoExist(g)"> 
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} / 
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} / 
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}  
               </td>
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo" >
+                checkGameStateAndPlayerInfoExist(g)" >
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
               </td>
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
+                checkGameStateAndPlayerInfoExist(g) &&
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win == true">
                   <span class="win-circle">
                     <v-tooltip
@@ -133,8 +113,7 @@
                   </span> 
               </td>
               <td v-else-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
+                checkGameStateAndPlayerInfoExist(g) &&
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win == false">
                   <span class="lose-circle">
                     <v-tooltip
@@ -147,8 +126,7 @@
                 <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">Load more details</v-btn>
               </td>
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo && 
+                checkGameStateAndPlayerInfoExist(g) && 
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO && 
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0"> 
                 <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues">
@@ -164,17 +142,10 @@
                 </span> 
               </td>
               <td v-if="
-                lolGameService.gameState.gameDetails[g] && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo && 
-                (
-                  gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Normal' ||
-                  gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Solo/Duo'
-                ) &&
-                (
-                  lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd ||
-                  lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min ||
-                  lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min
-                )"
+                checkGameStateAndPlayerInfoExist(g) && 
+                checkNormalOrRanked(g) &&
+                checkExistenceOfDeathArrays(g)
+                "
                 >
                 <v-btn icon variant="flat" style="padding-bottom: 9px;" v-on:click="revealHeatmap(g)">
                   <deathlyHallows style="transform: scale(2.5); "/>
@@ -192,16 +163,14 @@
 </template>
 
 <script setup lang="ts">
-import searchweb from 'vue-material-design-icons/SearchWeb.vue';
 import deathlyHallows from 'vue-material-design-icons/DeathlyHallows.vue';
-import skull from 'vue-material-design-icons/Skull.vue';
-import baseB from 'vue-material-design-icons/HomeFloorB.vue';
+import DeathHeatmap from '@/components/DeathHeatmap/DeathHeatmap.vue';
+import searchweb from 'vue-material-design-icons/SearchWeb.vue';
 import { useLolGameService } from "@/services/LolGameService";
 import { useUserService } from "@/services/UserService";
 import PlayerInfo from "@/components/PlayerInfo.vue";
 import Navigation from "@/components/Navigation.vue";
 import { ref } from 'vue';
-import DeathHeatmap from '@/components/DeathHeatmap.vue';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
@@ -220,15 +189,10 @@ const gameType: {[code: string] : string;} =
     "CHERRY":"Arena"
   }
 
-const teamType : {[code: string] : string} = 
-  {
-    "BLUE":"Blue",
-    "RED":"Red"
-  }
-
 async function getUserFromService() {
     if(inputName.value) {
       lolGameService.resetPlayerInfo();
+      lolGameService.resetGames();
       await userService.getUserDTO(inputName.value, inputRegion.value)
       await lolGameService.getMatchHistory();
     } else {
@@ -236,29 +200,57 @@ async function getUserFromService() {
     }
 }
 
+/* MAYBE FOR LATER USE
+
 function hideHeatmap(gameID: string) {
   var id: string = "heatmap-container-"+gameID; 
   var heatmapContainerElement = document.getElementById(id);
   var darkerBackroung = document.getElementById("complete-content-container");
-  if (heatmapContainerElement && darkerBackroung) {
+  var legend = document.getElementById("heatmap-legend");
+  if (heatmapContainerElement && darkerBackroung && legend) {
     if (heatmapContainerElement.style.display == '') {
       heatmapContainerElement.style.display = 'none';
       darkerBackroung.style.display = 'none'; 
+      legend.style.display = 'none';
     }
   }
 }
+*/
 
 function revealHeatmap(gameID: string) {
   var id: string = "heatmap-container-"+gameID; 
   var heatmapContainerElement = document.getElementById(id);
   var darkerBackroung = document.getElementById("complete-content-container");
-  if (heatmapContainerElement && darkerBackroung) {
+  var legend = document.getElementById("heatmap-legend");
+  if (heatmapContainerElement && darkerBackroung && legend) {
     if (heatmapContainerElement.style.display == 'none') {
       heatmapContainerElement.style.display = '';
       darkerBackroung.style.display = ''; 
+      legend.style.display = '';
     }
   }
 }
+
+function checkGameStateAndPlayerInfoExist(g: string) : boolean {
+  return (lolGameService.gameState.gameDetails[g] != undefined && lolGameService.gameState.gameDetails[g].relevantPlayerInfo != undefined);
+}
+
+function checkExistenceOfDeathArrays(g: string) : boolean {
+  return (
+    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd != undefined ||
+    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min != undefined ||
+    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min != undefined
+    );
+}
+
+function checkNormalOrRanked(g: string) : boolean {
+  return(
+    gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Normal' ||
+    gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Solo/Duo' ||
+    gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Flex'
+  );
+}
+
 </script>
 
 <style>
@@ -344,19 +336,6 @@ function revealHeatmap(gameID: string) {
 .container {
     display: flex;
     size: 100%;
-}
-
-.heatmap-container {
-  position: absolute;
-  z-index: 15;
-  min-height: 750px;
-  min-width: 755px;
-  margin-top: 20px;
-  left: 40%;
-  top: 20%;
-  margin: -100px 0 0 -150px;
-  background-image: url('https://ddragon.leagueoflegends.com/cdn/10.18.1/img/map/map11.png');
-  background-size: cover;
 }
 
 .close-heatmap {

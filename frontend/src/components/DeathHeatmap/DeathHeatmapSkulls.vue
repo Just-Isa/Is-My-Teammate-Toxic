@@ -4,9 +4,7 @@
         class="death-icons" 
         :style="{transform: 'translate(' + ((((death.position['x'] / 10) / 2))) +'px,' + (740 - (((death.position['y'] / 10) / 2)))+'px)',}"
         >
-        
         <skull :class="props.when"/>
-        
         <v-tooltip
             activator="parent"
             location="end"
@@ -22,7 +20,6 @@
 <script setup lang="ts">
     import skull from 'vue-material-design-icons/Skull.vue';
     const props = defineProps(['deaths', 'when']);
-    console.log(props.deaths)
 </script>
 
 <style>
