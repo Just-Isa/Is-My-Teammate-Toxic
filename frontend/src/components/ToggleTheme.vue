@@ -6,7 +6,7 @@
     import { useTheme } from "vuetify/lib/framework.mjs";
     import themeIcon from "vue-material-design-icons/ThemeLightDark.vue";
 
-    var darkmode: boolean = false;
+    var darkmode: boolean = true;
     
     const theme = useTheme()
 

@@ -11,6 +11,9 @@ import 'vue-material-design-icons/styles.css';
 const vuetify = createVuetify({
     components,
     directives,
+    theme: {
+      defaultTheme: "dark",
+    }
   });
   
 createApp(App).use(router).use(vuetify).mount("#app");

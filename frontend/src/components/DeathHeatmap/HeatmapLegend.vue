@@ -9,6 +9,9 @@
       <skull style="color: yellow;"/> Midgame Deaths  
       <br>
       <skull style="color: red;"/> Early Deaths
+      <br>
+      <br>
+      Hover over Deaths for the Minute
     </div>
 </template>
 
@@ -16,3 +19,14 @@
 import skull from 'vue-material-design-icons/Skull.vue';
 import baseB from 'vue-material-design-icons/HomeFloorB.vue';
 </script>
+
+<style>
+.legend {
+  position: absolute;
+  width: 250px;
+  z-index: 14;
+  top: 10%;
+  left: 15%;
+  font-size: 25px;
+}
+</style>

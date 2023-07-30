@@ -70,12 +70,4 @@ function hideHeatmap(gameID: string) {
   background-image: url('https://ddragon.leagueoflegends.com/cdn/10.18.1/img/map/map11.png');
   background-size: cover;
 }
-
-.legend {
-  position: absolute;
-  z-index: 14;
-  top: 10%;
-  left: 15%;
-  font-size: 25px;
-}
 </style>

@@ -351,6 +351,7 @@ function checkNormalOrRanked(g: string) : boolean {
   height: 100%;
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
 }
 
 </style>
