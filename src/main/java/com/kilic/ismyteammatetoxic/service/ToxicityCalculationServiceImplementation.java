@@ -211,13 +211,6 @@ public class ToxicityCalculationServiceImplementation {
             toxicity += value.value;
         }
 
-        logger.info("{}", toxicityValues);
-
-        logger.info("\n\n");
-        logger.info("Name = {}", participant.getSummonerName());
-        logger.info("pre10min = {}", pre10MinDeathPositions);
-        logger.info("inbetween = {}", post10pre2minBeforeEndDeathPositions);
-        logger.info("2minbeforeend = {}", last2MinDeathPositions);
         return GetToxicityDTO.from(toxicity, toxicityValues, pre10MinDeathPositions,
                 post10pre2minBeforeEndDeathPositions, last2MinDeathPositions);
     }

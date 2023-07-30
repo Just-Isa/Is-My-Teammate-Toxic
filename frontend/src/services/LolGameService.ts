@@ -101,7 +101,6 @@ async function getRelevantPlayerInfo(gameID: string) {
     })
     .then((jsondata : RelevantPlayerInfo) => {
         gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
-        console.log(gameState.gameDetails[gameID].relevantPlayerInfo)
     })
     .catch((e) => {
         gameState.errorMessage = e;

@@ -15,36 +15,18 @@
               style="display: none;">
             <v-btn v-on:click="hideHeatmap(g)" class="close-heatmap" color="white" variant="outlined">close</v-btn>
             <!-- DEATHS PRE 2 MIN -->
-            <div 
-              v-for="death in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd" 
-              class="death-icons" 
-              :style="{transform: 'translate(' + (755 - ((death.position['x'] / 10) / 2)) +'px,' + (740 - ((death.position['y'] / 10) / 2))+'px)',}"
-              >
-              <skull class="late-deaths"/>
-            </div>
+            <DeathHeatmap :deaths="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd" when="late-deaths"></DeathHeatmap>
             <!-- DEATHS POST 10 MIN AND PRE 2 MIN -->
-            <div 
-              v-for="death in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min" 
-              class="death-icons" 
-              :style="{transform: 'translate(' + (755 - ((death.position['x'] / 10) / 2)) +'px,' + (740 - ((death.position['y'] / 10) / 2))+'px)',}"
-              >
-              <skull class="midgame-deaths"/>
-            </div>
+            <DeathHeatmap :deaths="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min" when="midgame-deaths"></DeathHeatmap>
             <!-- DEATHS PRE 10 MIN -->
-            <div 
-              v-for="death in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min" 
-              class="death-icons" 
-              :style="{transform: 'translate(' + ((death.position['x'] / 10) / 2) +'px,' + (740 - ((death.position['y'] / 10) / 2))+'px)',}"
-              >
-              <skull class="early-deaths"/>
-            </div>
+            <DeathHeatmap :deaths="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min" when="early-deaths"></DeathHeatmap>
             <div v-if="              
-              teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] == 'Blue'
+              teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] == 'Red'
               ">
               <baseB style="transform: translate(15px , 705px); font-size: 25px; width:220px; color: lightblue;"/>  
             </div>
             <div v-else-if="
-              teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] == 'Red'
+              teamType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team] == 'Blue'
               ">
               <baseB style="transform: translate(715px,  10px); font-size: 25px; color: red;"/>  
             </div>
@@ -219,7 +201,7 @@ import { useUserService } from "@/services/UserService";
 import PlayerInfo from "@/components/PlayerInfo.vue";
 import Navigation from "@/components/Navigation.vue";
 import { ref } from 'vue';
-import { TeamType } from '@/domain/IGames';
+import DeathHeatmap from '@/components/DeathHeatmap.vue';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
@@ -264,7 +246,6 @@ function hideHeatmap(gameID: string) {
       darkerBackroung.style.display = 'none'; 
     }
   }
-  console.log(gameID)
 }
 
 function revealHeatmap(gameID: string) {
@@ -277,7 +258,6 @@ function revealHeatmap(gameID: string) {
       darkerBackroung.style.display = ''; 
     }
   }
-  console.log(gameID)
 }
 </script>
 
@@ -385,11 +365,6 @@ function revealHeatmap(gameID: string) {
   margin-left: 10px;
 }
 
-.death-icons {
-  position: fixed;
-  color: white;
-}
-
 .complete-content-container {
   z-index: 14;
   position: fixed;
@@ -398,21 +373,5 @@ function revealHeatmap(gameID: string) {
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.7);
 }
-
-.late-deaths {
-  color: wheat;
-  transform: scale(1.5);
-}
-
-.midgame-deaths {
-  color: yellow;
-  transform: scale(1.5);
-}
-
-.early-deaths {
-  color: red;
-  transform: scale(1.5);
-}
-
 
 </style>
