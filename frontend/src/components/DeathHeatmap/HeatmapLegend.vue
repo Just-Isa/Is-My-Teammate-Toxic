@@ -1,17 +1,12 @@
 <template>
     <div style="display: none; color: white;" class="legend" id="heatmap-legend">
-      <baseB style="font-size: 25px; color: red;"/> Red Base
-      <br>
+      <baseB style="font-size: 25px; color: red;"/> Red Base 
+      |
       <baseB style="font-size: 25px; color: lightblue;"/> Blue Base  
       <br>
-      <skull style="color: wheat;"/> Lategame Deaths  
-      <br>
-      <skull style="color: yellow;"/> Midgame Deaths  
-      <br>
-      <skull style="color: red;"/> Early Deaths
-      <br>
-      <br>
-      Hover over Deaths for the Minute
+      <skull style="color: wheat;"/> Late Deaths  |
+      <skull style="color: yellow;"/> Midgame Deaths  |
+      <skull style="color: red;"/> Early Deaths   
     </div>
 </template>
 
@@ -22,11 +17,11 @@ import baseB from 'vue-material-design-icons/HomeFloorB.vue';
 
 <style>
 .legend {
-  position: absolute;
-  width: 250px;
+  text-align: center;
+  margin-left: 36%;
+  position: absolute; 
   z-index: 14;
-  top: 10%;
-  left: 15%;
+  top: 2%;
   font-size: 25px;
 }
 </style>
