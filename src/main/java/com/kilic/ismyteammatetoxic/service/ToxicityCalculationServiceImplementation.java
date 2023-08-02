@@ -212,7 +212,7 @@ public class ToxicityCalculationServiceImplementation {
         }
 
         return GetToxicityDTO.from(toxicity, toxicityValues, pre10MinDeathPositions,
-                post10pre2minBeforeEndDeathPositions, last2MinDeathPositions);
+                post10pre2minBeforeEndDeathPositions, last2MinDeathPositions, participant.getBaitPings());
     }
 
     private List<ToxicityValue> interCheck(List<ToxicityValue> values, int kills, int deaths, int assists,

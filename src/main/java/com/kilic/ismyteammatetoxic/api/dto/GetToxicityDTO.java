@@ -8,13 +8,15 @@ public record GetToxicityDTO(
         List<ToxicityValue> toxicityValues,
         List<GetDeathPositionAndTimestampDTO> deathsPre10min,
         List<GetDeathPositionAndTimestampDTO> deathsPost10minPre2min,
-        List<GetDeathPositionAndTimestampDTO> deaths2minBeforeEnd) {
+        List<GetDeathPositionAndTimestampDTO> deaths2minBeforeEnd,
+        int amountBaitPings) {
     public static GetToxicityDTO from(float toxicityLevel,
             List<ToxicityValue> toxicityValues,
             List<GetDeathPositionAndTimestampDTO> deathsPre10min,
             List<GetDeathPositionAndTimestampDTO> deathsPost10minPre2min,
-            List<GetDeathPositionAndTimestampDTO> deaths2minBeforeEnd) {
+            List<GetDeathPositionAndTimestampDTO> deaths2minBeforeEnd,
+            int amountBaitPings) {
         return new GetToxicityDTO(toxicityLevel, toxicityValues, deathsPre10min, deathsPost10minPre2min,
-                deaths2minBeforeEnd);
+                deaths2minBeforeEnd, amountBaitPings);
     }
 }

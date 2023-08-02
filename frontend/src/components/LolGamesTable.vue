@@ -15,6 +15,7 @@
             <th class="text-center">Lane or AFK</th>
             <th class="text-center">Win</th>
             <th class="text-center">toxicityValues</th>
+            <th class="text-center">Bait Pings</th>
             <th class="text-center">Death Heatmap</th>
           </tr>
         </thead>
@@ -65,19 +66,29 @@
               </td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g) && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO && 
+                checkToxicityDtoExistence(g) && 
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0"> 
-                <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues">
+                <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues
+                ">
                   {{ v }} 
                 </p>
               </td>
-              <td v-else>
+              <td v-else-if="
+                checkGameStateAndPlayerInfoExist(g) && 
+                checkToxicityDtoExistence(g) && 
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length == 0
+                ">
                 <span class="win-circle">
                   <v-tooltip
                     activator="parent"
                     location="end"
                   >No Toxicity found!</v-tooltip>
                 </span> 
+              </td>
+              <td v-if="
+                checkGameStateAndPlayerInfoExist(g)
+                ">
+                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.amountBaitPings }}
               </td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g) && 
@@ -128,6 +139,12 @@ function checkNormalOrRanked(g: string) : boolean {
     gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Normal' ||
     gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Solo/Duo' ||
     gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Flex'
+  );
+}
+
+function checkToxicityDtoExistence(g: string) : boolean {
+  return (
+    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO != undefined
   );
 }
 
