@@ -4,20 +4,20 @@
   <div v-for="g in lolGameService.matchHistoryState.LolGames">
     <!-- DEATH HEATMAP -->
     <div v-if="
-          lolGameService.gameState.gameDetails[g] && 
-          lolGameService.gameState.gameDetails[g].relevantPlayerInfo && 
+          lolGameService.gameState.gameDetails[g] &&
+          lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
           (
             lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd ||
             lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min ||
             lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min
           )">
-        <DeathHeatmap 
-          :g="g" 
+        <DeathHeatmap
+          :g="g"
           :teamColor="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team"
           :deaths-post10min-pre2min="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min"
           :deaths-pre10min="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min"
           :deaths2min-before-end="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd">
-        </DeathHeatmap>  
+        </DeathHeatmap>
     </div>
     <!---------------->
   </div>
@@ -25,34 +25,34 @@
     <v-row>
       <v-col cols="4"></v-col>
       <v-col cols="2" class="summoner-col">
-        <v-text-field 
-          variant="solo-filled" 
-          class="summoner-name-input" 
-          type="text" 
-          required 
-          v-model="inputName" 
-          label="Summoner" 
+        <v-text-field
+          variant="solo-filled"
+          class="summoner-name-input"
+          type="text"
+          required
+          v-model="inputName"
+          label="Summoner"
           style="text-align: center;"
-        /> 
+        />
       </v-col>
       <v-col cols="1" class="region-col">
-        <v-select 
-          class="select-region" 
-          variant="solo-filled" 
-          v-model="inputRegion" 
+        <v-select
+          class="select-region"
+          variant="solo-filled"
+          v-model="inputRegion"
           :items="Object.values(regions)">
         </v-select>
       </v-col>
       <v-col cols="1" class="search-button-col">
-        <v-btn 
-          icon 
-          size="large" 
-          theme="dark" 
-          variant="elevated" 
-          class="search-button" 
+        <v-btn
+          icon
+          size="large"
+          theme="dark"
+          variant="elevated"
+          class="search-button"
           v-on:click="getUserFromService">
-            <searchweb/>  
-        </v-btn> 
+            <searchweb/>
+        </v-btn>
       </v-col>
       <v-col cols="4"></v-col>
   </v-row>
@@ -64,9 +64,7 @@
     <LolGamesTable/>
     </v-col>
   </v-row>
-  <div class="footer bg-deep-purple">
-    <p>Shoutouts to Racer, Phen & Toon (and simpleflips ig)</p>
-  </div>
+  <Footer />
 </template>
 
 <script setup lang="ts">
@@ -77,6 +75,7 @@ import LolGamesTable from '@/components/LolGamesTable.vue';
 import { useUserService } from "@/services/UserService";
 import PlayerInfo from "@/components/PlayerInfo.vue";
 import Navigation from "@/components/Navigation.vue";
+import Footer from "@/components/Footer.vue";
 import { ref } from 'vue';
 
 const lolGameService = useLolGameService();
@@ -101,14 +100,14 @@ async function getUserFromService() {
 /* MAYBE FOR LATER USE*/
 
 function hideHeatmap(gameID: string) {
-  var id: string = "heatmap-container-"+gameID; 
+  var id: string = "heatmap-container-"+gameID;
   var heatmapContainerElement = document.getElementById(id);
   var darkerBackroung = document.getElementById("complete-content-container");
   var legend = document.getElementById("heatmap-legend");
   if (heatmapContainerElement && darkerBackroung && legend) {
     if (heatmapContainerElement.style.display == '') {
       heatmapContainerElement.style.display = 'none';
-      darkerBackroung.style.display = 'none'; 
+      darkerBackroung.style.display = 'none';
       legend.style.display = 'none';
     }
   }
@@ -117,19 +116,6 @@ function hideHeatmap(gameID: string) {
 </script>
 
 <style>
-
-.footer {
-  z-index: 0;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 30px;
-  color: black;
-  text-align: center;
-  line-height: 30px;
-}
-
 .main-data-table {
   text-align: center;
   margin: 20px 100px 20px 100px;
@@ -173,12 +159,12 @@ function hideHeatmap(gameID: string) {
 
 .search-button {
   font-size: xxx-large;
-  padding-bottom: 8px; 
+  padding-bottom: 8px;
 }
 
 .death-button {
   font-size: xx-large;
-  padding-bottom: 8px; 
+  padding-bottom: 8px;
 }
 
 .container {
