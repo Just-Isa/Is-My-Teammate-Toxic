@@ -1,5 +1,13 @@
 ﻿# Is my teammate Toxic?
 
+## Using
+- Spring Boot (Java 20)
+- Vue 3.0
+- Vuetify
+- stelar7
+
+
+
 ## Tool to check a certain players behaviour ingame
 
 Includes Certain aspects like:
