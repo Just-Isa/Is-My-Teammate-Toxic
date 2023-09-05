@@ -22,20 +22,20 @@
         <tbody>
             <tr v-for="g in lolGameService.matchHistoryState.LolGames">
               <td v-if="
-                checkGameStateAndPlayerInfoExist(g)"> 
-                  {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }} 
+                checkGameStateAndPlayerInfoExist(g)">
+                  {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }}
               </td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
               <td v-if="
-                checkGameStateAndPlayerInfoExist(g)"> 
+                checkGameStateAndPlayerInfoExist(g)">
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName }}
               </td>
               <td v-if="
-                checkGameStateAndPlayerInfoExist(g)"> 
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} / 
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} / 
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}  
+                checkGameStateAndPlayerInfoExist(g)">
+                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} /
+                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} /
+                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}
               </td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g)" >
@@ -49,7 +49,7 @@
                       activator="parent"
                       location="end"
                     >Player won!</v-tooltip>
-                  </span> 
+                  </span>
               </td>
               <td v-else-if="
                 checkGameStateAndPlayerInfoExist(g) &&
@@ -59,23 +59,23 @@
                       activator="parent"
                       location="end"
                     >Player lost!</v-tooltip>
-                  </span> 
+                  </span>
               </td>
-              <td v-if="!lolGameService.gameState.gameDetails[g]">  
+              <td v-if="!lolGameService.gameState.gameDetails[g]">
                 <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">Load more details</v-btn>
               </td>
               <td v-if="
-                checkGameStateAndPlayerInfoExist(g) && 
-                checkToxicityDtoExistence(g) && 
-                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0"> 
+                checkGameStateAndPlayerInfoExist(g) &&
+                checkToxicityDtoExistence(g) &&
+                lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0">
                 <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues
                 ">
-                  {{ v }} 
+                  {{ v }}
                 </p>
               </td>
               <td v-else-if="
-                checkGameStateAndPlayerInfoExist(g) && 
-                checkToxicityDtoExistence(g) && 
+                checkGameStateAndPlayerInfoExist(g) &&
+                checkToxicityDtoExistence(g) &&
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length == 0
                 ">
                 <span class="win-circle">
@@ -83,7 +83,7 @@
                     activator="parent"
                     location="end"
                   >No Toxicity found!</v-tooltip>
-                </span> 
+                </span>
               </td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g)
@@ -91,7 +91,7 @@
                 {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.amountBaitPings }}
               </td>
               <td v-if="
-                checkGameStateAndPlayerInfoExist(g) && 
+                checkGameStateAndPlayerInfoExist(g) &&
                 checkNormalOrRanked(g) &&
                 checkExistenceOfDeathArrays(g)
                 "
@@ -109,12 +109,12 @@
 <script setup lang="ts">
 import deathlyHallows from 'vue-material-design-icons/DeathlyHallows.vue';
 import { useLolGameService } from '@/services/LolGameService';
- 
+
 const lolGameService = useLolGameService();
 
-const gameType: {[code: string] : string;} = 
+const gameType: {[code: string] : string;} =
   {
-    "TEAM_BUILDER_DRAFT_UNRANKED_5X5":"Normal", 
+    "TEAM_BUILDER_DRAFT_UNRANKED_5X5":"Normal",
     "TEAM_BUILDER_RANKED_SOLO":"Ranked Solo/Duo",
     "ARAM":"ARAM",
     "BOT_5X5_INTRO":"Bot game",
@@ -149,14 +149,14 @@ function checkToxicityDtoExistence(g: string) : boolean {
 }
 
 function revealHeatmap(gameID: string) {
-  var id: string = "heatmap-container-"+gameID; 
+  var id: string = "heatmap-container-"+gameID;
   var heatmapContainerElement = document.getElementById(id);
   var darkerBackroung = document.getElementById("complete-content-container");
   var legend = document.getElementById("heatmap-legend");
   if (heatmapContainerElement && darkerBackroung && legend) {
     if (heatmapContainerElement.style.display == 'none') {
       heatmapContainerElement.style.display = '';
-      darkerBackroung.style.display = ''; 
+      darkerBackroung.style.display = '';
       legend.style.display = '';
     }
   }

@@ -1,7 +1,12 @@
 <template>
   <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
   <Navigation class="navbar"></Navigation>
-  <div v-for="g in lolGameService.matchHistoryState.LolGames">
+  <div v-show="!lolGameService.matchHistoryState.finishedGettingGames && clickedSearch" class="loading-animation">
+    <img src="../assets/loading-spin.svg">
+  </div>
+  <div
+  v-for="g in lolGameService.matchHistoryState.LolGames"
+  v-show="lolGameService.matchHistoryState.finishedGettingGames">
     <!-- DEATH HEATMAP -->
     <div v-if="
           lolGameService.gameState.gameDetails[g] &&
@@ -57,14 +62,16 @@
       <v-col cols="4"></v-col>
   </v-row>
   </div>
-  <PlayerInfo />
-  <v-row>
-    <v-col cols="1"></v-col>
-    <v-col cols="11">
-    <LolGamesTable/>
-    </v-col>
-  </v-row>
-  <Footer />
+  <div v-show="lolGameService.matchHistoryState.finishedGettingGames">
+    <PlayerInfo />
+    <v-row>
+      <v-col cols="1"></v-col>
+      <v-col cols="11">
+      <LolGamesTable/>
+      </v-col>
+    </v-row>
+    <Footer/>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -85,6 +92,7 @@ const inputName = ref("");
 const inputRegion = ref("");
 const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":"NA"};
 
+var clickedSearch: boolean = false;
 
 async function getUserFromService() {
     if(inputName.value) {
@@ -92,6 +100,7 @@ async function getUserFromService() {
       lolGameService.resetGames();
       await userService.getUserDTO(inputName.value, inputRegion.value)
       await lolGameService.getMatchHistory();
+      clickedSearch = true;
     } else {
         console.log("No Name given")
     }
@@ -188,4 +197,10 @@ function hideHeatmap(gameID: string) {
   backdrop-filter: blur(5px);
 }
 
+.loading-animation {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 125px);
+  transform: translate(0, -50%) scale(3);
+}
 </style>

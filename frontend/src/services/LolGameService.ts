@@ -2,12 +2,12 @@ import { IGameInfo, RelevantPlayerInfo } from "@/domain/IGames";
 import { computed, reactive, readonly, ref, watch } from "vue";
 import { useUserService } from "./UserService";
 
-
 interface IGameState {
     gameDetails: {[gameid:string]: IGameInfo},
     errorMessage: string;
 }
 
+const MAXGAMES = 20;
 const userService = useUserService();
 
 const gameState = reactive<IGameState>({
@@ -24,6 +24,7 @@ interface IMatchHistoryState {
    NormalGames: string[],
    BotGames: string[],
    TFTGames : string[],
+   finishedGettingGames: boolean
 }
 
 const matchHistoryState = reactive<IMatchHistoryState>({
@@ -34,7 +35,8 @@ const matchHistoryState = reactive<IMatchHistoryState>({
     FlexRankedGames: [],
     NormalGames: [],
     BotGames: [],
-    TFTGames: []
+    TFTGames: [],
+    finishedGettingGames: false
 });
 
 async function getGame(gameID: string) {
@@ -97,7 +99,7 @@ function resetGames() {
     matchHistoryState.NormalGames = [];
     matchHistoryState.LolGames = [];
     matchHistoryState.TFTGames = [];
-
+    matchHistoryState.finishedGettingGames = false;
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
@@ -114,6 +116,9 @@ async function getRelevantPlayerInfo(gameID: string) {
     })
     .then((jsondata : RelevantPlayerInfo) => {
         gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
+        if(Object.keys(gameState.gameDetails).length == MAXGAMES) {
+            matchHistoryState.finishedGettingGames = true;
+        }
     })
     .catch((e) => {
         gameState.errorMessage = e;
@@ -146,13 +151,12 @@ async function getMatchHistory() {
     }
 }
 
-
 watch(() => matchHistoryState.LolGames, (newValue, oldValue) => {
-    if (newValue.length > 20 ) {
-        matchHistoryState.LolGames.slice(0, 20).forEach(game => {
-          getGame(game);
+    if (newValue.length > MAXGAMES ) {
+        matchHistoryState.LolGames.slice(0, MAXGAMES).forEach(game => {
+            getGame(game);
         });
-      } else if (newValue.length > 1 && newValue.length < 20) {
+      } else if (newValue.length > 1 && newValue.length < MAXGAMES) {
         matchHistoryState.LolGames.slice(0, matchHistoryState.LolGames.length).forEach(game => {
             getGame(game);
         });
@@ -168,13 +172,13 @@ const toxicityInMatches = computed(() => {
     var toxicity = 0;
     var toxicNameAmount = 0;
     Object.values(gameState.gameDetails).forEach(element => {
-        if(element.relevantPlayerInfo && element.relevantPlayerInfo.toxicityDTO && element.relevantPlayerInfo.toxicityDTO.toxicityLevel) 
+        if(element.relevantPlayerInfo && element.relevantPlayerInfo.toxicityDTO && element.relevantPlayerInfo.toxicityDTO.toxicityLevel)
         {
             if ( toxicNameAmount == 0 && element.relevantPlayerInfo.toxicityDTO.toxicityValues.filter(x => x.toLowerCase().includes("toxicname")) ) {
                 toxicity += element.relevantPlayerInfo.toxicityDTO.toxicityLevel;
-                toxicNameAmount += 1; 
+                toxicNameAmount += 1;
             }
-        } 
+        }
     });
     return (toxicity  / Object.keys(gameState.gameDetails).length).toFixed(2);
 });

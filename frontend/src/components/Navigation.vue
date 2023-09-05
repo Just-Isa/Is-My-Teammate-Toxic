@@ -1,6 +1,6 @@
 <template>
     <v-card class="drawer">
-      <v-layout class="layout"> 
+      <v-layout class="layout">
         <v-navigation-drawer
           class="bg-deep-purple drawer"
           theme="dark"
@@ -34,7 +34,7 @@ function goToLeague() {
 function goToHome() {
     router.push('/home')
     .then(() => {
-        
+
     });
 }
 

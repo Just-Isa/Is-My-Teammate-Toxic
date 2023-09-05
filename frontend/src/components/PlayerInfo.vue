@@ -11,13 +11,20 @@
             Player info
             </div>
             <div class="text-h6 mb-1">
-                {{ userService.userState.user.name }} 
+                {{ userService.userState.user.name }}
             </div>
             <div class="text-h6 mb-1">
-            Level {{ userService.userState.user.level }} 
+            Level {{ userService.userState.user.level }}
             </div>
             <div class="text-h6 mb-1">
-            toxicity in {{ Object.keys(lolGameService.gameState.gameDetails).length }} games  {{ lolGameService.toxicityInMatches }}
+                <v-tooltip
+                    activator="parent"
+                    location="top right"
+                  >Above 1.2 is bad</v-tooltip>
+            toxicity in
+                <div style="color: lightblue; display: inline;;">{{ Object.keys(lolGameService.gameState.gameDetails).length }}</div>
+            games
+                <div style="color: lightcoral; display: inline;">{{ lolGameService.toxicityInMatches.value }}</div>
             </div>
             <div class="text-h6 mb-1" v-if="lolGameService.boughtAccount.value == true">
                 Probably a bought Account
@@ -35,9 +42,7 @@ import { useTheme } from 'vuetify/lib/framework.mjs';
 
 const theme = useTheme()
 
-function switchTheme() {
-    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-}
+
 const userService = useUserService();
 const lolGameService = useLolGameService();
 
