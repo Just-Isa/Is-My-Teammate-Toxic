@@ -43,7 +43,9 @@ public class ToxicityCalculationServiceImplementation {
             "owo",
             "PL",
             "TR",
-            "FR"
+            "FR",
+            "spacegliding",
+            "testosterone"
     };
 
     public GetToxicityDTO calculateToxicityLevel(LOLMatch match, LOLTimeline timeline,

@@ -19,8 +19,8 @@
             <div class="text-h6 mb-1">
                 <v-tooltip
                     activator="parent"
-                    location="top right"
-                  >Above 1.2 is bad</v-tooltip>
+                    location="end"
+                  >Above 0.1 is bad (keep toxic reasons in mind)</v-tooltip>
             toxicity in
                 <div style="color: lightblue; display: inline;;">{{ Object.keys(lolGameService.gameState.gameDetails).length }}</div>
             games

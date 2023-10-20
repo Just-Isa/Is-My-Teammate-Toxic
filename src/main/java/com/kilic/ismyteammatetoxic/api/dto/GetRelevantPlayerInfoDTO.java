@@ -6,6 +6,7 @@ import no.stelar7.api.r4j.basic.constants.types.lol.TeamType;
 
 public record GetRelevantPlayerInfoDTO(
         String champName,
+        int champMastery,
         int baitpings,
         int kills,
         int deaths,
@@ -17,6 +18,7 @@ public record GetRelevantPlayerInfoDTO(
         GetToxicityDTO toxicityDTO) {
     public static GetRelevantPlayerInfoDTO from(
             String champString,
+            int champMastery,
             int baitpings,
             int kills,
             int deaths,
@@ -26,7 +28,7 @@ public record GetRelevantPlayerInfoDTO(
             boolean win,
             GameQueueType gameQueueType,
             GetToxicityDTO toxicityDTO) {
-        return new GetRelevantPlayerInfoDTO(champString, baitpings, kills, deaths, assists, lane, team, win,
+        return new GetRelevantPlayerInfoDTO(champString, champMastery, baitpings, kills, deaths, assists, lane, team, win,
                 gameQueueType,
                 toxicityDTO);
     }

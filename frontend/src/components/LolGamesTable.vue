@@ -6,7 +6,7 @@
         class="main-data-table"
         >
         <thead>
-          <tr class="main-data-table-th">
+          <tr class="main-data-table-th text-center">
             <th class="text-center">Queue</th>
             <th class="text-center">Date</th>
             <th class="text-center">Duration</th>
@@ -17,6 +17,7 @@
             <th class="text-center">toxicityValues</th>
             <th class="text-center">Bait Pings</th>
             <th class="text-center">Death Heatmap</th>
+            <th class="text-center"><img class="header-image" src="../assets/Champion_Mastery_Level_4_Flair.png"></th>
           </tr>
         </thead>
         <tbody>
@@ -27,10 +28,7 @@
               </td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
-              <td v-if="
-                checkGameStateAndPlayerInfoExist(g)">
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName }}
-              </td>
+              <td v-if="checkGameStateAndPlayerInfoExist(g)">{{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName  }}</td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g)">
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} /
@@ -100,6 +98,8 @@
                   <deathlyHallows style="transform: scale(2.5); "/>
                 </v-btn>
               </td>
+              <td v-else>---</td>
+              <td v-if="checkGameStateAndPlayerInfoExist(g)">{{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery }}</td>
             </tr>
         </tbody>
       </v-table>
@@ -179,5 +179,10 @@ function revealHeatmap(gameID: string) {
   background-color: red;
   border-radius: 50%;
   display: inline-block;
+}
+
+.header-image {
+  max-width: 45px;
+  max-height: 45px;
 }
 </style>

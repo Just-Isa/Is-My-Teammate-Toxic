@@ -110,6 +110,7 @@ export enum GameQueueType {
 
 export interface IRelevantPlayerInfo {
     champName: string,
+    champMastery: number,
     baitPings: number,
     kills: number,
     deaths: number,
@@ -155,6 +156,7 @@ export class GameInfo implements IGameInfo {
 
 export class RelevantPlayerInfo implements IRelevantPlayerInfo {
     champName: string;
+    champMastery: number;
     baitPings: number;
     kills: number;
     deaths: number;
@@ -164,9 +166,10 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
     win: boolean;
     gameQueueType: GameQueueType;
     toxicityDTO: IGetToxicitiyDTO;
-    
+
     constructor (
         champName: string,
+        champMastery: number,
         baitPings: number,
         kills: number,
         deaths: number,
@@ -179,6 +182,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
 
     ) {
         this.champName = champName;
+        this.champMastery = champMastery;
         this.baitPings = baitPings;
         this.kills = kills;
         this.deaths = deaths;

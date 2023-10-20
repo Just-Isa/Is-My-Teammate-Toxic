@@ -16,12 +16,16 @@ import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.impl.R4J;
+import no.stelar7.api.r4j.impl.lol.builders.championmastery.ChampionMasteryBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.TimelineBuilder;
+import no.stelar7.api.r4j.impl.lol.raw.ChampionAPI;
+import no.stelar7.api.r4j.impl.lol.raw.MasteryAPI;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLTimeline;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
+import no.stelar7.api.r4j.pojo.lol.summoner.masteries.Mastery;
 
 @Service
 public class LolGameServiceImplementation implements LolGameService {
@@ -62,10 +66,10 @@ public class LolGameServiceImplementation implements LolGameService {
 
         TimelineBuilder tb = new TimelineBuilder(LeagueShard.valueOf(userRegion));
         MatchBuilder mb = new MatchBuilder(LeagueShard.valueOf(userRegion));
+        ChampionMasteryBuilder cmb = new ChampionMasteryBuilder().withPlatform(LeagueShard.valueOf((userRegion))).withSummonerId(sum.getSummonerId());
 
         tb = tb.withId(matchId);
         mb = mb.withId(matchId);
-
         LOLMatch match = mb.getMatch();
         LOLTimeline timeline = tb.getTimeline();
 
@@ -82,8 +86,10 @@ public class LolGameServiceImplementation implements LolGameService {
 
         // Match related metadata
         if (wrapper.matchParticipant != null) {
+            int champPoints =  cmb.withChampionId(wrapper.matchParticipant.getChampionId()).getChampionMastery().getChampionPoints();
             GetRelevantPlayerInfoDTO relevantPlayerInfoDTO = GetRelevantPlayerInfoDTO.from(
                     wrapper.matchParticipant.getChampionName(),
+                    champPoints,
                     0,
                     wrapper.matchParticipant.getKills(),
                     wrapper.matchParticipant.getDeaths(),
