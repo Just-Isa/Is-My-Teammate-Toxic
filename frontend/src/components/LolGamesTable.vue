@@ -99,7 +99,12 @@
                 </v-btn>
               </td>
               <td v-else>---</td>
-              <td v-if="checkGameStateAndPlayerInfoExist(g)">{{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery }}</td>
+              <td v-if="checkGameStateAndPlayerInfoExist(g)" :class="{
+                below50kMastery : lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery < 50000,
+                below100kAbove50kMastery : lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery < 100000 && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery > 50000,
+                below500kAbove10kMastery : lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery < 500000 && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery > 100000,
+                above500kMastery : lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery > 500000,
+                }">{{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery.toLocaleString()}}</td>
             </tr>
         </tbody>
       </v-table>
@@ -165,6 +170,27 @@ function revealHeatmap(gameID: string) {
 
 <style>
 
+.below50kMastery{
+  color: lightgreen;
+}
+
+.below500kAbove10kMastery{
+  color: lightpink
+}
+
+.below100kAbove50kMastery{
+  color: lightskyblue;
+}
+
+.above500kMastery{
+  color: red;
+}
+
+
+th {
+  font-size: 20px;
+}
+
 .win-circle {
   height: 25px;
   width: 25px;
@@ -182,6 +208,7 @@ function revealHeatmap(gameID: string) {
 }
 
 .header-image {
+  margin-top: 10px;
   max-width: 45px;
   max-height: 45px;
 }
