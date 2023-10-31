@@ -30,6 +30,7 @@
                 Probably a bought Account
                 {{ lolGameService.boughtAccount.value }}
             </div>
+            <v-btn :variant="'elevated'" @click="loadFullLobby">Live Game</v-btn>
         </div>
         </v-card-item>
     </v-card>
@@ -45,6 +46,11 @@ const theme = useTheme()
 
 const userService = useUserService();
 const lolGameService = useLolGameService();
+
+
+function loadFullLobby() {
+    console.log("TODO")
+}
 
 </script>
 
