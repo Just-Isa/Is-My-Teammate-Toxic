@@ -6,7 +6,7 @@
         v-if="userService.userState.user.puuid"
     >
         <v-card-item>
-        <div v-bind:class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class' ]">
+        <div v-bind:class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class' ]" class="text-center">
             <div class="text-overline mb-1" color="white">
             Player info
             </div>
@@ -30,7 +30,12 @@
                 Probably a bought Account
                 {{ lolGameService.boughtAccount.value }}
             </div>
+            <div class="text-h6 mb-1 mt-3">
             <v-btn :variant="'elevated'" @click="loadFullLobby">Live Game</v-btn>
+            </div>
+            <div class="text-h6 mb-1 mt-4">
+            <v-btn :variant="'elevated'" @click="loadStats">Stats...</v-btn>
+            </div>
         </div>
         </v-card-item>
     </v-card>
@@ -47,8 +52,11 @@ const theme = useTheme()
 const userService = useUserService();
 const lolGameService = useLolGameService();
 
-
 function loadFullLobby() {
+    console.log("TODO")
+}
+
+function loadStats() {
     console.log("TODO")
 }
 
