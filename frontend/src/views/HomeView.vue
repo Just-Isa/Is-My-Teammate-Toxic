@@ -7,7 +7,7 @@
     </template>
 
     <template v-slot:text>
-      Yes, this even applies for League of Legends, mom.
+      get out of my head  get out of my head  get out of my head  get out of my head  get out of my head  get out of my head  get out of my head  get out of my head
     </template>
   </v-card>
   <div class="sisyphus">

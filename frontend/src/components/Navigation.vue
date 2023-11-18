@@ -10,6 +10,7 @@
           <v-list color="transparent" class="drawer-list">
             <v-btn icon title="Home" value="" size="x-large" v-on:click="goToHome"><homegroup class="home-icon"/></v-btn>
             <v-btn icon title="League" value="lol" size="x-large" v-on:click="goToLeague"><sizel class="league-icon"/></v-btn>
+            <v-btn icon title="League" value="lol" size="x-large" v-on:click="goToSources">src</v-btn>
             <toggle-theme class="swap-themes"/>
           </v-list>
         </v-navigation-drawer>
@@ -32,7 +33,14 @@ function goToLeague() {
 }
 
 function goToHome() {
-    router.push('/home')
+    router.push('/')
+    .then(() => {
+
+    });
+}
+
+function goToSources() {
+    router.push('/sources')
     .then(() => {
 
     });

@@ -42,9 +42,9 @@
       </v-col>
       <v-col cols="1" class="region-col">
         <v-select
-          class="select-region"
           variant="solo-filled"
           v-model="inputRegion"
+          label="Region"
           :items="Object.values(regions)">
         </v-select>
       </v-col>
@@ -95,14 +95,14 @@ const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":
 var clickedSearch: boolean = false;
 
 async function getUserFromService() {
-    if(inputName.value) {
+    if(inputName.value && inputRegion.value) {
       lolGameService.resetPlayerInfo();
       lolGameService.resetGames();
       await userService.getUserDTO(inputName.value, inputRegion.value)
       await lolGameService.getMatchHistory();
       clickedSearch = true;
     } else {
-        console.log("No Name given")
+      alert("Check name and Region please")
     }
 }
 

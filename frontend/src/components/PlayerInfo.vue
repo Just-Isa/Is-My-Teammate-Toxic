@@ -30,12 +30,12 @@
                 Probably a bought Account
                 {{ lolGameService.boughtAccount.value }}
             </div>
-            <div class="text-h6 mb-1 mt-3">
-            <v-btn :variant="'elevated'" @click="loadFullLobby">Live Game</v-btn>
+            <!--<div class="text-h6 mb-1 mt-3">
+        <v-btn :variant="'elevated'" @click="loadFullLobby">Live Game</v-btn>
             </div>
             <div class="text-h6 mb-1 mt-4">
             <v-btn :variant="'elevated'" @click="loadStats">Stats...</v-btn>
-            </div>
+            </div>-->
         </div>
         </v-card-item>
     </v-card>
