@@ -15,5 +15,10 @@ const vuetify = createVuetify({
       defaultTheme: "dark",
     }
   });
-  
+
+export default createVuetify({
+  components,
+  directives,
+})
+
 createApp(App).use(router).use(vuetify).mount("#app");

@@ -1,10 +1,28 @@
-FROM gradle:7.2.0-jdk17 AS build
+# Stage 1: Build Vue.js Frontend
+FROM node:latest AS vue-build
+
+WORKDIR /app/frontend
+COPY frontend /app/frontend
+RUN npm install && npm run build
+
+# Stage 2: Build Spring Boot Application
+FROM openjdk:17-jdk AS spring-build
+RUN microdnf install findutils
+
+WORKDIR /app
 COPY . .
-RUN gradle build
+COPY --from=vue-build /app/frontend/dist /app/src/main/resources/static
+RUN ./gradlew --no-daemon build -x test
 
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /build/libs/toxic-teammate-1.0.jar test.jar
+# Stage 3: Package Stage
+FROM openjdk:17-jdk AS final
+RUN microdnf install findutils
 
-ADD build/libs/*.jar toxic-teammate-1.0.jar
+WORKDIR /app
+COPY --from=spring-build /app/build/libs/*.jar app.jar
+
+# Expose the port your app runs on (if applicable)
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","test.jar"]
+
+# Specify the command to run on container start
+CMD ["java", "-jar", "app.jar"]
