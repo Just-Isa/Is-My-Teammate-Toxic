@@ -25,4 +25,4 @@ COPY --from=spring-build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Specify the command to run on container start
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "-Xmx5G", "app.jar"]
