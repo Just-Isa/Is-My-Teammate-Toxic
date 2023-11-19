@@ -42,7 +42,7 @@ public class LolGameServiceImplementation implements LolGameService {
         Summoner sum = Summoner.byName(LeagueShard.valueOf(userRegion), summonerName);
         List<String> matches = sum
                 .getLeagueGames()
-                .withCount(30)
+                .withCount(20)
                 .get();
 
         return matches;
