@@ -6,7 +6,6 @@ import no.stelar7.api.r4j.basic.APICredentials;
 
 public class SecretFile {
 
-    //RGAPI-6acaefcf-73da-4ee7-9e2a-75e25e817313
 
     @Value("${riot_api_key}")
     public static String LEAGUE_KEY;
