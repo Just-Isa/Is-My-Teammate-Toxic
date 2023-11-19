@@ -2,7 +2,6 @@ package com.kilic.ismyteammatetoxic;
 
 import java.util.function.Supplier;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,7 +13,6 @@ import no.stelar7.api.r4j.basic.calling.DataCall;
 @SpringBootApplication
 public class IsMyTeammateToxicApplication {
 
-	@Autowired
 	static Supplier<FileSystemCacheProvider> fileCache = () -> new FileSystemCacheProvider(20);
 
 	public static void main(String[] args) {

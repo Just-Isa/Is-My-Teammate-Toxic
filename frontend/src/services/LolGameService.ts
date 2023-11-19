@@ -7,7 +7,7 @@ interface IGameState {
     errorMessage: string;
 }
 
-const MAXGAMES = 20;
+const MAXGAMES = 10;
 const userService = useUserService();
 
 const gameState = reactive<IGameState>({
@@ -73,8 +73,10 @@ async function getGame(gameID: string) {
             case "CHERRY":
                 matchHistoryState.ArenaGames.push(gameID);
                 break;
+            case "QUICKPLAY_NORMAL":
+                matchHistoryState.NormalGames.push(gameID);
             default:
-                console.log("detected other game type: " + jsondata.queueType + "ignoring for calculation");
+                console.log("detected other game type: " + jsondata.queueType + " ignoring for calculation");
                 break;
             }
     })
@@ -141,6 +143,7 @@ async function getMatchHistory() {
         })
         .then((jsondata) => {
             matchHistoryState.LolGames = jsondata;
+            matchHistoryState.finishedGettingGames = true;
         })
         .catch((e) => {
             gameState.errorMessage = e;
