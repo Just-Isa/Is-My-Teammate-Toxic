@@ -43,6 +43,7 @@
         <v-select
           variant="solo-filled"
           v-model="inputRegion"
+          class="region-input"
           label="Region"
           :items="Object.values(regions)">
         </v-select>
@@ -153,15 +154,17 @@ function hideHeatmap(gameID: string) {
   margin-left: 100px;
   margin-top: 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .summoner-name-input {
   max-width: 500px;
+  min-width: 300px;
 }
 
-.select-region {
-  max-width: 100px;
+.region-input {
+  max-width: 500px;
+  min-width: 300px;
 }
 
 .search-button {
