@@ -5,8 +5,8 @@
       <div v-for="source in sources" class="type-container">
           <v-card
           class="card"
-          max-width="400"
-          min-width="400"
+          max-width="500"
+          min-width="250"
           >
 
               <v-card-title class="card-title">
@@ -46,9 +46,10 @@
 
 <style>
 .container {
+  margin-left: 100px;
   margin-top: 40px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
   justify-content: space-around;
   align-items: center;
@@ -66,4 +67,11 @@
   margin:0 auto;
   display:block;
 }
+
+
+@media only screen and (max-width: 600px) {
+    .card {
+      max-width: 250px !important;
+    }
+  }
 </style>

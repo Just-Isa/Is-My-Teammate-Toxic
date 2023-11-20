@@ -70,4 +70,15 @@ function loadStats() {
 .light-text-class {
     color: white;
 }
+
+
+@media only screen and (max-width: 600px) {
+    .quote {
+      display: none;
+    }
+
+    .sisyphus {
+      display: none;
+    }
+  }
 </style>

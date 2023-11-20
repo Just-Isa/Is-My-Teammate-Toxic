@@ -1,5 +1,5 @@
 <template>
-    <v-btn icon title="League" size="x-large" @click="switchTheme"><themeIcon class="theme-icon"/></v-btn>
+    <v-btn icon title="Theme" size="x-large" @click="switchTheme"><themeIcon class="theme-icon"/></v-btn>
 </template>
 
  <script setup lang="ts">
@@ -7,7 +7,7 @@
     import themeIcon from "vue-material-design-icons/ThemeLightDark.vue";
 
     var darkmode: boolean = true;
-    
+
     const theme = useTheme()
 
     function switchTheme() {

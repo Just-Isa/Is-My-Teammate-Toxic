@@ -4,14 +4,14 @@
         <v-navigation-drawer
           class="bg-deep-purple drawer"
           theme="dark"
-          width="125"
+          width="100px"
           permanent
         >
           <v-list color="transparent" class="drawer-list">
-            <v-btn icon title="Home" value="" size="x-large" v-on:click="goToHome"><homegroup class="home-icon"/></v-btn>
-            <v-btn icon title="League" value="lol" size="x-large" v-on:click="goToLeague"><sizel class="league-icon"/></v-btn>
-            <v-btn icon title="Sources" value="lol" size="x-large" v-on:click="goToSources">src</v-btn>
-            <toggle-theme class="swap-themes"/>
+            <v-btn icon title="Home" value="" size="default" v-on:click="goToHome"><homegroup class="home-icon"/></v-btn>
+            <v-btn icon title="League" value="lol" size="default" v-on:click="goToLeague"><sizel class="league-icon"/></v-btn>
+            <v-btn icon title="Sources" value="lol" size="default" v-on:click="goToSources">src</v-btn>
+            <toggle-theme class="swap-themes" size="default"/>
           </v-list>
         </v-navigation-drawer>
         <v-main></v-main>
@@ -49,21 +49,21 @@ function goToSources() {
 </script>
 
 <style>
-.drawer{
-  width: 20px;
+.drawer {
+  padding: 15px;
 }
-
 .layout {
   position: absolute;
   top:10px
 }
 
-.drawer-list > *{
-    margin-bottom: 20px;
+.drawer-list {
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .home-icon {
-  margin-top: auto;
   margin-bottom: 7px;
   transform: scale(2);
 }

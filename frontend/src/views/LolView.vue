@@ -6,7 +6,8 @@
   </div>
   <div
   v-for="g in lolGameService.matchHistoryState.LolGames"
-  v-show="lolGameService.matchHistoryState.finishedGettingGames">
+  v-show="lolGameService.matchHistoryState.finishedGettingGames"
+  :key="g">
     <!-- DEATH HEATMAP -->
     <div v-if="
           lolGameService.gameState.gameDetails[g] &&
@@ -27,9 +28,7 @@
     <!---------------->
   </div>
   <div class="top-bar">
-    <v-row>
-      <v-col cols="4"></v-col>
-      <v-col cols="2" class="summoner-col">
+      <div class="summoner-col">
         <v-text-field
           variant="solo-filled"
           class="summoner-name-input"
@@ -39,16 +38,16 @@
           label="Summoner"
           style="text-align: center;"
         />
-      </v-col>
-      <v-col cols="1" class="region-col">
+      </div>
+      <div class="region-col">
         <v-select
           variant="solo-filled"
           v-model="inputRegion"
           label="Region"
           :items="Object.values(regions)">
         </v-select>
-      </v-col>
-      <v-col cols="1" class="search-button-col">
+      </div>
+      <div class="search-button-col">
         <v-btn
           icon
           size="large"
@@ -58,9 +57,7 @@
           v-on:click="getUserFromService">
             <searchweb/>
         </v-btn>
-      </v-col>
-      <v-col cols="4"></v-col>
-  </v-row>
+      </div>
   </div>
   <div v-show="lolGameService.matchHistoryState.finishedGettingGames">
     <PlayerInfo />
@@ -153,7 +150,8 @@ function hideHeatmap(gameID: string) {
 }
 
 .top-bar {
-  margin-top: 50px;
+  margin-left: 100px;
+  margin-top: 20px;
   display: flex;
   justify-content: space-around;
 }
@@ -203,4 +201,21 @@ function hideHeatmap(gameID: string) {
   left: calc(50% - 125px);
   transform: translate(0, -50%) scale(3);
 }
+
+
+@media only screen and (max-width: 600px) {
+    .top-bar {
+      display: flex;
+      flex-direction: column;
+      max-width: 300px;
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    .top-bar {
+      display: flex;
+      flex-direction: column;
+      max-width: 250px;
+    }
+  }
 </style>
