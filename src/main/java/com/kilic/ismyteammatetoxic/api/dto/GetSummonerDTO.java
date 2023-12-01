@@ -1,18 +1,19 @@
 package com.kilic.ismyteammatetoxic.api.dto;
 
-import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
 public record GetSummonerDTO(
         String accountId,
-        String id,
         int level,
         String name,
+        String tag,
         String platform,
         int profileIconId,
-        String puuid) {
-    public static GetSummonerDTO from(Summoner s) {
-        return new GetSummonerDTO(s.getAccountId(), s.getId(), s.getLevel(), s.getName(), s.getPlatform().name(),
-                s.getProfileIcon().getId(),
-                s.getPuuid());
+        String puuid,
+        LeagueShard leagueShard) {
+    public static GetSummonerDTO from(Summoner s, String name, String tag, LeagueShard leagueShard) {
+        return new GetSummonerDTO(s.getAccountId(), s.getSummonerLevel(), name, tag, s.getPlatform().name(),
+                s.getProfileIconId(), s.getPUUID(), leagueShard);
     }
 }

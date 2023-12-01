@@ -124,7 +124,8 @@ const gameType: {[code: string] : string;} =
     "ARAM":"ARAM",
     "BOT_5X5_INTRO":"Bot game",
     "RANKED_FLEX_SR":"Ranked Flex",
-    "CHERRY":"Arena"
+    "CHERRY":"Arena",
+    "QUICKPLAY_NORMAL":"Quickplay"
   }
 
 function checkGameStateAndPlayerInfoExist(g: string) : boolean {
@@ -133,17 +134,15 @@ function checkGameStateAndPlayerInfoExist(g: string) : boolean {
 
 function checkExistenceOfDeathArrays(g: string) : boolean {
   return (
-    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd != undefined ||
-    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min != undefined ||
+    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd != undefined &&
+    lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min != undefined &&
     lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min != undefined
     );
 }
 
 function checkNormalOrRanked(g: string) : boolean {
   return(
-    gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Normal' ||
-    gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Solo/Duo' ||
-    gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] == 'Ranked Flex'
+    ["Normal", "Ranked Solo/Duo", "Ranked Flex", "Quickplay"].includes(gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType])
   );
 }
 

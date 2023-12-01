@@ -26,11 +26,11 @@ public class LolGameRestController {
 
         Logger logger = LoggerFactory.getLogger(LolGameRestController.class);
 
-        @GetMapping("/lol/matchhistory/{summonerName}")
+        @GetMapping("/lol/matchhistory/{accountId}")
         public @ResponseBody List<String> getLolMatcheHistory(
-                        @PathVariable String summonerName,
+                        @PathVariable String accountId,
                         @RequestParam String region) {
-                return lolGameService.getMatchHistory(summonerName, region);
+                return lolGameService.getMatchHistory(accountId, region);
         }
 
         @GetMapping("/lol/game/{gameID}")
@@ -43,8 +43,8 @@ public class LolGameRestController {
         @GetMapping("/lol/game/{gameID}/timeline")
         public @ResponseBody GetRelevantPlayerInfoDTO getRelevantPlayerInfo(
                         @PathVariable String gameID,
-                        @RequestParam String summonerName,
+                        @RequestParam String accountId,
                         @RequestParam String region) throws IOException {
-                return lolGameService.getRelevantPlayerInfo(summonerName, gameID, region);
+                return lolGameService.getRelevantPlayerInfo(accountId, gameID, region);
         }
 }

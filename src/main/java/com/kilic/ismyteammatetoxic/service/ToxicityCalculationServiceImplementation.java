@@ -272,7 +272,7 @@ public class ToxicityCalculationServiceImplementation {
         return values;
     }
 
-    private boolean checkForToxicName(String summonerName) {
-        return Arrays.stream(toxicNames).anyMatch(summonerName.toLowerCase()::contains);
+    private boolean checkForToxicName(String riotId) {
+        return Arrays.stream(toxicNames).anyMatch(riotId.toLowerCase()::contains);
     }
 }

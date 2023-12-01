@@ -8,7 +8,7 @@ export interface IUserState {
 }
 
 const userState  = reactive<IUserState>({
-   user: new User("", "", "", 0, "", 0, "", 0),
+   user: new User("", "", "", "", 0, "", 0, "", 0),
    userRegion: "",
    errorMessage: ""
 });
@@ -20,7 +20,7 @@ const regionDict: {[code:string]:string} = {
 }
 
 async function getUserDTO(username: string, region: string){
-    const DEST = "/api/user/"+username+"?region="+region;
+    const DEST = "/api/user/"+username.replace('#','-')+"?region="+region;
     return fetch(DEST, {
         method: "GET",
       })
@@ -33,10 +33,10 @@ async function getUserDTO(username: string, region: string){
     })
     .then((jsondata) => {
         userState.user = jsondata;
-        
+        return jsondata.leagueShard;
     })
-    .then(() => {
-        userState.userRegion = regionDict[region] ? regionDict[region] : "";
+    .then((leagueShard) => {
+        userState.userRegion = leagueShard;
     })
     .catch((e) => {
         userState.errorMessage = e;
@@ -50,9 +50,9 @@ function getTFTGames(amountOfGames: number) {
 
 
 export function useUserService() {
-    return { 
-        userState: readonly(userState), 
-        getUserDTO, 
+    return {
+        userState: readonly(userState),
+        getUserDTO,
         getTFTGames
     }
 }

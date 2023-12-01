@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.merakianalytics.orianna.Orianna;
-import com.kilic.ismyteammatetoxic.SecretFile;
 import com.kilic.ismyteammatetoxic.api.dto.GetSummonerDTO;
 import com.kilic.ismyteammatetoxic.service.SummonerServiceImplementation;
 
@@ -24,13 +22,10 @@ public class SummonerRestController {
 
     Logger logger = LoggerFactory.getLogger(SummonerRestController.class);
 
-    @GetMapping("/user/{summonerName}")
+    @GetMapping("/user/{riotId}")
     public @ResponseBody GetSummonerDTO getUserHistory(
-            @PathVariable String summonerName,
+            @PathVariable String riotId,
             @RequestParam String region) {
-
-        Orianna.setRiotAPIKey(SecretFile.LEAGUE_KEY);
-
-        return summService.getUser(summonerName, region);
+        return summService.getUser(riotId, region);
     }
 }

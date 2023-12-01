@@ -89,6 +89,7 @@ const userService = useUserService();
 const inputName = ref("");
 const inputRegion = ref("");
 const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":"NA"};
+const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "NA":"na1"};
 
 var clickedSearch: boolean = false;
 
@@ -96,7 +97,8 @@ async function getUserFromService() {
     if(inputName.value && inputRegion.value) {
       lolGameService.resetPlayerInfo();
       lolGameService.resetGames();
-      await userService.getUserDTO(inputName.value, inputRegion.value)
+      console.log(regionFlipped[inputRegion.value])
+      await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
       await lolGameService.getMatchHistory();
       clickedSearch = true;
     } else {

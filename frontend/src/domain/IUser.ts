@@ -23,6 +23,7 @@ export class User implements IUser {
         accountId: string,
         id : string,
         name: string,
+        tag: string,
         profileIconId: number,
         puuid: string,
         revisionDate: number,

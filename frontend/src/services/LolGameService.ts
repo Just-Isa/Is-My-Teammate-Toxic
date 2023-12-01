@@ -67,7 +67,6 @@ async function getGame(gameID: string) {
                 matchHistoryState.FlexRankedGames.push(gameID);
                 break;
             case "BOT_5X5_INTRO":
-                console.log("hiii")
                 matchHistoryState.BotGames.push(gameID);
                 break;
             case "CHERRY":
@@ -75,6 +74,7 @@ async function getGame(gameID: string) {
                 break;
             case "QUICKPLAY_NORMAL":
                 matchHistoryState.NormalGames.push(gameID);
+                break;
             default:
                 console.log("detected other game type: " + jsondata.queueType + " ignoring for calculation");
                 break;
@@ -105,7 +105,7 @@ function resetGames() {
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
-    const DEST = "/api/lol/game/"+gameID+"/timeline?region="+userService.userState.userRegion+"&summonerName="+userService.userState.user.name;
+    const DEST = "/api/lol/game/"+gameID+"/timeline?region="+userService.userState.userRegion+"&accountId="+userService.userState.user.accountId;
     return fetch(DEST, {
         method: "GET",
       })
@@ -130,7 +130,7 @@ async function getRelevantPlayerInfo(gameID: string) {
 //number of games capped to 5 for now
 async function getMatchHistory() {
     try {
-        const DEST = "/api/lol/matchhistory/"+userService.userState.user.name+"?region="+userService.userState.userRegion;
+        const DEST = "/api/lol/matchhistory/"+userService.userState.user.accountId+"?region="+userService.userState.userRegion;
         return fetch(DEST, {
             method: "GET",
           })

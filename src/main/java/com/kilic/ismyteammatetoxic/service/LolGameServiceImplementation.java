@@ -38,8 +38,8 @@ public class LolGameServiceImplementation implements LolGameService {
     ToxicityCalculationServiceImplementation toxicityCalculationService;
 
     @Override
-    public List<String> getMatchHistory(String summonerName, String userRegion) {
-        Summoner sum = Summoner.byName(LeagueShard.valueOf(userRegion), summonerName);
+    public List<String> getMatchHistory(String accountId, String userRegion) {
+        Summoner sum = Summoner.byAccountId(LeagueShard.valueOf(userRegion), accountId);
         List<String> matches = sum
                 .getLeagueGames()
                 .withCount(20)
@@ -59,10 +59,10 @@ public class LolGameServiceImplementation implements LolGameService {
     }
 
     @Override
-    public GetRelevantPlayerInfoDTO getRelevantPlayerInfo(String summonerName, String matchId, String userRegion)
+    public GetRelevantPlayerInfoDTO getRelevantPlayerInfo(String accountId, String matchId, String userRegion)
             throws IOException {
 
-        Summoner sum = Summoner.byName(LeagueShard.valueOf(userRegion), summonerName);
+        Summoner sum = Summoner.byAccountId(LeagueShard.valueOf(userRegion), accountId);
 
         TimelineBuilder tb = new TimelineBuilder(LeagueShard.valueOf(userRegion));
         MatchBuilder mb = new MatchBuilder(LeagueShard.valueOf(userRegion));

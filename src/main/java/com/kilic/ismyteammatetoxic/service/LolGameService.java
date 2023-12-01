@@ -7,10 +7,10 @@ import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
 
 public interface LolGameService {
-    public List<String> getMatchHistory(String summonerName, String userRegion);
+    public List<String> getMatchHistory(String accountId, String userRegion);
 
     public GetGameListItemDTO getMatch(String gameId, String userRegion);
 
-    public GetRelevantPlayerInfoDTO getRelevantPlayerInfo(String summonerName, String gameId, String userRegion)
+    public GetRelevantPlayerInfoDTO getRelevantPlayerInfo(String accountId, String gameId, String userRegion)
             throws IOException;
 }
