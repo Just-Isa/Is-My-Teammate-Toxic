@@ -95,6 +95,10 @@ var clickedSearch: boolean = false;
 
 async function getUserFromService() {
     if(inputName.value && inputRegion.value) {
+      if(!inputName.value.includes("#")) {
+        alert("Please make sure to include the #TAG");
+        return;
+      }
       lolGameService.resetPlayerInfo();
       lolGameService.resetGames();
       console.log(regionFlipped[inputRegion.value])
