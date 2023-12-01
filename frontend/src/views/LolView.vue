@@ -35,7 +35,7 @@
           type="text"
           required
           v-model="inputName"
-          label="Summoner"
+          label="Summoner + #TAG"
           style="text-align: center;"
         />
       </div>
