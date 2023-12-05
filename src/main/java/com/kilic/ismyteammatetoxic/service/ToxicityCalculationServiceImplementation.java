@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.kilic.ismyteammatetoxic.api.dto.GetDeathPositionAndTimestampDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetToxicityDTO;
 import com.kilic.ismyteammatetoxic.domain.ToxicityValue;
-
-import java.util.Map;
 
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.basic.constants.types.lol.LaneType;
@@ -77,100 +76,50 @@ public class ToxicityCalculationServiceImplementation {
         int amountSameItems = 0;
         int idSameItem = 0;
 
-        List<Integer> participantItems = new ArrayList<>() {
-            {
-                add(participant.getItem0());
-                add(participant.getItem1());
-                add(participant.getItem2());
-                add(participant.getItem3());
-                add(participant.getItem4());
-                add(participant.getItem5());
-                add(participant.getItem6());
-            }
-        };
+        List<Integer> participantItems = List.of(
+                participant.getItem0(),
+                participant.getItem1(),
+                participant.getItem2(),
+                participant.getItem3(),
+                participant.getItem4(),
+                participant.getItem5(),
+                participant.getItem6()
+        );
 
-        for (Integer itemId : participantItems) {
-            if (Collections.frequency(participantItems, itemId) > 2) {
-                amountSameItems = Collections.frequency(participantItems, itemId);
-                idSameItem = itemId;
-            }
-        }
         for (TimelineFrame frame : timeline.getFrames()) {
-
-            if (frame.getTimestamp() < 600000) {
+            long timestamp = frame.getTimestamp();
+            if (timestamp < 600000) {
                 pre10MinFrames.add(frame);
-            }
-            if (frame.getTimestamp() <= match.getGameDurationAsDuration().toMillis() - 120000
-                    && frame.getTimestamp() > 600000) {
+            } else if (timestamp <= match.getGameDurationAsDuration().toMillis() - 120000) {
                 post10pre2minBeforeEndFrames.add(frame);
-            }
-            if (frame.getTimestamp() >= match.getGameDurationAsDuration().toMillis() - 120000) {
+            } else {
                 last2MinFrames.add(frame);
             }
-        }
-        // first 10 min calc
-        for (TimelineFrame frame : pre10MinFrames) {
-            for (TimelineFrameEvent event : frame.getEvents()) {
-                switch (event.getType()) {
-                    case CHAMPION_KILL:
-                        if (event.getVictimId() == participant.getParticipantId()) {
-                            pre10MinDeathPositions.add(
-                                    GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
-                            deathspre10++;
-                        }
-                        break;
-                    case ITEM_PURCHASED:
-                        if (itemsBoughtpre10.get(event.getItemId()) != null) {
-                            itemsBoughtpre10.merge(event.getItemId(), 1, Integer::sum);
-                            break;
-                        }
-                        itemsBoughtpre10.put(event.getItemId(), 1);
-                    default:
-                        break;
-                }
-            }
-        }
-        // inbetween calc
-        for (TimelineFrame frame : post10pre2minBeforeEndFrames) {
-            for (TimelineFrameEvent event : frame.getEvents()) {
-                switch (event.getType()) {
-                    case CHAMPION_KILL:
-                        if (event.getVictimId() == participant.getParticipantId()) {
-                            post10pre2minBeforeEndDeathPositions.add(
-                                    GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
-                            deathspost10Pre2Min++;
-                        }
-                        break;
-                    case ITEM_PURCHASED:
-                        if (itemsBoughtpost10Pre2.get(event.getItemId()) != null) {
-                            itemsBoughtpost10Pre2.merge(event.getItemId(), 1, Integer::sum);
 
-                            break;
-                        }
-                        itemsBoughtpost10Pre2.put(event.getItemId(), 1);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        // last 2 min calc
-        for (TimelineFrame frame : last2MinFrames) {
             for (TimelineFrameEvent event : frame.getEvents()) {
                 switch (event.getType()) {
                     case CHAMPION_KILL:
                         if (event.getVictimId() == participant.getParticipantId()) {
-                            last2MinDeathPositions.add(
-                                    GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
-                            deathsPre2MinBeforeEnd++;
+                            if (timestamp < 600000) {
+                                pre10MinDeathPositions.add(GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
+                                deathspre10++;
+                            } else if (timestamp <= match.getGameDurationAsDuration().toMillis() - 120000) {
+                                post10pre2minBeforeEndDeathPositions.add(GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
+                                deathspost10Pre2Min++;
+                            } else {
+                                last2MinDeathPositions.add(GetDeathPositionAndTimestampDTO.from(event.getPosition(), event.getTimestamp()));
+                                deathsPre2MinBeforeEnd++;
+                            }
                         }
                         break;
                     case ITEM_PURCHASED:
-                        if (itemsBoughtPre2MinBeforeEnd.get(event.getItemId()) != null) {
+                        if (timestamp < 600000) {
+                            itemsBoughtpre10.merge(event.getItemId(), 1, Integer::sum);
+                        } else if (timestamp <= match.getGameDurationAsDuration().toMillis() - 120000) {
+                            itemsBoughtpost10Pre2.merge(event.getItemId(), 1, Integer::sum);
+                        } else {
                             itemsBoughtPre2MinBeforeEnd.merge(event.getItemId(), 1, Integer::sum);
-                            break;
                         }
-                        itemsBoughtPre2MinBeforeEnd.put(event.getItemId(), 1);
                         break;
                     default:
                         break;
@@ -179,34 +128,25 @@ public class ToxicityCalculationServiceImplementation {
         }
 
         // check for item troll
-
         if (idSameItem != 0) {
-            if (itemsBoughtpost10Pre2.get(idSameItem) != null) {
-                if (itemsBoughtpost10Pre2.get(idSameItem) >= amountSameItems) {
-                    toxicityValues.add(ToxicityValue.TROLLITEMS);
-                }
-            } else if (itemsBoughtpre10.get(idSameItem) != null) {
-                if (itemsBoughtpre10.get(idSameItem) >= amountSameItems) {
-                    toxicityValues.add(ToxicityValue.TROLLITEMS);
-                }
+            if (itemsBoughtpost10Pre2.getOrDefault(idSameItem, 0) >= amountSameItems
+                    || itemsBoughtpre10.getOrDefault(idSameItem, 0) >= amountSameItems) {
+                toxicityValues.add(ToxicityValue.TROLLITEMS);
             }
         }
 
         // check for inting
         if (match.getQueue() != GameQueueType.ARAM && match.getQueue() != GameQueueType.CHERRY) {
-            toxicityValues = interCheck(toxicityValues, kills, deaths, assists, match, deathspre10,
-                    deathspost10Pre2Min);
+            toxicityValues = interCheck(toxicityValues, kills, deaths, assists, deathspre10, deathspost10Pre2Min);
         }
 
         // Toxic Name check
-        if (this.checkForToxicName(sum.getName())) {
+        if (checkForToxicName(sum.getName())) {
             toxicityValues.add(ToxicityValue.TOXICNAME);
         }
 
         // Check if player went AFK or PICKED TROLL
-        toxicityValues = this.afkOrTrollCheck(toxicityValues, deaths, kills, assists, win, lane, match, participant);
-
-        // ---------------------------------------------------------------------------------------------
+        toxicityValues = afkOrTrollCheck(toxicityValues, deaths, kills, assists, win, lane, match, participant);
 
         // Add up toxicity Value
         for (ToxicityValue value : toxicityValues) {
@@ -218,18 +158,16 @@ public class ToxicityCalculationServiceImplementation {
     }
 
     private List<ToxicityValue> interCheck(List<ToxicityValue> values, int kills, int deaths, int assists,
-            LOLMatch match, int deathspre10, int deathspost10Pre2Min) {
+            int deathspre10, int deathspost10Pre2Min) {
         if (deathspre10 > 10) {
             values.add(ToxicityValue.EARLYINTER);
         }
         if (deathspost10Pre2Min > 20) {
             values.add(ToxicityValue.INTER);
         }
-        if (deaths >= 20
-                && (kills <= 5 && assists <= 5)) {
+        if (deaths >= 20 && (kills <= 5 && assists <= 5)) {
             values.add(ToxicityValue.FEEDING);
-        } else if (deaths > 10
-                && (kills <= 3 && assists <= 3)) {
+        } else if (deaths > 10 && (kills <= 3 && assists <= 3)) {
             values.add(ToxicityValue.BADSCORE);
         }
         return values;
@@ -242,31 +180,20 @@ public class ToxicityCalculationServiceImplementation {
             case AFK:
                 values.add(ToxicityValue.AFK);
                 break;
-            case NONE:
-                break;
-            case BOT:
-                break;
-            case INVALID:
-                break;
-            case JUNGLE:
-                break;
-            case MID:
-                break;
-            case TOP:
-                break;
             case UTILITY:
+                //ADD CHECK FOR KSING SUPPORT HERE
                 break;
             default:
-                if (deaths == 0 || match.getQueue() == GameQueueType.ARAM) {
+                if (deaths <= 4 || match.getQueue() == GameQueueType.ARAM) {
                     break;
                 }
-                if (win
-                        && ((kills + (assists * 0.5))
-                                / deaths) > 0.8) {
-                    values.add(ToxicityValue.TROLLBUTWIN);
+                if (((kills + (assists * 0.5)) / deaths) < 0.08) {
+                    values.add(ToxicityValue.TROLL);
+                    if (win) {
+                        values.add(ToxicityValue.TROLLBUTWIN);
+                    }
                     break;
                 }
-                values.add(ToxicityValue.TROLL);
                 break;
         }
         return values;
