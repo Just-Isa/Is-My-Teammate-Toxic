@@ -19,8 +19,6 @@ import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.championmastery.ChampionMasteryBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.TimelineBuilder;
-import no.stelar7.api.r4j.impl.lol.raw.ChampionAPI;
-import no.stelar7.api.r4j.impl.lol.raw.MasteryAPI;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLTimeline;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
@@ -89,7 +87,6 @@ public class LolGameServiceImplementation implements LolGameService {
             GetRelevantPlayerInfoDTO relevantPlayerInfoDTO = GetRelevantPlayerInfoDTO.from(
                     wrapper.matchParticipant.getChampionName(),
                     champPoints,
-                    0,
                     wrapper.matchParticipant.getKills(),
                     wrapper.matchParticipant.getDeaths(),
                     wrapper.matchParticipant.getAssists(),

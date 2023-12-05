@@ -19,7 +19,6 @@ Includes Certain aspects like:
 - bad scores
 - bought accounts
 - trolling but winning
-- bait pint counter (to be implemented)
 
 Aswell as:
 - A Deathheatmap (which shows the timing for the deaths by hovering on the respective skulls)

@@ -1,12 +1,13 @@
 <template>
     <v-card
-        class="mx-auto"
+        class="player-info-container mx-auto"
         max-width="344"
+        min-width="200"
         variant="outlined"
         v-if="userService.userState.user.puuid"
     >
         <v-card-item>
-        <div v-bind:class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class' ]" class="text-center">
+        <div v-bind:class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class' ]" class="player-info-card text-center">
             <div class="text-overline mb-1" color="white">
             Player info
             </div>
@@ -73,12 +74,10 @@ function loadStats() {
 
 
 @media only screen and (max-width: 600px) {
-    .quote {
-      display: none;
-    }
-
-    .sisyphus {
-      display: none;
+    .player-info-container {
+        max-width: 200px;
+        width:250px;
+        left: 35px;
     }
   }
 </style>

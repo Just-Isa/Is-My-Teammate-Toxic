@@ -15,7 +15,6 @@
             <th class="text-center">Lane or AFK</th>
             <th class="text-center">Win</th>
             <th class="text-center">toxicityValues</th>
-            <th class="text-center">Bait Pings</th>
             <th class="text-center">Death Heatmap</th>
             <th class="text-center">Mastery</th>
           </tr>
@@ -26,7 +25,7 @@
                 checkGameStateAndPlayerInfoExist(g)">
                   {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }}
               </td>
-              <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].dateOfGame }}</td>
+              <td v-if="lolGameService.gameState.gameDetails[g]">{{ formatDate(lolGameService.gameState.gameDetails[g].dateOfGame) }}</td>
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
               <td v-if="checkGameStateAndPlayerInfoExist(g)">{{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName  }}</td>
               <td v-if="
@@ -60,7 +59,7 @@
                   </span>
               </td>
               <td v-if="!lolGameService.gameState.gameDetails[g]">
-                <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">Load more details</v-btn>
+                <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">More</v-btn>
               </td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g) &&
@@ -83,19 +82,15 @@
                 </span>
               </td>
               <td v-if="
-                checkGameStateAndPlayerInfoExist(g)
-                ">
-                {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.amountBaitPings }}
-              </td>
-              <td v-if="
                 checkGameStateAndPlayerInfoExist(g) &&
                 checkNormalOrRanked(g) &&
                 checkExistenceOfDeathArrays(g)
                 "
                 >
-                <v-btn icon variant="flat" style="padding-bottom: 9px;" v-on:click="revealHeatmap(g)">
+                <v-btn icon variant="flat" class="heatmap-button" v-on:click="revealHeatmap(g)">
                   <deathlyHallows style="transform: scale(2.5); "/>
                 </v-btn>
+                <div class="mobile-info">Not for mobile yet</div>
               </td>
               <td v-else>---</td>
               <td v-if="checkGameStateAndPlayerInfoExist(g)" :class="{
@@ -151,6 +146,15 @@ function checkToxicityDtoExistence(g: string) : boolean {
   );
 }
 
+function formatDate(date: string) {
+    const currentDate = new Date();
+    const splitDateString = date.replace(" ", "").split("/");
+    const gameDate = new Date(parseInt(splitDateString[2]), parseInt(splitDateString[1]), parseInt(splitDateString[0]));
+    const timeDifference = Math.abs((currentDate.getTime() as number) - (gameDate.getTime() as number));
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    return `${daysDifference} days ago`;
+  }
+
 function revealHeatmap(gameID: string) {
   var id: string = "heatmap-container-"+gameID;
   var heatmapContainerElement = document.getElementById(id);
@@ -184,6 +188,9 @@ function revealHeatmap(gameID: string) {
   color: red;
 }
 
+.mobile-info {
+  display: none;
+}
 
 th {
   font-size: 20px;
@@ -210,4 +217,39 @@ th {
   max-width: 45px;
   max-height: 45px;
 }
+
+.heatmap-button {
+  padding-bottom: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .main-data-table {
+      max-width: 310px;
+      height: 400px;
+    }
+
+    th {
+      font-size: 18px;
+    }
+
+    td{
+      font-size: 15px;
+      max-width: 20px;
+    }
+
+    .v-table__wrapper {
+      max-width: 310px;
+
+      height: 300px;
+      max-height: 400px;
+    }
+
+    .heatmap-button {
+      display: none;
+    }
+
+    .mobile-info {
+      display: inline;
+    }
+  }
 </style>
