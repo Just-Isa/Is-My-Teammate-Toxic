@@ -218,14 +218,15 @@ function hideHeatmap(gameID: string) {
       flex-direction: column;
       max-width: 280px;
     }
+
+    .main-data-table {
+      text-align: center;
+      margin-top: 20px;
+      width: 90%;
+      margin-left: 60px;
+    }
   }
 
-  .main-data-table {
-    text-align: center;
-    margin-top: 20px;
-    width: 90%;
-    margin-left: 50px;
-  }
 
   @media only screen and (max-width: 400px) {
     .top-bar {

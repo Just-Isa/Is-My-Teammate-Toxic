@@ -11,11 +11,11 @@
             <th class="text-center">Date</th>
             <th class="text-center">Duration</th>
             <th class="text-center">Champ</th>
+            <th class="text-center">Lane</th>
             <th class="text-center">K/D/A</th>
-            <th class="text-center">Lane or AFK</th>
             <th class="text-center">Win</th>
-            <th class="text-center">toxicityValues</th>
-            <th class="text-center">Death Heatmap</th>
+            <th class="text-center">toxicity</th>
+            <th class="text-center">Deaths</th>
             <th class="text-center">Mastery</th>
           </tr>
         </thead>
@@ -29,14 +29,14 @@
               <td v-if="lolGameService.gameState.gameDetails[g]">{{ lolGameService.gameState.gameDetails[g].gameDuration }}</td>
               <td v-if="checkGameStateAndPlayerInfoExist(g)">{{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName  }}</td>
               <td v-if="
+                checkGameStateAndPlayerInfoExist(g)" >
+                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
+              </td>
+              <td v-if="
                 checkGameStateAndPlayerInfoExist(g)">
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} /
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} /
                   {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}
-              </td>
-              <td v-if="
-                checkGameStateAndPlayerInfoExist(g)" >
-                  {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
               </td>
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g) &&
@@ -239,7 +239,6 @@ th {
 
     .v-table__wrapper {
       max-width: 310px;
-
       height: 300px;
       max-height: 400px;
     }

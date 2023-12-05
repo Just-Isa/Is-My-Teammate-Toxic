@@ -64,6 +64,9 @@ function loadStats() {
 </script>
 
 <style>
+.player-info-container {
+    margin: 25px 0 25px 0;
+}
 .dark-text-class {
     color: black;
 }
