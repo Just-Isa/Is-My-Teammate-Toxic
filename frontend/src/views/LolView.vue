@@ -73,13 +73,13 @@
 </template>
 
 <script setup lang="ts">
-import DeathHeatmap from '@/components/DeathHeatmap/DeathHeatmap.vue';
+import DeathHeatmap from '../components/DeathHeatmap/DeathHeatmap.vue';
 import searchweb from 'vue-material-design-icons/SearchWeb.vue';
 import { useLolGameService } from "@/services/LolGameService";
-import LolGamesTable from '@/components/LolGamesTable.vue';
+import LolGamesTable from '../components/LolGamesTable.vue';
 import { useUserService } from "@/services/UserService";
-import PlayerInfo from "@/components/PlayerInfo.vue";
-import Navigation from "@/components/Navigation.vue";
+import PlayerInfo from "../components/PlayerInfo.vue";
+import Navigation from "../components/Navigation.vue";
 import Footer from "@/components/Footer.vue";
 import { ref } from 'vue';
 

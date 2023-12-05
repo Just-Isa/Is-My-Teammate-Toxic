@@ -1,5 +1,4 @@
 <template>
-    <v-card class="drawer">
       <v-layout class="layout">
         <v-navigation-drawer
           class="bg-deep-purple drawer"
@@ -16,7 +15,6 @@
         </v-navigation-drawer>
         <v-main></v-main>
       </v-layout>
-    </v-card>
   </template>
 
 <script setup lang="ts">
