@@ -17,11 +17,11 @@
             <th class="text-center">toxicityValues</th>
             <th class="text-center">Bait Pings</th>
             <th class="text-center">Death Heatmap</th>
-            <th class="text-center"><img class="header-image" src="../assets/Champion_Mastery_Level_4_Flair.png"></th>
+            <th class="text-center">Mastery</th>
           </tr>
         </thead>
         <tbody>
-            <tr v-for="g in lolGameService.matchHistoryState.LolGames">
+            <tr v-for="g in lolGameService.matchHistoryState.LolGames" :key="g">
               <td v-if="
                 checkGameStateAndPlayerInfoExist(g)">
                   {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }}
@@ -66,8 +66,7 @@
                 checkGameStateAndPlayerInfoExist(g) &&
                 checkToxicityDtoExistence(g) &&
                 lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0">
-                <p v-for="v in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues
-                ">
+                <p v-for="(v, index) in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues" :key="index">
                   {{ v }}
                 </p>
               </td>
