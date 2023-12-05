@@ -7,37 +7,28 @@
         v-if="userService.userState.user.puuid"
     >
         <v-card-item>
-        <div v-bind:class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class' ]" class="player-info-card text-center">
-            <div class="text-overline mb-1" color="white">
-            Player info
+            <div :class="[theme.global.name.value == 'light' ? 'dark-text-class' : 'light-text-class']" class="player-info-card text-center">
+                <div class="text-overline mb-1" color="white">
+                    Player info
+                </div>
+                <div class="text-h6 mb-1">
+                    {{ userService.userState.user.name }}
+                </div>
+                <div class="text-h6 mb-1">
+                    Level {{ userService.userState.user.level }}
+                </div>
+                <div class="text-h6 mb-1">
+                    <v-tooltip activator="parent" location="end">Above 0.1 is bad (keep toxic reasons in mind)</v-tooltip>
+                    Toxicity in
+                    <span style="color: lightblue; display: inline;">{{ Object.keys(lolGameService.gameState.gameDetails).length }}</span>
+                    games
+                    <span style="color: lightcoral; display: inline;">{{ lolGameService.toxicityInMatches.value }}</span>
+                </div>
+                <div class="text-h6 mb-1" v-if="lolGameService.boughtAccount.value">
+                    Probably a bought Account
+                    {{ lolGameService.boughtAccount.value }}
+                </div>
             </div>
-            <div class="text-h6 mb-1">
-                {{ userService.userState.user.name }}
-            </div>
-            <div class="text-h6 mb-1">
-            Level {{ userService.userState.user.level }}
-            </div>
-            <div class="text-h6 mb-1">
-                <v-tooltip
-                    activator="parent"
-                    location="end"
-                  >Above 0.1 is bad (keep toxic reasons in mind)</v-tooltip>
-            toxicity in
-                <div style="color: lightblue; display: inline;;">{{ Object.keys(lolGameService.gameState.gameDetails).length }}</div>
-            games
-                <div style="color: lightcoral; display: inline;">{{ lolGameService.toxicityInMatches.value }}</div>
-            </div>
-            <div class="text-h6 mb-1" v-if="lolGameService.boughtAccount.value == true">
-                Probably a bought Account
-                {{ lolGameService.boughtAccount.value }}
-            </div>
-            <!--<div class="text-h6 mb-1 mt-3">
-        <v-btn :variant="'elevated'" @click="loadFullLobby">Live Game</v-btn>
-            </div>
-            <div class="text-h6 mb-1 mt-4">
-            <v-btn :variant="'elevated'" @click="loadStats">Stats...</v-btn>
-            </div>-->
-        </div>
         </v-card-item>
     </v-card>
 </template>

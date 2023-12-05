@@ -9,14 +9,7 @@
   v-show="lolGameService.matchHistoryState.finishedGettingGames"
   :key="g">
     <!-- DEATH HEATMAP -->
-    <div v-if="
-          lolGameService.gameState.gameDetails[g] &&
-          lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
-          (
-            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd ||
-            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min ||
-            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min
-          )">
+    <div v-if="hasToxicityData(g)">
         <DeathHeatmap
           :g="g"
           :teamColor="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team"
@@ -28,37 +21,38 @@
     <!---------------->
   </div>
   <div class="top-bar">
-      <div class="summoner-col">
-        <v-text-field
-          variant="solo-filled"
-          class="summoner-name-input"
-          type="text"
-          required
-          v-model="inputName"
-          label="Summoner + #TAG"
-          style="text-align: center;"
-        />
-      </div>
-      <div class="region-col">
-        <v-select
-          variant="solo-filled"
-          v-model="inputRegion"
-          class="region-input"
-          label="Region"
-          :items="Object.values(regions)">
-        </v-select>
-      </div>
-      <div class="search-button-col">
-        <v-btn
-          icon
-          size="large"
-          theme="dark"
-          variant="elevated"
-          class="search-button"
-          v-on:click="getUserFromService">
-            <searchweb/>
-        </v-btn>
-      </div>
+    <div class="summoner-col">
+      <v-text-field
+        variant="solo-filled"
+        class="summoner-name-input"
+        type="text"
+        required
+        v-model="inputName"
+        label="Summoner + #TAG"
+        style="text-align: center;"
+      />
+    </div>
+    <div class="region-col">
+      <v-select
+        variant="solo-filled"
+        v-model="inputRegion"
+        class="region-input"
+        label="Region"
+        :items="Object.values(regions)"
+      ></v-select>
+    </div>
+    <div class="search-button-col">
+      <v-btn
+        icon
+        size="large"
+        theme="dark"
+        variant="elevated"
+        class="search-button"
+        v-on:click="getUserFromService"
+      >
+        <searchweb />
+      </v-btn>
+    </div>
   </div>
   <div v-show="lolGameService.matchHistoryState.finishedGettingGames">
     <PlayerInfo />
@@ -93,6 +87,16 @@ const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "
 
 var clickedSearch: boolean = false;
 
+function hasToxicityData(g) {
+  return lolGameService.gameState.gameDetails[g] &&
+          lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
+          (
+            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd ||
+            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min ||
+            lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min
+          );
+}
+
 async function getUserFromService() {
     if(inputName.value && inputRegion.value) {
       if(!inputName.value.includes("#")) {
@@ -113,10 +117,10 @@ async function getUserFromService() {
 /* MAYBE FOR LATER USE*/
 
 function hideHeatmap(gameID: string) {
-  var id: string = "heatmap-container-"+gameID;
-  var heatmapContainerElement = document.getElementById(id);
-  var darkerBackroung = document.getElementById("complete-content-container");
-  var legend = document.getElementById("heatmap-legend");
+  const id: string = "heatmap-container-"+gameID;
+  const heatmapContainerElement = document.getElementById(id);
+  const darkerBackroung = document.getElementById("complete-content-container");
+  const legend = document.getElementById("heatmap-legend");
   if (heatmapContainerElement && darkerBackroung && legend) {
     if (heatmapContainerElement.style.display == '') {
       heatmapContainerElement.style.display = 'none';
