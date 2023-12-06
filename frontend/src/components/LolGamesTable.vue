@@ -23,14 +23,17 @@
           <td v-if="lolGameService.gameState.gameDetails[g]">
             {{ formatDate(lolGameService.gameState.gameDetails[g].dateOfGame) }}
           </td>
-          <td v-if="lolGameService.gameState.gameDetails[g]">
+          <td v-if="lolGameService.gameState.gameDetails[g] ">
             {{ lolGameService.gameState.gameDetails[g].gameDuration }}
           </td>
           <td v-if="checkGameStateAndPlayerInfoExist(g)">
             {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName }}
           </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g)">
+          <td v-if="checkGameStateAndPlayerInfoExist(g) && gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] !== 'ARAM' ">
             {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
+          </td>
+          <td v-else-if="checkGameStateAndPlayerInfoExist(g) && gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] === 'ARAM'">
+             ---
           </td>
           <td v-if="checkGameStateAndPlayerInfoExist(g)">
             {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} /
@@ -84,6 +87,7 @@
 <script setup lang="ts">
 import deathlyHallows from 'vue-material-design-icons/DeathlyHallows.vue';
 import { useLolGameService } from '@/services/LolGameService';
+import { GameQueueType } from '@/domain/IGames';
 
 const lolGameService = useLolGameService();
 
