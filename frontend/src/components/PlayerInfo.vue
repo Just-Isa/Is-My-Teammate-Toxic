@@ -17,16 +17,20 @@
                 <div class="text-h6 mb-1">
                     Level {{ userService.userState.user.level }}
                 </div>
-                <div class="text-h6 mb-1">
+                <div class="text-h6 mb-5">
                     <v-tooltip activator="parent" location="end">Above 0.1 is bad (keep toxic reasons in mind)</v-tooltip>
                     Toxicity in
                     <span style="color: lightblue; display: inline;">{{ Object.keys(lolGameService.gameState.gameDetails).length }}</span>
                     games
                     <span style="color: lightcoral; display: inline;">{{ lolGameService.toxicityInMatches.value }}</span>
                 </div>
-                <div class="text-h6 mb-1" v-if="lolGameService.boughtAccount.value">
+                <div class="text-h6 mb-5" v-if="lolGameService.boughtAccount.value">
                     Probably a bought Account
                     {{ lolGameService.boughtAccount.value }}
+                </div>
+                <div class="text-h6 mb-1">
+                    <v-btn class=" mb-3" v-on:click="userService.generateQRCode()">Generate QR-Code</v-btn>
+                    <img v-if="userService.userState.user.qrCode" :src="userService.userState.user.qrCode" alt="QR Code">
                 </div>
             </div>
         </v-card-item>
@@ -34,23 +38,17 @@
 </template>
 
 <script setup lang="ts">
-import { useUserService } from '@/services/UserService';
-import { useLolGameService } from '@/services/LolGameService';
+import { useUserService } from '../services/UserService';
+import { useLolGameService } from '../services/LolGameService';
 import { useTheme } from 'vuetify/lib/framework.mjs';
+import { ref } from 'vue';
 
 const theme = useTheme()
-
-
 const userService = useUserService();
 const lolGameService = useLolGameService();
 
-function loadFullLobby() {
-    console.log("TODO")
-}
 
-function loadStats() {
-    console.log("TODO")
-}
+
 
 </script>
 
