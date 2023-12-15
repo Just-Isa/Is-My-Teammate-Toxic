@@ -75,7 +75,8 @@ import { useUserService } from "@/services/UserService";
 import PlayerInfo from "../components/PlayerInfo.vue";
 import Navigation from "../components/Navigation.vue";
 import Footer from "@/components/Footer.vue";
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
@@ -86,8 +87,23 @@ const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":
 const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "NA":"na1"};
 
 var clickedSearch: boolean = false;
+const route = useRoute();
 
-function hasToxicityData(g) {
+onMounted(async () => {
+  if (route.query.name && route.query.tag && route.query.region) {
+    await setParams();
+    getUserFromService();
+  }
+});
+
+async function setParams() {
+  inputName.value = route.query.name + "#" + route.query.tag;
+  inputRegion.value = (regions[(route.query.region as string).toLowerCase()]);
+  return new Promise((resolve) => setTimeout(resolve, 1000))
+}
+
+
+function hasToxicityData(g: any) {
   return lolGameService.gameState.gameDetails[g] &&
           lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
           (

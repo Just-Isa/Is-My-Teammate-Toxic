@@ -18,7 +18,7 @@ public class QRCodeServiceImplementation implements QRCodeService  {
     public ResponseEntity<String> generateQRCode(String name, String region, String tag) {
          try {
 
-            String linkForQrCode = "https://www.just-isa.de/#/links?region=" + region + "&name=" + name + "&tag=" + tag;
+            String linkForQrCode = "https://www.just-isa.de/#/lol?region=" + region + "&name=" + name + "&tag=" + tag;
 
             // Generate QR code using QRGen
             ByteArrayOutputStream stream = QRCode.from(linkForQrCode).withSize(250, 250).stream();

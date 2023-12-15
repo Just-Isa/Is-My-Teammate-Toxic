@@ -47,9 +47,6 @@ const theme = useTheme()
 const userService = useUserService();
 const lolGameService = useLolGameService();
 
-
-
-
 </script>
 
 <style>

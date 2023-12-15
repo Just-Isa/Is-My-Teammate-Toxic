@@ -30,18 +30,20 @@
   import Navigation from "@/components/Navigation.vue";
   import { useRoute } from 'vue-router';
   import { reactive } from 'vue';
+  import { useUserService } from '../services/UserService';
 
-  const route = useRoute();
+  const userService = useUserService();
   const links: { [key: string]: string } = reactive({});
 
 
   var xd = ["hi", "hi2", "hi3"];
   onMounted(() => {
 
-      const region = (route.query.region as string).toLowerCase();
-      const regionNoNum = (route.query.region as string).toLowerCase().replace(/[0-9]/g, '');
-      const tag = route.query.tag;
-      const name = route.query.name;
+
+      const region = (userService.userState.userRegion as string).toLowerCase();
+      const regionNoNum = (userService.userState.userRegion as string).toLowerCase().replace(/[0-9]/g, '');
+      const tag = userService.userState.user.tag;
+      const name = userService.userState.user.name;
 
       links["op.gg"] = `https://op.gg/summoners/${regionNoNum}/${name}-${tag}/`;
       links["League of Graphs"] = `https://www.leagueofgraphs.com/summoner/${regionNoNum}/${name}-${tag}/`;
@@ -52,7 +54,7 @@
   });
 
   function goToLink(link: string) {
-      location.href = link;
+      window.open(link);
   }
 </script>
 
