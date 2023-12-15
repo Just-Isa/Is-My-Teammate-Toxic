@@ -23,13 +23,11 @@ public class QRCodeController {
     @Autowired QRCodeService qrCodeService;
     Logger logger = LoggerFactory.getLogger(LolGameRestController.class);
 
-
     @GetMapping("/qr/generate/{name}")
     public @ResponseBody ResponseEntity<String> getLolMatcheHistory(
             @PathVariable String name,
             @RequestParam String region,
             @RequestParam String summonerTag) {
-                logger.info("{}", qrCodeService.generateQRCode(name, region, summonerTag));
                 return qrCodeService.generateQRCode(name, region, summonerTag);
             }
 }

@@ -2,6 +2,7 @@ package com.kilic.ismyteammatetoxic.service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class QRCodeServiceImplementation implements QRCodeService  {
     public ResponseEntity<String> generateQRCode(String name, String region, String tag) {
          try {
 
-            String linkForQrCode = "https://www.just-isa.de/links/" + region + "/" + name + "/" + tag;
+            String linkForQrCode = "https://www.just-isa.de/#/links?region=" + region + "&name=" + name + "&tag=" + tag;
 
             // Generate QR code using QRGen
             ByteArrayOutputStream stream = QRCode.from(linkForQrCode).withSize(250, 250).stream();
@@ -35,10 +36,4 @@ public class QRCodeServiceImplementation implements QRCodeService  {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @Override
-    public String[] getLinksForQRCode(Base64 QRCode) {
-        throw new UnsupportedOperationException("Unimplemented method 'getLinksForQRCode'");
-    }
-
 }
