@@ -242,7 +242,7 @@ function hideHeatmap(gameID: string) {
     .main-data-table {
       text-align: center;
       margin-top: 20px;
-      width: 90%;
+      width: 80%;
       margin-left: 60px;
     }
   }
