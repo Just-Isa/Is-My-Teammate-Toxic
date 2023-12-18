@@ -1,12 +1,27 @@
 {
-    "Stelar":
+    "Stelar R4J":
     {
-        "name":"Stelar -> R4J",
+        "name":"R4J",
         "link": "https://github.com/stelar7"
     },
-    "meraki-analytics":
+    "Vue.js":
     {
-        "name":"meraki-analytics -> Orianna",
-        "link":"https://github.com/meraki-analytics/orianna"
+        "name":"Vue3",
+        "link":"https://vuejs.org/"
+    },
+    "Vuetify":
+    {
+        "name":"Vuetify",
+        "link":"https://vuetifyjs.com/en/"
+    },
+    "MDI Icons":
+    {
+        "name":"Material Design Icons",
+        "link":"https://pictogrammers.com/library/mdi/"
+    },
+    "Riot Developer Portal":
+    {
+        "name":"Riot Developer Portal",
+        "link":"https://developer.riotgames.com/"
     }
 }

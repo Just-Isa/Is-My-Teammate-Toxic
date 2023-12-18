@@ -15,10 +15,14 @@
           <td>
             {{ lolChampsService.lolChampState.data[i.championId] }}
           </td>
-          <td if>
+          <td>
             {{ i.championLevel }}
           </td>
-          <td>
+          <td :class="
+            i.championPoints < 50000? 'below50kMastery' :
+            i.championPoints > 50000 && i.championPoints < 300000? 'below50kMastery' :
+            i.championPoints > 300000 && i.championPoints < 750000? 'below200kAbove100kMastery' :
+            i.championPoints > 500000 ? 'above500kMastery' : ''">
             {{ i.championPoints }}
           </td>
           <td v-if="i.chestGranted">
@@ -53,7 +57,7 @@ const playerMasteryService = usePlayerMasteryService();
   color: lightgreen;
 }
 
-.below500kAbove10kMastery{
+.below200kAbove100kMastery{
   color: lightpink
 }
 
