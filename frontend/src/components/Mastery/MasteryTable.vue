@@ -53,6 +53,7 @@ const playerMasteryService = usePlayerMasteryService();
 
 <style>
 
+
 .below50kMastery{
   color: lightgreen;
 }

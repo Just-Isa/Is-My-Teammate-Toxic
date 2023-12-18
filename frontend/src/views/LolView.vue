@@ -158,7 +158,7 @@ function hideHeatmap(gameID: string) {
   text-align: center;
   margin: 20px 100px 20px 100px;
   margin-top: 20px;
-  width: 90%;
+  width: 85%;
   margin-left: 100px;
 }
 

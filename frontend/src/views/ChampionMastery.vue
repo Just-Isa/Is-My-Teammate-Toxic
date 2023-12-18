@@ -79,6 +79,7 @@
   onMounted(async () => {
     if (route.query.name && route.query.tag && route.query.region) {
       await setParams(route.query.name as string, route.query.tag as string, route.query.region as string);
+      playerMasteryService.resetPlayerMasteryState();
       playerMasteryService.getPlayerMastery();
     }
   });

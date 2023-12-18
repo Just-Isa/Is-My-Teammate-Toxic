@@ -54,11 +54,16 @@ function getPlayerMastery(){
     }
 }
 
-
+function resetPlayerMasteryState(){
+    playerMasteryState.playerMastery = [];
+    playerMasteryState.errorMessage = "";
+    playerMasteryState.finishedGettingMasteries = false;
+}
 
 export function usePlayerMasteryService() {
     return {
         playerMasteryState: readonly(playerMasteryState),
         getPlayerMastery,
+        resetPlayerMasteryState
     }
 }
