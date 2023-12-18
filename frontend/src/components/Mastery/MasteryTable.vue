@@ -22,13 +22,13 @@
             {{ i.championPoints }}
           </td>
           <td v-if="i.chestGranted">
-            <span class="win-circle">
-              <v-tooltip activator="parent" location="end">Player won!</v-tooltip>
+            <span class="lose-circle">
+              <v-tooltip activator="parent" location="end">Chest Aquired</v-tooltip>
             </span>
           </td>
           <td v-else>
-            <span class="lose-circle">
-              <v-tooltip activator="parent" location="end">Player lost!</v-tooltip>
+            <span class="win-circle">
+              <v-tooltip activator="parent" location="end">Chest Available</v-tooltip>
             </span>
           </td>
         </tr>
