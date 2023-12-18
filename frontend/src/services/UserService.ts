@@ -21,7 +21,6 @@ const regionDict: {[code:string]:string} = {
 
 function generateQRCode() {
     const DEST = "api/qr/generate/" + userState.user.name + "?region=" + userState.userRegion + "&summonerTag=" + userState.user.tag;
-    console.log(userState.user)
     return fetch(DEST, {
         method: "GET",
     })

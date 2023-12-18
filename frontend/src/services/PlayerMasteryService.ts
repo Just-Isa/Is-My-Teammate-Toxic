@@ -42,7 +42,6 @@ function getPlayerMastery(){
             return response.json();
         })
         .then((jsondata) => {
-            console.log(jsondata)
             playerMasteryState.playerMastery = jsondata;
             playerMasteryState.finishedGettingMasteries = true;
         })

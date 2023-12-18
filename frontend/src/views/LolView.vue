@@ -123,7 +123,6 @@ async function getUserFromService() {
       }
       lolGameService.resetPlayerInfo();
       lolGameService.resetGames();
-      console.log(regionFlipped[inputRegion.value])
       await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
       await lolGameService.getMatchHistory();
       await lolChampService.getAllChamps();
