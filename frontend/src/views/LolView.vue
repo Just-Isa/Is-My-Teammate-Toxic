@@ -78,10 +78,12 @@ import Navigation from "../components/Navigation.vue";
 import Footer from "@/components/Footer.vue";
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
 const lolChampService = useLolChampsService();
+const playerMasteryService = usePlayerMasteryService();
 
 const inputName = ref("");
 const inputRegion = ref("");
@@ -126,6 +128,7 @@ async function getUserFromService() {
       await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
       await lolGameService.getMatchHistory();
       await lolChampService.getAllChamps();
+      await playerMasteryService.getPlayerMastery();
       clickedSearch = true;
     } else {
       alert("Check name and Region please")

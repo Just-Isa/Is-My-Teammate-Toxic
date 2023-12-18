@@ -98,8 +98,8 @@
         lolGameService.resetPlayerInfo();
         lolGameService.resetGames();
         await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
-        await lolGameService.getMatchHistory();
         await playerMasteryService.getPlayerMastery();
+        await lolGameService.getMatchHistory();
         await lolChampService.getAllChamps();
         clickedSearch = true;
       } else {
