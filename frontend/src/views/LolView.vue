@@ -70,6 +70,7 @@
 import DeathHeatmap from '../components/DeathHeatmap/DeathHeatmap.vue';
 import searchweb from 'vue-material-design-icons/SearchWeb.vue';
 import { useLolGameService } from "@/services/LolGameService";
+import { useLolChampsService } from '@/services/LolChampService';
 import LolGamesTable from '../components/LolGamesTable.vue';
 import { useUserService } from "@/services/UserService";
 import PlayerInfo from "../components/PlayerInfo.vue";
@@ -80,6 +81,7 @@ import { useRoute } from 'vue-router';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
+const lolChampService = useLolChampsService();
 
 const inputName = ref("");
 const inputRegion = ref("");
@@ -124,6 +126,7 @@ async function getUserFromService() {
       console.log(regionFlipped[inputRegion.value])
       await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
       await lolGameService.getMatchHistory();
+      await lolChampService.getAllChamps();
       clickedSearch = true;
     } else {
       alert("Check name and Region please")

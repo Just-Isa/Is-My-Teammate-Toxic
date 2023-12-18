@@ -1,7 +1,9 @@
 package com.kilic.ismyteammatetoxic.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.kilic.ismyteammatetoxic.SecretFile;
 import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
+import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
@@ -19,6 +22,9 @@ import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.championmastery.ChampionMasteryBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.TimelineBuilder;
+import no.stelar7.api.r4j.impl.lol.raw.ChampionAPI;
+import no.stelar7.api.r4j.impl.lol.raw.DDragonAPI;
+import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLTimeline;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
@@ -63,7 +69,6 @@ public class LolGameServiceImplementation implements LolGameService {
 
         TimelineBuilder tb = new TimelineBuilder(LeagueShard.valueOf(userRegion));
         MatchBuilder mb = new MatchBuilder(LeagueShard.valueOf(userRegion));
-        ChampionMasteryBuilder cmb = new ChampionMasteryBuilder().withPlatform(LeagueShard.valueOf((userRegion))).withSummonerId(sum.getSummonerId());
 
         tb = tb.withId(matchId);
         mb = mb.withId(matchId);
@@ -83,10 +88,8 @@ public class LolGameServiceImplementation implements LolGameService {
 
         // Match related metadata
         if (wrapper.matchParticipant != null) {
-            int champPoints =  cmb.withChampionId(wrapper.matchParticipant.getChampionId()).getChampionMastery().getChampionPoints();
             GetRelevantPlayerInfoDTO relevantPlayerInfoDTO = GetRelevantPlayerInfoDTO.from(
                     wrapper.matchParticipant.getChampionName(),
-                    champPoints,
                     wrapper.matchParticipant.getKills(),
                     wrapper.matchParticipant.getDeaths(),
                     wrapper.matchParticipant.getAssists(),
@@ -106,5 +109,24 @@ public class LolGameServiceImplementation implements LolGameService {
             return relevantPlayerInfoDTO;
         }
         return null;
+    }
+
+    @Override
+    public List<ChampionMastery> getPlayerMastery(String accountId, String userRegion) {
+        Summoner sum = Summoner.byAccountId(LeagueShard.valueOf(userRegion), accountId);
+        List<ChampionMastery> mastery = new ChampionMasteryBuilder()
+                .withPlatform(LeagueShard.valueOf(userRegion))
+                .withPUUID(sum.getPUUID())
+                .getChampionMasteries();
+        mastery.sort((a, b) -> Integer.compare(b.getChampionPoints(), a.getChampionPoints()));
+        return mastery.subList(0, 50);
+    }
+
+    @Override
+    public Map<Integer, String> getChamps() {
+        DDragonAPI api = DDragonAPI.getInstance();
+        Map<Integer, String> champions = new HashMap<>();
+        api.getChampions().forEach((k, v) -> champions.put(k, v.getName()));
+        return champions;
     }
 }

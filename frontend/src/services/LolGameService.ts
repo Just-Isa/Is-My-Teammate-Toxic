@@ -1,6 +1,7 @@
 import { IGameInfo, RelevantPlayerInfo } from "@/domain/IGames";
 import { computed, reactive, readonly, ref, watch } from "vue";
 import { useUserService } from "./UserService";
+import { useLolChampsService } from "./LolChampService";
 
 interface IGameState {
     gameDetails: {[gameid:string]: IGameInfo},
@@ -9,6 +10,7 @@ interface IGameState {
 
 const MAXGAMES = 10;
 const userService = useUserService();
+const lolChampService = useLolChampsService();
 
 const gameState = reactive<IGameState>({
     gameDetails: {},
@@ -126,6 +128,7 @@ async function getRelevantPlayerInfo(gameID: string) {
         gameState.errorMessage = e;
     });
 }
+
 
 //number of games capped to 5 for now
 async function getMatchHistory() {

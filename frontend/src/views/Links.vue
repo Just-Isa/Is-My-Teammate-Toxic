@@ -49,8 +49,6 @@
       links["League of Graphs"] = `https://www.leagueofgraphs.com/summoner/${regionNoNum}/${name}-${tag}/`;
       links["u.gg"] = `https://u.gg/lol/profile/${region}/${name}-${tag}/overview`
 
-      console.log( links)
-      console.log(region, tag, name);
   });
 
   function goToLink(link: string) {

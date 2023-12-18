@@ -12,7 +12,6 @@
           <th class="text-center">Win</th>
           <th class="text-center">Toxicity</th>
           <th class="text-center">Deaths</th>
-          <th class="text-center">Mastery</th>
         </tr>
       </thead>
       <tbody>
@@ -70,14 +69,6 @@
             <div class="mobile-info">Not for mobile yet</div>
           </td>
           <td v-else>---</td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g)" :class="{
-            below50kMastery: lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery < 50000,
-            below100kAbove50kMastery: lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery < 100000 && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery > 50000,
-            below500kAbove10kMastery: lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery < 500000 && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery > 100000,
-            above500kMastery: lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery > 500000
-          }">
-            {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champMastery.toLocaleString() }}
-          </td>
         </tr>
       </tbody>
     </v-table>
@@ -87,7 +78,6 @@
 <script setup lang="ts">
 import deathlyHallows from 'vue-material-design-icons/DeathlyHallows.vue';
 import { useLolGameService } from '@/services/LolGameService';
-import { GameQueueType } from '@/domain/IGames';
 
 const lolGameService = useLolGameService();
 
