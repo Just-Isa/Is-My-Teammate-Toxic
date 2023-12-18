@@ -60,8 +60,6 @@ public class LolGameRestController {
 
         @GetMapping("/lol/champs")
         public @ResponseBody Map<Integer, String> getChamps() throws IOException {
-                logger.info("{}", lolGameService.getChamps());                logger.info("{}", lolGameService.getChamps());
-
                 return lolGameService.getChamps();
         }
 }
