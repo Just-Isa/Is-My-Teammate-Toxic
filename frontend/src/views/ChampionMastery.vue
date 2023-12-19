@@ -1,7 +1,7 @@
 <template>
     <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
     <Navigation class="navbar"></Navigation>
-    <div v-show="!playerMasteryService.playerMasteryState.finishedGettingMasteries && clickedSearch" class="loading-animation">
+    <div v-show="!playerMasteryService.playerMasteryState.finishedGettingMasteries && clickedSearch && !lolGameService.matchHistoryState.finishedGettingGames" class="loading-animation">
       <img src="../assets/loading-spin.svg">
     </div>
     <div class="top-bar">
@@ -38,8 +38,8 @@
         </v-btn>
       </div>
     </div>
-    <div v-show="playerMasteryService.playerMasteryState.finishedGettingMasteries">
-    <PlayerInfoMastery />
+    <div v-show="playerMasteryService.playerMasteryState.finishedGettingMasteries && playerMasteryService.playerMasteryState.finishedGettingMasteries">
+      <PlayerInfoMastery />
       <v-row>
         <v-col cols="1"></v-col>
         <v-col cols="11">
@@ -98,11 +98,12 @@
         }
         lolGameService.resetPlayerInfo();
         lolGameService.resetGames();
+        playerMasteryService.resetPlayerMasteryState();
+        clickedSearch = true;
         await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
         await playerMasteryService.getPlayerMastery();
         await lolGameService.getMatchHistory();
         await lolChampService.getAllChamps();
-        clickedSearch = true;
       } else {
         alert("Check name and Region please")
       }
