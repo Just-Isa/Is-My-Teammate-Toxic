@@ -39,8 +39,7 @@
   import Navigation from "@/components/Navigation.vue";
 
   function goToLink(link: string) {
-      console.log("TODO: IMPLEMENT NEXT STEP")
-      location.href = link;
+      window.open(link);
   }
 </script>
 
