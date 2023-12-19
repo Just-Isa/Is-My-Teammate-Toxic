@@ -28,7 +28,6 @@
 <script setup lang="ts">
   import { onMounted } from 'vue';
   import Navigation from "@/components/Navigation.vue";
-  import { useRoute } from 'vue-router';
   import { reactive } from 'vue';
   import { useUserService } from '../services/UserService';
 

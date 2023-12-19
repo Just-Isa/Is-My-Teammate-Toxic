@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.kilic.ismyteammatetoxic.SecretFile;
 import com.kilic.ismyteammatetoxic.api.dto.GetGameListItemDTO;
 import com.kilic.ismyteammatetoxic.api.dto.GetRelevantPlayerInfoDTO;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteryScore;
 
 import no.stelar7.api.r4j.basic.cache.impl.FileSystemCacheProvider;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
@@ -22,7 +21,6 @@ import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.championmastery.ChampionMasteryBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.TimelineBuilder;
-import no.stelar7.api.r4j.impl.lol.raw.ChampionAPI;
 import no.stelar7.api.r4j.impl.lol.raw.DDragonAPI;
 import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;

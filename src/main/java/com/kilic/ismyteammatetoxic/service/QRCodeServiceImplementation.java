@@ -2,14 +2,12 @@ package com.kilic.ismyteammatetoxic.service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import net.glxn.qrgen.javase.QRCode;
-
 
 @Service
 public class QRCodeServiceImplementation implements QRCodeService  {

@@ -2,7 +2,7 @@
   <home-button/>
   <Navigation class="navbar"></Navigation>
   <div class="container">
-      <div v-for="source in sources" class="type-container">
+      <div v-for="source in sources" class="type-container" :key="source.link">
           <v-card
           class="card"
           max-width="500"
@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue';
   import sources from "@/assets/sources.json";
   import Navigation from "@/components/Navigation.vue";
 
