@@ -116,7 +116,7 @@ public class LolGameServiceImplementation implements LolGameService {
                 .withPlatform(LeagueShard.valueOf(userRegion))
                 .withPUUID(sum.getPUUID())
                 .getChampionMasteries();
-        mastery.sort((a, b) -> Integer.compare(b.getChampionPoints(), a.getChampionPoints()));
+        mastery.sort((a, b) -> Integer.compare(b.getChampionLevel(), a.getChampionLevel()));
         return mastery.subList(0, 50);
     }
 

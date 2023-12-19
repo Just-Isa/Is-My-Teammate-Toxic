@@ -15,7 +15,12 @@
           <td>
             {{ lolChampsService.lolChampState.data[i.championId] }}
           </td>
-          <td>
+          <td :style="
+            i.championLevel == 5? 'color: #b73c28' :
+            i.championLevel == 6? 'color: #b129d7' :
+            i.championLevel == 7? 'color: #24b8ac' :
+            ''
+            ">
             {{ i.championLevel }}
           </td>
           <td :class="

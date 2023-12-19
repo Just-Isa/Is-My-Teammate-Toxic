@@ -81,6 +81,7 @@
       await setParams(route.query.name as string, route.query.tag as string, route.query.region as string);
       playerMasteryService.resetPlayerMasteryState();
       playerMasteryService.getPlayerMastery();
+      await lolChampService.getAllChamps();
     }
   });
 
@@ -103,7 +104,6 @@
         await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
         await playerMasteryService.getPlayerMastery();
         await lolGameService.getMatchHistory();
-        await lolChampService.getAllChamps();
       } else {
         alert("Check name and Region please")
       }
