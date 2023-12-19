@@ -1,5 +1,6 @@
 <template>
   <div class="headline">Get out of my head</div>
+  <Header class="header" name="Home"></Header>
   <div class="quote">
     <pre>
       ⠀⠀⠀⠀⠀⢀⡴⠊⠉⠉⢉⠏⠻⣍⠑⢲⠢⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀
@@ -34,6 +35,7 @@
 <script setup lang="ts">
 import Navigation from "@/components/Navigation.vue";
 import Footer from "@/components/Footer.vue";
+import Header from  '../components/Header.vue';
 </script>
 
 <style scoped>

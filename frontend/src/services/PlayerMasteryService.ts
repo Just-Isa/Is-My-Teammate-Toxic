@@ -5,6 +5,7 @@ const userService = useUserService();
 
 export interface IChampionMastery {
     championLevel: number;
+    totalMasteryPoints: number;
     chestGranted: boolean;
     championPoints: number;
     championPointsSinceLastLevel: number;
@@ -16,13 +17,15 @@ export interface IChampionMastery {
 }
 
 export interface IPlayerMasteryState {
-    playerMastery: IChampionMastery[],
+    playerMastery: IChampionMastery[];
+    totalMasteryPoints: number;
     errorMessage: string;
     finishedGettingMasteries: boolean;
 }
 
 const playerMasteryState: IPlayerMasteryState = reactive({
     playerMastery: [],
+    totalMasteryPoints: 0,
     errorMessage: "",
     finishedGettingMasteries: false
 });
@@ -43,6 +46,7 @@ function getPlayerMastery(){
         })
         .then((jsondata) => {
             playerMasteryState.playerMastery = jsondata;
+            playerMasteryState.totalMasteryPoints = playerMasteryState.playerMastery.reduce((acc: number, cur: IChampionMastery) => acc + cur.championPoints, 0);
             playerMasteryState.finishedGettingMasteries = true;
         })
         .catch((e) => {

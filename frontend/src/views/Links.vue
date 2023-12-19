@@ -1,6 +1,7 @@
 <template>
   <home-button/>
   <Navigation class="navbar"></Navigation>
+  <Header class="header" name="Quicklinks"></Header>
   <div class="container">
       <div v-for="key in Object.keys(links)" :key="key" class="type-container">
           <v-card
@@ -30,6 +31,7 @@
   import Navigation from "@/components/Navigation.vue";
   import { reactive } from 'vue';
   import { useUserService } from '../services/UserService';
+  import Header from '../components/Header.vue';
 
   const userService = useUserService();
   const links: { [key: string]: string } = reactive({});
@@ -44,8 +46,8 @@
       const tag = userService.userState.user.tag;
       const name = userService.userState.user.name;
 
-      links["op.gg"] = `https://op.gg/summoners/${regionNoNum}/${name}-${tag}/`;
       links["League of Graphs"] = `https://www.leagueofgraphs.com/summoner/${regionNoNum}/${name}-${tag}/`;
+      links["op.gg"] = `https://op.gg/summoners/${regionNoNum}/${name}-${tag}/`;
       links["u.gg"] = `https://u.gg/lol/profile/${region}/${name}-${tag}/overview`
 
   });
@@ -57,8 +59,7 @@
 
 <style>
 .container {
-  margin-left: 100px;
-  margin-top: 40px;
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;

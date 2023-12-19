@@ -1,9 +1,15 @@
 <template>
     <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
     <Navigation class="navbar"></Navigation>
-    <div v-show="!playerMasteryService.playerMasteryState.finishedGettingMasteries && clickedSearch && !lolGameService.matchHistoryState.finishedGettingGames" class="loading-animation">
+    <div v-show="
+      !playerMasteryService.playerMasteryState.finishedGettingMasteries &&
+      clickedSearch &&
+      !lolGameService.matchHistoryState.finishedGettingGames"
+      class="loading-animation"
+      >
       <img src="../assets/loading-spin.svg">
     </div>
+    <Header class="header" name="Champion Mastery"></Header>
     <div class="top-bar">
       <div class="summoner-col">
         <v-text-field
@@ -38,15 +44,17 @@
         </v-btn>
       </div>
     </div>
-    <div v-show="playerMasteryService.playerMasteryState.finishedGettingMasteries && playerMasteryService.playerMasteryState.finishedGettingMasteries">
+    <div v-show="
+      playerMasteryService.playerMasteryState.finishedGettingMasteries &&
+      playerMasteryService.playerMasteryState.finishedGettingMasteries"
+      >
       <PlayerInfoMastery />
       <v-row>
         <v-col cols="1"></v-col>
         <v-col cols="11">
-        <MasteryTable />
+          <MasteryTable />
         </v-col>
       </v-row>
-      <Footer/>
     </div>
   </template>
 
@@ -57,7 +65,7 @@
   import { useUserService } from "@/services/UserService";
   import Navigation from "../components/Navigation.vue";
   import MasteryTable from '../components/Mastery/MasteryTable.vue';
-  import Footer from "@/components/Footer.vue";
+  import Header from '../components/Header.vue';
   import { ref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
@@ -77,10 +85,15 @@
   const route = useRoute();
 
   onMounted(async () => {
+    inputRegion.value = regions['euw1'];
+    await lolChampService.getAllChamps();
+
     if (route.query.name && route.query.tag && route.query.region) {
       await setParams(route.query.name as string, route.query.tag as string, route.query.region as string);
-      await lolChampService.getAllChamps();
       await getUserFromService();
+    } else if (userService.userState.user.name && userService.userState.user.tag && userService.userState.userRegion) {
+      inputName.value = userService.userState.user.name + "#" + userService.userState.user.tag;
+      inputRegion.value = regions[userService.userState.userRegion.toLowerCase()];
     }
   });
 
@@ -138,10 +151,14 @@
     margin-bottom: 20px;
   }
 
+  .header {
+    margin-bottom: 20px;
+  }
+
   .top-bar {
-    margin-left: 100px;
-    margin-top: 20px;
+    margin-top: 80px;
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
   }
 
@@ -149,6 +166,7 @@
     max-width: 500px;
     min-width: 300px;
   }
+
 
   .region-input {
     max-width: 500px;

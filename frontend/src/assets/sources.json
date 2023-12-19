@@ -1,19 +1,4 @@
 {
-    "Stelar R4J":
-    {
-        "name":"R4J",
-        "link": "https://github.com/stelar7"
-    },
-    "Vue.js":
-    {
-        "name":"Vue3",
-        "link":"https://vuejs.org/"
-    },
-    "Vuetify":
-    {
-        "name":"Vuetify",
-        "link":"https://vuetifyjs.com/en/"
-    },
     "MDI Icons":
     {
         "name":"Material Design Icons",
@@ -23,5 +8,20 @@
     {
         "name":"Riot Developer Portal",
         "link":"https://developer.riotgames.com/"
+    },
+    "Stelar R4J":
+    {
+        "name":"R4J",
+        "link": "https://github.com/stelar7"
+    },
+    "Vuetify":
+    {
+        "name":"Vuetify",
+        "link":"https://vuetifyjs.com/en/"
+    },
+    "Vue.js":
+    {
+        "name":"Vue3",
+        "link":"https://vuejs.org/"
     }
 }

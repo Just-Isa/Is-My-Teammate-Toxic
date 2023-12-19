@@ -4,6 +4,7 @@
   <div v-show="!lolGameService.matchHistoryState.finishedGettingGames && clickedSearch" class="loading-animation">
     <img src="../assets/loading-spin.svg">
   </div>
+  <Header class="header" name="Metrics"></Header>
   <div
   v-for="g in lolGameService.matchHistoryState.LolGames"
   v-show="lolGameService.matchHistoryState.finishedGettingGames"
@@ -62,7 +63,6 @@
       <LolGamesTable/>
       </v-col>
     </v-row>
-    <Footer/>
   </div>
 </template>
 
@@ -75,7 +75,7 @@ import LolGamesTable from '../components/LolGamesTable.vue';
 import { useUserService } from "@/services/UserService";
 import PlayerInfo from "../components/PlayerInfo.vue";
 import Navigation from "../components/Navigation.vue";
-import Footer from "@/components/Footer.vue";
+import Header from '../components/Header.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
@@ -94,9 +94,22 @@ var clickedSearch: boolean = false;
 const route = useRoute();
 
 onMounted(async () => {
-  if (route.query.name && route.query.tag && route.query.region) {
+  inputRegion.value = (regions['euw1']);
+  if (
+    route.query.name &&
+    route.query.tag &&
+    route.query.region)
+  {
     await setParams();
     getUserFromService();
+  }else if(
+    userService.userState.user.name &&
+    userService.userState.user.tag &&
+    userService.userState.userRegion
+    )
+  {
+    inputName.value = userService.userState.user.name + "#" + userService.userState.user.tag;
+    inputRegion.value = (regions[userService.userState.userRegion.toLowerCase()]);
   }
 });
 
@@ -105,7 +118,6 @@ async function setParams() {
   inputRegion.value = (regions[(route.query.region as string).toLowerCase()]);
   return new Promise((resolve) => setTimeout(resolve, 1000))
 }
-
 
 function hasToxicityData(g: any) {
   return lolGameService.gameState.gameDetails[g] &&
@@ -125,9 +137,9 @@ async function getUserFromService() {
       }
       lolGameService.resetPlayerInfo();
       lolGameService.resetGames();
+      await lolChampService.getAllChamps();
       await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
       await lolGameService.getMatchHistory();
-      await lolChampService.getAllChamps();
       await playerMasteryService.getPlayerMastery();
       clickedSearch = true;
     } else {
@@ -182,9 +194,9 @@ function hideHeatmap(gameID: string) {
 }
 
 .top-bar {
-  margin-left: 100px;
-  margin-top: 20px;
+  margin-top: 80px;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 }
 

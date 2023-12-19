@@ -12,7 +12,8 @@
                     Player info
                 </div>
                 <div class="text-h6 mb-1">
-                    {{ userService.userState.user.name + '#' + userService.userState.user.tag }}
+                    {{ userService.userState.user.name }}<!---->
+                    <span style="color:teal">{{ '#' + userService.userState.user.tag }}</span>
                 </div>
                 <div class="text-h6 mb-1">
                     Level {{ userService.userState.user.level }}
