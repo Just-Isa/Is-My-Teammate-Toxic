@@ -21,42 +21,50 @@
     </div>
     <!---------------->
   </div>
-  <div class="top-bar">
-    <div class="summoner-col">
-      <v-text-field
-        variant="solo-filled"
-        class="summoner-name-input"
-        type="text"
-        required
-        v-model="inputName"
-        label="Summoner + #TAG"
-        style="text-align: center;"
-      />
-    </div>
-    <div class="region-col">
-      <v-select
-        variant="solo-filled"
-        v-model="inputRegion"
-        class="region-input"
-        label="Region"
-        :items="Object.values(regions)"
-      ></v-select>
-    </div>
-    <div class="search-button-col">
-      <v-btn
-        icon
-        size="large"
-        theme="dark"
+  <div class="search-and-info">
+    <v-card
         variant="elevated"
-        class="search-button"
-        v-on:click="getUserFromService"
-      >
-        <searchweb />
-      </v-btn>
-    </div>
+        class="search-container-card">
+      <div class="search-inputs-button">
+        <div class="search-inputs">
+          <div class="summoner-col">
+            <v-text-field
+              variant="solo-filled"
+              class="summoner-name-input"
+              type="text"
+              required
+              v-model="inputName"
+              label="Summoner + #TAG"
+              style="text-align: center;"
+            />
+          </div>
+          <div class="region-col">
+            <v-select
+              variant="solo-filled"
+              v-model="inputRegion"
+              class="region-input"
+              label="Region"
+              :items="Object.values(regions)"
+            ></v-select>
+          </div>
+        </div>
+        <div class="search-button-col">
+          <v-btn
+            icon
+            size="large"
+            theme="dark"
+            variant="outlined"
+            class="search-button"
+            v-on:click="getUserFromService"
+            >
+              <searchweb />
+            </v-btn>
+          </div>
+      </div>
+    </v-card>
+    <PlayerInfo/>
   </div>
   <div v-show="lolGameService.matchHistoryState.finishedGettingGames">
-    <PlayerInfo />
     <v-row>
       <v-col cols="1"></v-col>
       <v-col cols="11">
@@ -193,26 +201,52 @@ function hideHeatmap(gameID: string) {
   margin-bottom: 20px;
 }
 
-.top-bar {
-  margin-top: 80px;
+.search-container-card {
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+  max-width: 400px;
+  max-height: 200px;
+  padding: 30px;
+}
+
+.search-inputs {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
+}
+
+.search-inputs-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;;
+  gap:20px
+}
+
+.search-and-info {
+  margin-top: 50px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 100px;
 }
 
 .summoner-name-input {
-  max-width: 500px;
-  min-width: 300px;
+  max-width: 250px;
+  min-width: 250px;
 }
 
 .region-input {
-  max-width: 500px;
-  min-width: 300px;
+  max-width: 250px;
+  min-width: 250px;
 }
 
 .search-button {
   font-size: xxx-large;
-  padding-bottom: 8px;
+  padding: 0 0 8px 2px;
+  margin-left: 15px;
 }
 
 .death-button {
@@ -248,28 +282,68 @@ function hideHeatmap(gameID: string) {
   transform: translate(0, -50%) scale(3);
 }
 
-
-@media only screen and (max-width: 600px) {
-    .top-bar {
-      display: flex;
-      flex-direction: column;
-      max-width: 280px;
-    }
-
-    .main-data-table {
-      text-align: center;
-      margin-top: 20px;
-      width: 80%;
-      margin-left: 60px;
-    }
+@media only screen and (max-width: 1115px) {
+  .search-container-card {
+    max-width: 300px;
+    max-height: 300px;
+    padding: 30px;
+    backdrop-filter: blur(5px);
+    margin-bottom: 0;
   }
 
-
-  @media only screen and (max-width: 400px) {
-    .top-bar {
-      display: flex;
-      flex-direction: column;
-      max-width: 200px;
-    }
+  .search-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
+
+  .search-inputs-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;;
+  }
+
+  .summoner-name-input {
+    max-width: 200px;
+    min-width: 200px;
+  }
+
+  .region-input {
+    max-width: 200px;
+    min-width: 200px;
+  }
+
+  .search-button {
+    font-size: xxx-large;
+    padding: 0 0 8px 2px;
+    margin-left: 15px;
+    margin-top: 0px;
+  }
+
+  .search-and-info {
+    margin-top: 50px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    margin-left: 75px;
+  }
+
+  .main-data-table {
+    text-align: center;
+    margin-top: 20px;
+    width: 80%;
+    margin-left: 60px;
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+  .search-inputs {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+  }
+}
 </style>

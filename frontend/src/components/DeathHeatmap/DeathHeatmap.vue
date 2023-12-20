@@ -60,11 +60,26 @@ function hideHeatmap(gameID: string) {
   z-index: 15;
   min-height: 750px;
   min-width: 755px;
-  margin-top: 20px;
   left: 40%;
   top: 20%;
-  margin: -100px 0 0 -150px;
+  margin: -20px 0 0 -150px;
   background-image: url('https://ddragon.leagueoflegends.com/cdn/10.18.1/img/map/map11.png');
   background-size: cover;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .top-bar {
+    display: flex;
+    flex-direction: column;
+    max-width: 280px;
+  }
+
+  .main-data-table {
+    text-align: center;
+    margin-top: 20px;
+    width: 80%;
+    margin-left: 60px;
+  }
 }
 </style>

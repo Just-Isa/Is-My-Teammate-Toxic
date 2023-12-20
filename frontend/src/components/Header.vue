@@ -22,6 +22,7 @@
     line-height: 30px;
     margin-bottom: 50px;
     font-size: 20px;
+    z-index: 5;
   }
 
   .header-text {
