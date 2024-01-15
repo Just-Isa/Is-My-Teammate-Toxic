@@ -10,7 +10,7 @@
             <v-btn icon title="Home" value="" size="default" v-on:click="goToHome" :class="checkActiveRoute('home') ? 'active' : ''"><homegroup class="home-icon"/></v-btn>
             <v-btn icon title="Metrics" size="default" v-on:click="goToLeague" :class="checkActiveRoute('lol') ? 'active' : ''"><sizel class="league-icon"/></v-btn>
             <v-btn icon title="Mastery" size="default" v-on:click="goToMastery" :class="checkActiveRoute('mastery') ? 'active' : ''"><sizem class="league-icon"/></v-btn>
-            <v-btn v-if="checkRegionNameTag()" icon title="Quicklinks" size="default" v-on:click="goToLinks" :class="checkActiveRoute('links') ? 'active' : ''"><openInNew class="link-icon"/></v-btn>
+            <v-btn :disabled="!checkRegionNameTag()" icon :title="!checkRegionNameTag() ? 'Quicklinks only active when searched!' : 'Quicklinks'" size="default" v-on:click="goToLinks" :class="checkActiveRoute('links') ? 'active' : ''"><openInNew class="link-icon"/></v-btn>
             <v-btn icon title="Sources"  size="default" v-on:click="goToSources" :class="checkActiveRoute('sources') ? 'active' : ''">src</v-btn>
 
             <toggle-theme class="swap-themes" size="default"/>
