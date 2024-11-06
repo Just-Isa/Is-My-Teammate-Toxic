@@ -11,7 +11,7 @@
           <th class="text-center">K/D/A</th>
           <th class="text-center">Win</th>
           <th class="text-center">Toxicity</th>
-          <th class="text-center">Deaths</th>
+          <th class="text-center">Death Heatmap</th>
         </tr>
       </thead>
       <tbody>
@@ -63,9 +63,7 @@
             </span>
           </td>
           <td v-if="checkGameStateAndPlayerInfoExist(g) && checkNormalOrRanked(g) && checkExistenceOfDeathArrays(g)">
-            <v-btn icon variant="flat" class="heatmap-button" v-on:click="revealHeatmap(g)">
-              <deathlyHallows style="transform: scale(2.5); "/>
-            </v-btn>
+            Coming Soon!
             <div class="mobile-info">Not for mobile yet</div>
           </td>
           <td v-else>---</td>

@@ -1,7 +1,7 @@
 <template>
-    <div 
-        v-for="death in deaths" 
-        class="death-icons" 
+    <div
+        v-for="death in deaths"
+        class="death-icons"
         :style="{transform: 'translate(' + ((((death.position['x'] / 10) / 2))) +'px,' + (740 - (((death.position['y'] / 10) / 2)))+'px)',}"
         >
         <skull :class="props.when"/>
@@ -14,7 +14,7 @@
           location="end"
           v-else>{{Math.floor((death.timestamp/1000/60) << 0)}}:0{{Math.floor((death.timestamp/1000) % 60) }}</v-tooltip>
     </div>
-    
+
 </template>
 
 <script setup lang="ts">
