@@ -12,8 +12,8 @@ public class SecretFile {
     public static final String VAL_KEY = "NO_KEY_:(";
 
     @Value("${riot_api_key}")
-    public void setLeagueKey(String name) {
-        LEAGUE_KEY = name;
+    public void setLeagueKey(String riot_api_key) {
+        LEAGUE_KEY = riot_api_key;
     }
 
     public static String getKey(){
