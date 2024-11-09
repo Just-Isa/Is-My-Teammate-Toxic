@@ -18,11 +18,11 @@ import baseB from 'vue-material-design-icons/HomeFloorB.vue';
 <style>
 .legend {
   text-align: center;
-  left: 40%;
+  margin-left: 36%;
   margin-top: 50px;
   position: absolute;
   z-index: 14;
   top: 2%;
-  font-size: 20px;
+  font-size: 25px;
 }
 </style>

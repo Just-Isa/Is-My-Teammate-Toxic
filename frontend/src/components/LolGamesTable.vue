@@ -63,7 +63,12 @@
             </span>
           </td>
           <td v-if="checkGameStateAndPlayerInfoExist(g) && checkNormalOrRanked(g) && checkExistenceOfDeathArrays(g)">
-            Coming Soon!
+            <!--
+            <v-btn icon variant="flat" class="heatmap-button" v-on:click="revealHeatmap(g)">
+              <deathlyHallows style="transform: scale(2.5); "/>
+            </v-btn>
+            -->
+            Coming soon :(
             <div class="mobile-info">Not for mobile yet</div>
           </td>
           <td v-else>---</td>
