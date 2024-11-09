@@ -140,10 +140,11 @@ public class ToxicityCalculationServiceImplementation {
         }
 
         // Toxic Name check
+        /*
         if (checkForToxicName(sum.getName())) {
             toxicityValues.add(ToxicityValue.TOXICNAME);
         }
-
+ */
         // Check if player went AFK or PICKED TROLL
         toxicityValues = afkOrTrollCheck(toxicityValues, deaths, kills, assists, win, lane, match, participant);
 
@@ -199,6 +200,7 @@ public class ToxicityCalculationServiceImplementation {
     }
 
     private boolean checkForToxicName(String riotId) {
+
         return Arrays.stream(toxicNames).anyMatch(riotId.toLowerCase()::contains);
     }
 }
