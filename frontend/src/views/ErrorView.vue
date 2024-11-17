@@ -1,5 +1,5 @@
 <template>
-  <div class="headline">Get out of my head</div>
+  <div class="headline">You did something wrong. Now you suffer</div>
   <div class="quote">
     <pre>
       ⠀⠀⠀⠀⠀⢀⡴⠊⠉⠉⢉⠏⠻⣍⠑⢲⠢⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀
@@ -39,10 +39,12 @@ import Footer from "@/components/Footer.vue";
 <style scoped>
 
   .headline {
-    margin-top: 100px;
+    margin-top:50px;
+    margin-bottom: 20px;
     filter: invert(45%) sepia(70%) saturate(926%) hue-rotate(304deg) brightness(93%) contrast(94%);
     display: block;
     text-align: center;
+    font-size: 70px;
   }
 
   .quote {
@@ -60,6 +62,7 @@ import Footer from "@/components/Footer.vue";
     .headline {
       margin-top: 150px;
       margin-left: 100px;
+      font-size: 15px;
     }
 
     .quote {

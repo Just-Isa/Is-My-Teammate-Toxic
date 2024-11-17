@@ -30,35 +30,40 @@ const playerMasteryState: IPlayerMasteryState = reactive({
     finishedGettingMasteries: false
 });
 
-
-function getPlayerMastery(){
+/**
+ * Initializes the playerMasteryState
+ */
+function getPlayerMastery() {
     try {
-        const DEST = "/api/lol/playerMastery/"+userService.userState.user.accountId+"?region="+userService.userState.userRegion;
+        const DEST = "/api/lol/playerMastery/" + userService.userState.user.accountId + "?region=" + userService.userState.userRegion;
         return fetch(DEST, {
             method: "GET",
-          })
-        .then((response) => {
-            if (!response.ok) {
-                playerMasteryState.errorMessage = response.statusText;
-                return;
-            }
-            return response.json();
         })
-        .then((jsondata) => {
-            playerMasteryState.playerMastery = jsondata;
-            playerMasteryState.totalMasteryPoints = playerMasteryState.playerMastery.reduce((acc: number, cur: IChampionMastery) => acc + cur.championPoints, 0);
-            playerMasteryState.finishedGettingMasteries = true;
-        })
-        .catch((e) => {
-            playerMasteryState.errorMessage = e;
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    playerMasteryState.errorMessage = response.statusText;
+                    return;
+                }
+                return response.json();
+            })
+            .then((jsondata) => {
+                playerMasteryState.playerMastery = jsondata;
+                playerMasteryState.totalMasteryPoints = playerMasteryState.playerMastery.reduce((acc: number, cur: IChampionMastery) => acc + cur.championPoints, 0);
+                playerMasteryState.finishedGettingMasteries = true;
+            })
+            .catch((e) => {
+                playerMasteryState.errorMessage = e;
+            });
     } catch (error) {
         console.log(error);
         return;
     }
 }
 
-function resetPlayerMasteryState(){
+/**
+ * Resets state
+ */
+function resetPlayerMasteryState() {
     playerMasteryState.playerMastery = [];
     playerMasteryState.errorMessage = "";
     playerMasteryState.finishedGettingMasteries = false;

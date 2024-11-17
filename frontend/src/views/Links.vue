@@ -1,7 +1,6 @@
 <template>
   <home-button/>
   <Navigation class="navbar"></Navigation>
-  <Header class="header" name="Quicklinks"></Header>
   <div class="container">
       <div v-for="key in Object.keys(links)" :key="key" class="type-container">
           <v-card
@@ -31,16 +30,11 @@
   import Navigation from "@/components/Navigation.vue";
   import { reactive } from 'vue';
   import { useUserService } from '../services/UserService';
-  import Header from '../components/Header.vue';
 
   const userService = useUserService();
   const links: { [key: string]: string } = reactive({});
 
-
-  var xd = ["hi", "hi2", "hi3"];
   onMounted(() => {
-
-
       const region = (userService.userState.userRegion as string).toLowerCase();
       const regionNoNum = (userService.userState.userRegion as string).toLowerCase().replace(/[0-9]/g, '');
       const tag = userService.userState.user.tag;
@@ -49,7 +43,6 @@
       links["League of Graphs"] = `https://www.leagueofgraphs.com/summoner/${regionNoNum}/${name}-${tag}/`;
       links["op.gg"] = `https://op.gg/summoners/${regionNoNum}/${name}-${tag}/`;
       links["u.gg"] = `https://u.gg/lol/profile/${region}/${name}-${tag}/overview`
-
   });
 
   function goToLink(link: string) {

@@ -1,7 +1,6 @@
 <template>
   <home-button/>
   <Navigation class="navbar"></Navigation>
-  <Header class="header" name="Sources"></Header>
   <div class="container">
       <div v-for="source in sources" class="type-container" :key="source.link">
           <v-card
@@ -37,7 +36,6 @@
 <script setup lang="ts">
   import sources from "@/assets/sources.json";
   import Navigation from "@/components/Navigation.vue";
-  import Header from '../components/Header.vue';
 
   function goToLink(link: string) {
       window.open(link);
@@ -54,7 +52,7 @@
   align-items: center;
 }
 
-.card{
+.card {
   flex:1;
 }
 
@@ -66,7 +64,6 @@
   margin:0 auto;
   display:block;
 }
-
 
 @media only screen and (max-width: 600px) {
     .card {

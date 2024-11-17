@@ -8,7 +8,6 @@
       class="loading-animation"
       >
     </div>
-    <Header class="header" name="Champion Mastery"></Header>
     <div class="search-and-info">
       <v-card
           variant="elevated"
@@ -73,7 +72,6 @@
   import { useUserService } from "@/services/UserService";
   import Navigation from "../components/Navigation.vue";
   import MasteryTable from '../components/Mastery/MasteryTable.vue';
-  import Header from '../components/Header.vue';
   import { ref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
@@ -83,6 +81,7 @@
   const userService = useUserService();
   const playerMasteryService = usePlayerMasteryService();
   const lolChampService = useLolChampsService();
+  const route = useRoute();
 
   const inputName = ref("");
   const inputRegion = ref("");
@@ -90,7 +89,6 @@
   const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "NA":"na1"};
 
   var clickedSearch: boolean = false;
-  const route = useRoute();
 
   onMounted(async () => {
     inputRegion.value = regions['euw1'];
@@ -114,6 +112,7 @@
   async function getUserFromService() {
       if(inputName.value && inputRegion.value) {
         if(!inputName.value.includes("#")) {
+          // TODO: make this prettier alert is gammlo
           alert("Please make sure to include the #TAG");
           return;
         }
@@ -125,10 +124,10 @@
         await playerMasteryService.getPlayerMastery();
         await lolGameService.getMatchHistory();
       } else {
+        // TODO: make this prettier alert is gammlo
         alert("Check name and Region please")
       }
   }
-
   </script>
 
 <style>
@@ -155,9 +154,6 @@
   justify-content: center;
 }
 
-.header-league {
-  margin-bottom: 20px;
-}
 
 .search-container-card {
   margin-top: 50px;

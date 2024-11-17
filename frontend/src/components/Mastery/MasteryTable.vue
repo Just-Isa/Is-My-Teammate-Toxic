@@ -98,13 +98,6 @@ th {
   border-radius: 50%;
   display: inline-block;
 }
-
-.header-image {
-  margin-top: 10px;
-  max-width: 45px;
-  max-height: 45px;
-}
-
 .heatmap-button {
   padding-bottom: 10px;
 }

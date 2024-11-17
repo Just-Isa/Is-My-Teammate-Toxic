@@ -4,7 +4,6 @@
   <div v-show="!lolGameService.matchHistoryState.finishedGettingGames && clickedSearch" class="loading-animation">
     <img src="../assets/loading-spin.svg">
   </div>
-  <Header class="header" name="Metrics"></Header>
   <div
   v-for="g in lolGameService.matchHistoryState.LolGames"
   v-show="lolGameService.matchHistoryState.finishedGettingGames"
@@ -83,7 +82,6 @@ import LolGamesTable from '../components/LolGamesTable.vue';
 import { useUserService } from "@/services/UserService";
 import PlayerInfo from "../components/PlayerInfo.vue";
 import Navigation from "../components/Navigation.vue";
-import Header from '../components/Header.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
@@ -155,22 +153,6 @@ async function getUserFromService() {
     }
 }
 
-/* MAYBE FOR LATER USE*/
-
-function hideHeatmap(gameID: string) {
-  const id: string = "heatmap-container-"+gameID;
-  const heatmapContainerElement = document.getElementById(id);
-  const darkerBackroung = document.getElementById("complete-content-container");
-  const legend = document.getElementById("heatmap-legend");
-  if (heatmapContainerElement && darkerBackroung && legend) {
-    if (heatmapContainerElement.style.display == '') {
-      heatmapContainerElement.style.display = 'none';
-      darkerBackroung.style.display = 'none';
-      legend.style.display = 'none';
-    }
-  }
-}
-
 </script>
 
 <style>
@@ -195,10 +177,6 @@ function hideHeatmap(gameID: string) {
 .search-button-col {
   display: flex;
   justify-content: center;
-}
-
-.header-league {
-  margin-bottom: 20px;
 }
 
 .search-container-card {
@@ -249,20 +227,9 @@ function hideHeatmap(gameID: string) {
   margin-left: 15px;
 }
 
-.death-button {
-  font-size: xx-large;
-  padding-bottom: 8px;
-}
-
 .container {
     display: flex;
     size: 100%;
-}
-
-.close-heatmap {
-  position: fixed;
-  margin-top: 10px;
-  margin-left: 10px;
 }
 
 .complete-content-container {
@@ -337,7 +304,6 @@ function hideHeatmap(gameID: string) {
     margin-left: 60px;
   }
 }
-
 
 @media only screen and (max-width: 400px) {
   .search-inputs {

@@ -32,6 +32,8 @@ public class SummonerServiceImplementation implements SummonerService {
         String name = riotId.split("-")[0];
         String tag = riotId.split("-")[1];
 
+        if (userRegion == null) return null;
+
         RiotAccount acc = AccountAPI.getInstance().getAccountByTag(userRegion.toRegionShard(), name, tag);
 
         if (userRegion != null) {

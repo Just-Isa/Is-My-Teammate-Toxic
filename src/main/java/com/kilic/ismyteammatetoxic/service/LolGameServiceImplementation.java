@@ -70,6 +70,7 @@ public class LolGameServiceImplementation implements LolGameService {
 
         tb = tb.withId(matchId);
         mb = mb.withId(matchId);
+
         LOLMatch match = mb.getMatch();
         LOLTimeline timeline = tb.getTimeline();
 

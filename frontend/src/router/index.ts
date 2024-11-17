@@ -10,39 +10,33 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/links",
     name: "links",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Links.vue"),
+      import("../views/Links.vue"),
   },
   {
     path: "/mastery",
     name: "mastery",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ChampionMastery.vue"),
+      import("../views/ChampionMastery.vue"),
   },
   {
     path: "/sources",
     name: "sources",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/SourcesView.vue"),
+      import("../views/SourcesView.vue"),
   },
   {
     path: "/lol",
     name: "lol",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/LolView.vue"),
+      import("../views/LolView.vue"),
   },
+  {
+    path: '/:catchAll(.*)*',
+    name: "error",
+    component: () =>
+      import('../views/ErrorView.vue'),
+  }
 ];
 
 const router = createRouter({

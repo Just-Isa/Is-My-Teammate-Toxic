@@ -27,6 +27,7 @@ import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 public class ToxicityCalculationServiceImplementation {
 
     Logger logger = LoggerFactory.getLogger(ToxicityCalculationServiceImplementation.class);
+
     private final String[] toxicNames = {
             "draven",
             "twitch",
@@ -63,10 +64,12 @@ public class ToxicityCalculationServiceImplementation {
 
         // starts at 0, goes up from there
         float toxicity = 0;
+
         // deaths
         int deathspre10 = 0;
         int deathspost10Pre2Min = 0;
         int deathsPre2MinBeforeEnd = 0;
+
         // items
         Map<Integer, Integer> itemsBoughtpost10Pre2 = new HashMap<>();
         Map<Integer, Integer> itemsBoughtpre10 = new HashMap<>();
@@ -200,7 +203,6 @@ public class ToxicityCalculationServiceImplementation {
     }
 
     private boolean checkForToxicName(String riotId) {
-
         return Arrays.stream(toxicNames).anyMatch(riotId.toLowerCase()::contains);
     }
 }

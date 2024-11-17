@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { useLolGameService } from "@/services/LolGameService";
-import circlemedium from 'vue-material-design-icons/CircleMedium.vue';
 import { computed } from "vue";
 const lolGameService = useLolGameService();
 
@@ -19,7 +18,6 @@ const props = defineProps({
 
 var relevantGame = computed(() => {
     if (props.gameID && lolGameService.gameState && lolGameService.gameState.gameDetails[props.gameID]) {
-        console.log("found!")
         return lolGameService.gameState.gameDetails[props.gameID].relevantPlayerInfo;
     }
 });
