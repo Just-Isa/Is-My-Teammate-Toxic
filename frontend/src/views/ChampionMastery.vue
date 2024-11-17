@@ -119,7 +119,6 @@
         lolGameService.resetPlayerInfo();
         lolGameService.resetGames();
         playerMasteryService.resetPlayerMasteryState();
-        clickedSearch = true;
         await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
         await playerMasteryService.getPlayerMastery();
         await lolGameService.getMatchHistory();

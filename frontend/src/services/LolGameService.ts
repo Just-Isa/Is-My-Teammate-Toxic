@@ -10,6 +10,7 @@ interface IGameState {
 const MAXGAMES = 10;
 const userService = useUserService();
 
+
 const gameState = reactive<IGameState>({
     gameDetails: {},
     errorMessage: ""
@@ -105,6 +106,7 @@ function resetGames() {
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
+    matchHistoryState.finishedGettingGames = false;
     const DEST = "/api/lol/game/" + gameID + "/timeline?region=" + userService.userState.userRegion + "&accountId=" + userService.userState.user.accountId;
     return fetch(DEST, {
         method: "GET",
@@ -130,6 +132,7 @@ async function getRelevantPlayerInfo(gameID: string) {
 
 //number of games capped to 5 for now
 async function getMatchHistory() {
+    matchHistoryState.finishedGettingGames = false;
     try {
         const DEST = "/api/lol/matchhistory/" + userService.userState.user.accountId + "?region=" + userService.userState.userRegion;
         return fetch(DEST, {
@@ -197,6 +200,6 @@ export function useLolGameService() {
         matchHistoryState: readonly(matchHistoryState),
         gameState: readonly(gameState),
         toxicityInMatches,
-        boughtAccount
+        boughtAccount,
     }
 }

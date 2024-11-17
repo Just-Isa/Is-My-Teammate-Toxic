@@ -1,7 +1,6 @@
 <template>
-  <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
   <Navigation class="navbar"></Navigation>
-  <div v-show="!lolGameService.matchHistoryState.finishedGettingGames && clickedSearch" class="loading-animation">
+  <div v-show="!lolGameService.matchHistoryState.finishedGettingGames && loading " class="loading-animation">
     <img src="../assets/loading-spin.svg">
   </div>
   <div
@@ -26,10 +25,9 @@
         class="search-container-card">
       <div class="search-inputs-button">
         <div class="search-inputs">
-          <div class="summoner-col">
+          <div class="summoner-name-input">
             <v-text-field
               variant="solo-filled"
-              class="summoner-name-input"
               type="text"
               required
               v-model="inputName"
@@ -37,28 +35,25 @@
               style="text-align: center;"
             />
           </div>
-          <div class="region-col">
+          <div class="region-input">
             <v-select
               variant="solo-filled"
               v-model="inputRegion"
-              class="region-input"
               label="Region"
               :items="Object.values(regions)"
             ></v-select>
           </div>
         </div>
-        <div class="search-button-col">
-          <v-btn
-            icon
-            size="large"
-            theme="dark"
-            variant="outlined"
-            class="search-button"
-            v-on:click="getUserFromService"
-            >
-              <searchweb />
-            </v-btn>
-          </div>
+        <v-btn
+          icon
+          size="large"
+          theme="dark"
+          variant="outlined"
+          class="search-button"
+          v-on:click="getUserFromService"
+          >
+            <searchweb />
+          </v-btn>
       </div>
     </v-card>
     <PlayerInfo/>
@@ -96,8 +91,9 @@ const inputRegion = ref("");
 const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":"NA"};
 const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "NA":"na1"};
 
-var clickedSearch: boolean = false;
 const route = useRoute();
+
+var loading = false;
 
 onMounted(async () => {
   inputRegion.value = (regions['euw1']);
@@ -137,6 +133,7 @@ function hasToxicityData(g: any) {
 
 async function getUserFromService() {
     if(inputName.value && inputRegion.value) {
+      loading = true;
       if(!inputName.value.includes("#")) {
         alert("Please make sure to include the #TAG");
         return;
@@ -147,7 +144,7 @@ async function getUserFromService() {
       await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
       await lolGameService.getMatchHistory();
       await playerMasteryService.getPlayerMastery();
-      clickedSearch = true;
+      loading = false;
     } else {
       alert("Check name and Region please")
     }
@@ -164,35 +161,27 @@ async function getUserFromService() {
   margin-left: 100px;
 }
 
-.summoner-col {
-  display: flex;
-  justify-content: center;
-}
-
-.region-col {
-  display: flex;
-  justify-content: center;
-}
-
-.search-button-col {
-  display: flex;
-  justify-content: center;
-}
-
 .search-container-card {
-  margin-top: 50px;
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-bottom: 50px;
-  max-width: 400px;
+  margin: 50px 50px 50px 50px;
   max-height: 200px;
   padding: 30px;
+  max-width: 400px;
+  min-width: 400px;
+}
+
+.search-and-info {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .search-inputs {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 75%;
+  max-width: 75%;
 }
 
 .search-inputs-button {
@@ -202,24 +191,14 @@ async function getUserFromService() {
   gap:20px
 }
 
-.search-and-info {
-  margin-top: 50px;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 100px;
-}
-
 .summoner-name-input {
-  max-width: 250px;
-  min-width: 250px;
+  min-width: 100%;
 }
 
 .region-input {
-  max-width: 250px;
-  min-width: 250px;
+  min-width: 100%;
 }
+
 
 .search-button {
   font-size: xxx-large;
@@ -232,19 +211,9 @@ async function getUserFromService() {
     size: 100%;
 }
 
-.complete-content-container {
-  z-index: 14;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-}
-
 .loading-animation {
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: calc(50% - 125px);
   transform: translate(0, -50%) scale(3);
 }
@@ -267,7 +236,7 @@ async function getUserFromService() {
   .search-inputs-button {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;;
+    justify-content: flex-start;
   }
 
   .summoner-name-input {
