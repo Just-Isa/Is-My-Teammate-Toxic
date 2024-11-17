@@ -104,7 +104,6 @@ public class LolGameServiceImplementation implements LolGameService {
                             wrapper.matchParticipant.getLane(),
                             sum,
                             wrapper.matchParticipant));
-
             return relevantPlayerInfoDTO;
         }
         return null;
