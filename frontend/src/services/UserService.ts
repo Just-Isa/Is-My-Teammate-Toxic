@@ -60,7 +60,7 @@ async function getUserDTO(username: string, region: string) {
         });
 }
 
-function emptyState(e) {
+function emptyState(e: string) {
     userState.user = new User("", "", "", "", 0, "", 0, "", 0, "");
     userState.userRegion = "";
     userState.errorMessage = e;
