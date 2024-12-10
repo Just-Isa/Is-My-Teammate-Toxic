@@ -140,8 +140,8 @@ async function getUserFromService() {
       }
       lolGameService.resetPlayerInfo();
       lolGameService.resetGames();
-      await lolChampService.getAllChamps();
       await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
+      await lolChampService.getAllChamps();
       await lolGameService.getMatchHistory();
       await playerMasteryService.getPlayerMastery();
       loading = false;

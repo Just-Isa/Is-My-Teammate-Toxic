@@ -141,7 +141,8 @@ async function getMatchHistory() {
             .then((response) => {
                 if (!response.ok) {
                     gameState.errorMessage = response.statusText;
-                    return;
+                    matchHistoryState.finishedGettingGames = true;
+                    throw new Error("No User!")
                 }
                 return response.json();
             })
@@ -153,7 +154,8 @@ async function getMatchHistory() {
                 gameState.errorMessage = e;
             });
     } catch (error) {
-        console.log(error);
+        emptyState();
+        alert("Wrong Name!")
         return;
     }
 }
@@ -188,6 +190,18 @@ const toxicityInMatches = computed(() => {
     });
     return (toxicity / Object.keys(gameState.gameDetails).length).toFixed(2);
 });
+
+function emptyState() {
+    matchHistoryState.AramGames = [];
+    matchHistoryState.ArenaGames = [];
+    matchHistoryState.BotGames = [];
+    matchHistoryState.FlexRankedGames = [];
+    matchHistoryState.LolGames = [];
+    matchHistoryState.NormalGames = [];
+    matchHistoryState.SoloDuoRankedGames = [];
+    matchHistoryState.TFTGames = [];
+    matchHistoryState.finishedGettingGames = true;
+}
 
 // EXPORT
 export function useLolGameService() {

@@ -50,7 +50,6 @@
         </div>
       </v-card>
       <PlayerInfoMastery />
-
   </div>
     <div v-show="
       playerMasteryService.playerMasteryState.finishedGettingMasteries &&
@@ -60,8 +59,9 @@
         <v-col cols="1"></v-col>
         <v-col cols="11">
           <MasteryTable />
-        </v-col>
-      </v-row>
+          <PlayerInfoMasteryBarChart />
+      </v-col>
+    </v-row>
     </div>
   </template>
 
@@ -76,6 +76,7 @@
   import { useRoute } from 'vue-router';
   import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
   import PlayerInfoMastery from '@/components/Mastery/PlayerInfoMastery.vue';
+  import PlayerInfoMasteryBarChart from '@/components/Mastery/PlayerInfoMasteryBarChart.vue';
 
   const lolGameService = useLolGameService();
   const userService = useUserService();

@@ -42,7 +42,7 @@ async function getUserDTO(username: string, region: string) {
         .then((response) => {
             if (!response.ok) {
                 userState.errorMessage = response.statusText;
-                return;
+                throw new Error("No User");
             }
             return response.json();
         })
@@ -54,8 +54,16 @@ async function getUserDTO(username: string, region: string) {
             userState.userRegion = leagueShard;
         })
         .catch((e) => {
-            userState.errorMessage = e;
+            emptyState(e);
+            alert("No summoner with this name exists!")
+            return;
         });
+}
+
+function emptyState(e) {
+    userState.user = new User("", "", "", "", 0, "", 0, "", 0, "");
+    userState.userRegion = "";
+    userState.errorMessage = e;
 }
 
 export function useUserService() {
