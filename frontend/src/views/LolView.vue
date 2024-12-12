@@ -1,11 +1,11 @@
 <template>
   <Navigation class="navbar"></Navigation>
-  <div v-show="!lolGameService.matchHistoryState.finishedGettingGames && loading " class="loading-animation">
+  <div v-show="loadingService.loadingState.isLoading" class="loading-animation">
     <img src="../assets/loading-spin.svg">
   </div>
   <div
   v-for="g in lolGameService.matchHistoryState.LolGames"
-  v-show="lolGameService.matchHistoryState.finishedGettingGames"
+  v-show="!loadingService.loadingState.isLoading"
   :key="g">
     <!-- DEATH HEATMAP -->
     <div v-if="hasToxicityData(g)">
@@ -58,7 +58,7 @@
     </v-card>
     <PlayerInfo/>
   </div>
-  <div v-show="lolGameService.matchHistoryState.finishedGettingGames">
+  <div v-show="!loadingService.loadingState.isLoading">
     <v-row>
       <v-col cols="1"></v-col>
       <v-col cols="11">
@@ -80,11 +80,13 @@ import Navigation from "../components/Navigation.vue";
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
+import { useLoadingService } from '@/services/LoadingService';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
 const lolChampService = useLolChampsService();
 const playerMasteryService = usePlayerMasteryService();
+const loadingService = useLoadingService();
 
 const inputName = ref("");
 const inputRegion = ref("");
@@ -92,8 +94,6 @@ const regions : {[code: string] : string;} = {"eun1":"EUN", "euw1":"EUW", "na1":
 const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "NA":"na1"};
 
 const route = useRoute();
-
-var loading = false;
 
 onMounted(async () => {
   inputRegion.value = (regions['euw1']);
@@ -133,18 +133,25 @@ function hasToxicityData(g: any) {
 
 async function getUserFromService() {
     if(inputName.value && inputRegion.value) {
-      loading = true;
       if(!inputName.value.includes("#")) {
         alert("Please make sure to include the #TAG");
         return;
       }
-      lolGameService.resetPlayerInfo();
-      lolGameService.resetGames();
-      await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
-      await lolChampService.getAllChamps();
-      await lolGameService.getMatchHistory();
-      await playerMasteryService.getPlayerMastery();
-      loading = false;
+
+      try {
+        loadingService.loadingStarted();
+        lolGameService.resetPlayerInfo();
+        lolGameService.resetGames();
+        await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
+        await lolChampService.getAllChamps();
+        await lolGameService.getMatchHistory();
+        await playerMasteryService.getPlayerMastery();
+      } catch {
+        console.log("This should never happen!")
+      } finally {
+        loadingService.loadingFinished();
+      }
+
     } else {
       alert("Check name and Region please")
     }

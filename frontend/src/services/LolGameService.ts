@@ -7,7 +7,8 @@ interface IGameState {
     errorMessage: string;
 }
 
-const MAXGAMES = 10;
+// amount of games to load initially
+const MAXGAMES = 20;
 const userService = useUserService();
 
 
@@ -25,7 +26,6 @@ interface IMatchHistoryState {
     NormalGames: string[],
     BotGames: string[],
     TFTGames: string[],
-    finishedGettingGames: boolean
 }
 
 const matchHistoryState = reactive<IMatchHistoryState>({
@@ -37,7 +37,6 @@ const matchHistoryState = reactive<IMatchHistoryState>({
     NormalGames: [],
     BotGames: [],
     TFTGames: [],
-    finishedGettingGames: false
 });
 
 async function getGame(gameID: string) {
@@ -102,11 +101,9 @@ function resetGames() {
     matchHistoryState.NormalGames = [];
     matchHistoryState.LolGames = [];
     matchHistoryState.TFTGames = [];
-    matchHistoryState.finishedGettingGames = false;
 }
 
 async function getRelevantPlayerInfo(gameID: string) {
-    matchHistoryState.finishedGettingGames = false;
     const DEST = "/api/lol/game/" + gameID + "/timeline?region=" + userService.userState.userRegion + "&accountId=" + userService.userState.user.accountId;
     return fetch(DEST, {
         method: "GET",
@@ -120,9 +117,6 @@ async function getRelevantPlayerInfo(gameID: string) {
         })
         .then((jsondata: RelevantPlayerInfo) => {
             gameState.gameDetails[gameID].relevantPlayerInfo = jsondata;
-            if (Object.keys(gameState.gameDetails).length == MAXGAMES) {
-                matchHistoryState.finishedGettingGames = true;
-            }
         })
         .catch((e) => {
             gameState.errorMessage = e;
@@ -132,7 +126,6 @@ async function getRelevantPlayerInfo(gameID: string) {
 
 //number of games capped to 5 for now
 async function getMatchHistory() {
-    matchHistoryState.finishedGettingGames = false;
     try {
         const DEST = "/api/lol/matchhistory/" + userService.userState.user.accountId + "?region=" + userService.userState.userRegion;
         return fetch(DEST, {
@@ -141,14 +134,12 @@ async function getMatchHistory() {
             .then((response) => {
                 if (!response.ok) {
                     gameState.errorMessage = response.statusText;
-                    matchHistoryState.finishedGettingGames = true;
                     throw new Error("No User!")
                 }
                 return response.json();
             })
             .then((jsondata) => {
                 matchHistoryState.LolGames = jsondata;
-                matchHistoryState.finishedGettingGames = true;
             })
             .catch((e) => {
                 gameState.errorMessage = e;
@@ -200,7 +191,6 @@ function emptyState() {
     matchHistoryState.NormalGames = [];
     matchHistoryState.SoloDuoRankedGames = [];
     matchHistoryState.TFTGames = [];
-    matchHistoryState.finishedGettingGames = true;
 }
 
 // EXPORT

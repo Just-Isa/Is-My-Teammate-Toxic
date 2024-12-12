@@ -20,14 +20,12 @@ export interface IPlayerMasteryState {
     playerMastery: IChampionMastery[];
     totalMasteryPoints: number;
     errorMessage: string;
-    finishedGettingMasteries: boolean;
 }
 
 const playerMasteryState: IPlayerMasteryState = reactive({
     playerMastery: [],
     totalMasteryPoints: 0,
     errorMessage: "",
-    finishedGettingMasteries: false
 });
 
 /**
@@ -49,7 +47,6 @@ function getPlayerMastery() {
             .then((jsondata) => {
                 playerMasteryState.playerMastery = jsondata;
                 playerMasteryState.totalMasteryPoints = playerMasteryState.playerMastery.reduce((acc: number, cur: IChampionMastery) => acc + cur.championPoints, 0);
-                playerMasteryState.finishedGettingMasteries = true;
             })
             .catch((e) => {
                 playerMasteryState.errorMessage = e;
@@ -66,7 +63,6 @@ function getPlayerMastery() {
 function resetPlayerMasteryState() {
     playerMasteryState.playerMastery = [];
     playerMasteryState.errorMessage = "";
-    playerMasteryState.finishedGettingMasteries = false;
 }
 
 export function usePlayerMasteryService() {

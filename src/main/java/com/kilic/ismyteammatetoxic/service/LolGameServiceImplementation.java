@@ -41,9 +41,10 @@ public class LolGameServiceImplementation implements LolGameService {
     @Override
     public List<String> getMatchHistory(String accountId, String userRegion) {
         Summoner sum = Summoner.byAccountId(LeagueShard.valueOf(userRegion), accountId);
+        // AMOUNT OF GAMES HERE
         List<String> matches = sum
                 .getLeagueGames()
-                .withCount(20)
+                .withCount(30)
                 .get();
 
         return matches;

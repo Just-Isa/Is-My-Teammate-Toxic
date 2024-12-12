@@ -2,9 +2,7 @@
     <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
     <Navigation class="navbar"></Navigation>
     <div v-show="
-      !playerMasteryService.playerMasteryState.finishedGettingMasteries &&
-      clickedSearch &&
-      !lolGameService.matchHistoryState.finishedGettingGames"
+      loadingService.loadingState.isLoading && clickedSearch"
       class="loading-animation"
       >
     </div>
@@ -50,18 +48,15 @@
         </div>
       </v-card>
       <PlayerInfoMastery />
-  </div>
-    <div v-show="
-      playerMasteryService.playerMasteryState.finishedGettingMasteries &&
-      playerMasteryService.playerMasteryState.finishedGettingMasteries"
-      >
+    </div>
+    <div v-show="!loadingService.loadingState.isLoading">
       <v-row>
         <v-col cols="1"></v-col>
         <v-col cols="11">
           <MasteryTable />
           <PlayerInfoMasteryBarChart />
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
     </div>
   </template>
 
@@ -77,12 +72,14 @@
   import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
   import PlayerInfoMastery from '@/components/Mastery/PlayerInfoMastery.vue';
   import PlayerInfoMasteryBarChart from '@/components/Mastery/PlayerInfoMasteryBarChart.vue';
+  import { useLoadingService } from '@/services/LoadingService';
 
   const lolGameService = useLolGameService();
   const userService = useUserService();
   const playerMasteryService = usePlayerMasteryService();
   const lolChampService = useLolChampsService();
   const route = useRoute();
+  const loadingService = useLoadingService();
 
   const inputName = ref("");
   const inputRegion = ref("");
@@ -111,22 +108,29 @@
   }
 
   async function getUserFromService() {
-      if(inputName.value && inputRegion.value) {
-        if(!inputName.value.includes("#")) {
-          // TODO: make this prettier alert is gammlo
-          alert("Please make sure to include the #TAG");
-          return;
-        }
+    if(inputName.value && inputRegion.value) {
+      if(!inputName.value.includes("#")) {
+        alert("Please make sure to include the #TAG");
+        return;
+      }
+
+      try {
+        loadingService.loadingStarted();
         lolGameService.resetPlayerInfo();
         lolGameService.resetGames();
-        playerMasteryService.resetPlayerMasteryState();
         await userService.getUserDTO(inputName.value, regionFlipped[inputRegion.value])
-        await playerMasteryService.getPlayerMastery();
+        await lolChampService.getAllChamps();
         await lolGameService.getMatchHistory();
-      } else {
-        // TODO: make this prettier alert is gammlo
-        alert("Check name and Region please")
+        await playerMasteryService.getPlayerMastery();
+      } catch {
+        console.log("This should never happen!")
+      } finally {
+        loadingService.loadingFinished();
       }
+
+    } else {
+      alert("Check name and Region please")
+    }
   }
   </script>
 

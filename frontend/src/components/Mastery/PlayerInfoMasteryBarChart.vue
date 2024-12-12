@@ -6,7 +6,6 @@
 import { useUserService } from '../../services/UserService';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
-import * as d3 from "d3";
 import { useLolChampsService } from '@/services/LolChampService';
 import { onMounted } from 'vue';
 import { IChampionMastery } from '@/services/PlayerMasteryService';

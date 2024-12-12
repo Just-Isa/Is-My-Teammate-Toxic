@@ -15,63 +15,69 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="g in lolGameService.matchHistoryState.LolGames" :key="g">
-          <td v-if="checkGameStateAndPlayerInfoExist(g)">
-            {{ gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] }}
+        <tr v-for="g in categorizedGames" :key="g.gameId">
+          <template v-if="g.isComplete">
+            <td>
+              {{ gameType[g.gameDetails.relevantPlayerInfo.gameQueueType] }}
+            </td>
+            <td>
+              {{ formatDate(g.gameDetails.dateOfGame) }}
+            </td>
+            <td>
+              {{ g.gameDetails.gameDuration }}
+            </td>
+            <td>
+              {{ g.gameDetails.relevantPlayerInfo.champName }}
+            </td>
+            <td>
+              {{
+                gameType[g.gameDetails.relevantPlayerInfo.gameQueueType] !== 'ARAM'
+                  ? g.gameDetails.relevantPlayerInfo.lane
+                  : '---'
+              }}
+            </td>
+            <td>
+              {{ g.gameDetails.relevantPlayerInfo.kills }} /
+              {{ g.gameDetails.relevantPlayerInfo.deaths }} /
+              {{ g.gameDetails.relevantPlayerInfo.assists }}
+            </td>
+            <td>
+              <span :class="g.gameDetails.relevantPlayerInfo.win ? 'win-circle' : 'lose-circle'">
+                <v-tooltip activator="parent" location="end">
+                  {{ g.gameDetails.relevantPlayerInfo.win ? 'Player won!' : 'Player lost!' }}
+                </v-tooltip>
+              </span>
+            </td>
+            <td>
+              <p v-for="(value, index) in g.gameDetails.relevantPlayerInfo.toxicityDTO.toxicityValues" :key="index">
+                {{ value }}
+              </p>
+              <span
+                v-if="!g.gameDetails.relevantPlayerInfo.toxicityDTO.toxicityValues.length"
+                :class="g.gameDetails.relevantPlayerInfo.toxicityDTO.toxicityValues.length ? 'lose-circle' : 'win-circle'"
+                >
+                <v-tooltip activator="parent" location="end">No Toxicity found!</v-tooltip>
+              </span>
+            </td>
+            <td>
+              <v-btn
+                icon
+                variant="flat"
+                class="heatmap-button"
+                v-on:click="revealHeatmap(g.gameId)"
+              >
+                <deathlyHallows style="transform: scale(2.5); "/>
+              </v-btn>
+              <div class="mobile-info">Not for mobile yet</div>
+            </td>
+        </template>
+
+        <!-- Show only "More" button for incomplete games -->
+        <template v-else>
+          <td colspan="9">
+            <v-btn v-on:click="lolGameService.getGame(g.gameId)" variant="outlined">Load More</v-btn>
           </td>
-          <td v-if="lolGameService.gameState.gameDetails[g]">
-            {{ formatDate(lolGameService.gameState.gameDetails[g].dateOfGame) }}
-          </td>
-          <td v-if="lolGameService.gameState.gameDetails[g] ">
-            {{ lolGameService.gameState.gameDetails[g].gameDuration }}
-          </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g)">
-            {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.champName }}
-          </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g) && gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] !== 'ARAM' ">
-            {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.lane }}
-          </td>
-          <td v-else-if="checkGameStateAndPlayerInfoExist(g) && gameType[lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType] === 'ARAM'">
-             ---
-          </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g)">
-            {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.kills }} /
-            {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.deaths }} /
-            {{ lolGameService.gameState.gameDetails[g].relevantPlayerInfo.assists }}
-          </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g) && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win">
-            <span class="win-circle">
-              <v-tooltip activator="parent" location="end">Player won!</v-tooltip>
-            </span>
-          </td>
-          <td v-else-if="checkGameStateAndPlayerInfoExist(g) && !lolGameService.gameState.gameDetails[g].relevantPlayerInfo.win">
-            <span class="lose-circle">
-              <v-tooltip activator="parent" location="end">Player lost!</v-tooltip>
-            </span>
-          </td>
-          <td v-if="!lolGameService.gameState.gameDetails[g]">
-            <v-btn v-on:click="lolGameService.getGame(g)" variant="outlined">More</v-btn>
-          </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g) && checkToxicityDtoExistence(g) && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length > 0">
-            <p v-for="(v, index) in lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues" :key="index">
-              {{ v }}
-            </p>
-          </td>
-          <td v-else-if="checkGameStateAndPlayerInfoExist(g) && checkToxicityDtoExistence(g) && lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.toxicityValues.length === 0">
-            <span class="win-circle">
-              <v-tooltip activator="parent" location="end">No Toxicity found!</v-tooltip>
-            </span>
-          </td>
-          <td v-if="checkGameStateAndPlayerInfoExist(g) && checkNormalOrRanked(g) && checkExistenceOfDeathArrays(g)">
-            <!--
-            <v-btn icon variant="flat" class="heatmap-button" v-on:click="revealHeatmap(g)">
-              <deathlyHallows style="transform: scale(2.5); "/>
-            </v-btn>
-            -->
-            Coming soon :(
-            <div class="mobile-info">Not for mobile yet</div>
-          </td>
-          <td v-else>---</td>
+        </template>
         </tr>
       </tbody>
     </v-table>
@@ -81,8 +87,20 @@
 <script setup lang="ts">
 import deathlyHallows from 'vue-material-design-icons/DeathlyHallows.vue';
 import { useLolGameService } from '@/services/LolGameService';
+import { computed } from 'vue';
 
 const lolGameService = useLolGameService();
+
+const categorizedGames = computed(() => {
+  return lolGameService.matchHistoryState.LolGames.map((gameId) => {
+    const gameDetails = lolGameService.gameState.gameDetails[gameId];
+    const isComplete =
+      gameDetails &&
+      gameDetails.relevantPlayerInfo &&
+      gameDetails.relevantPlayerInfo.toxicityDTO;
+    return { gameId, isComplete, gameDetails };
+  });
+});
 
 const gameType: {[code: string] : string;} =
   {
@@ -95,24 +113,6 @@ const gameType: {[code: string] : string;} =
     "QUICKPLAY_NORMAL":"Quickplay"
   }
 
-function checkGameStateAndPlayerInfoExist(g: string): boolean {
-  return lolGameService.gameState.gameDetails[g] !== undefined && lolGameService.gameState.gameDetails[g].relevantPlayerInfo !== undefined;
-}
-
-function checkExistenceOfDeathArrays(g: string): boolean {
-  const { deaths2minBeforeEnd, deathsPost10minPre2min, deathsPre10min } = lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO;
-  return deaths2minBeforeEnd !== undefined && deathsPost10minPre2min !== undefined && deathsPre10min !== undefined;
-}
-
-function checkNormalOrRanked(g: string): boolean {
-  const gameQueueType = lolGameService.gameState.gameDetails[g].relevantPlayerInfo.gameQueueType;
-  return ["Normal", "Ranked Solo/Duo", "Ranked Flex", "Quickplay"].includes(gameType[gameQueueType]);
-}
-
-function checkToxicityDtoExistence(g: string): boolean {
-  return lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO !== undefined;
-}
-
 function formatDate(date: string): string {
   const currentDate = new Date();
   const splitDateString = date.replace(" ", "").split("/");
@@ -123,17 +123,7 @@ function formatDate(date: string): string {
 }
 
 function revealHeatmap(gameID: string): void {
-  const id = "heatmap-container-" + gameID;
-  const heatmapContainerElement = document.getElementById(id);
-  const darkerBackground = document.getElementById("complete-content-container");
-  const legend = document.getElementById("heatmap-legend");
-  if (heatmapContainerElement && darkerBackground && legend) {
-    if (heatmapContainerElement.style.display === "none") {
-      heatmapContainerElement.style.display = "";
-      darkerBackground.style.display = "";
-      legend.style.display = "";
-    }
-  }
+  console.log(gameID);
 }
 </script>
 

@@ -1,5 +1,4 @@
 <template>
-    <button v-on:click="testButton">XDDD</button>
     <div class="container">
         <div class="heatmap">
             <div v-for="death in relevantGame?.toxicityDTO.deathsPost10minPre2min" style="color: white;">{{death}}</div>
@@ -21,10 +20,6 @@ var relevantGame = computed(() => {
         return lolGameService.gameState.gameDetails[props.gameID].relevantPlayerInfo;
     }
 });
-
-function testButton() {
-    console.log(relevantGame);
-}
 
 </script>
 
