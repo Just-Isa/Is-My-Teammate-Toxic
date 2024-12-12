@@ -1,4 +1,5 @@
 <template>
+  <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
   <div v-if="lolGameService.matchHistoryState.LolGames.length > 0">
     <v-table fixed-header height="550px" class="main-data-table">
       <thead>
@@ -9,13 +10,12 @@
           <th class="text-center">Champ</th>
           <th class="text-center">Lane</th>
           <th class="text-center">K/D/A</th>
-          <th class="text-center">Win</th>
           <th class="text-center">Toxicity</th>
           <th class="text-center">Death Heatmap</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="g in categorizedGames" :key="g.gameId">
+        <tr v-for="g in categorizedGames" :key="g.gameId" :style="getRowStyle(g)" >
           <template v-if="g.isComplete">
             <td>
               {{ gameType[g.gameDetails.relevantPlayerInfo.gameQueueType] }}
@@ -40,13 +40,6 @@
               {{ g.gameDetails.relevantPlayerInfo.kills }} /
               {{ g.gameDetails.relevantPlayerInfo.deaths }} /
               {{ g.gameDetails.relevantPlayerInfo.assists }}
-            </td>
-            <td>
-              <span :class="g.gameDetails.relevantPlayerInfo.win ? 'win-circle' : 'lose-circle'">
-                <v-tooltip activator="parent" location="end">
-                  {{ g.gameDetails.relevantPlayerInfo.win ? 'Player won!' : 'Player lost!' }}
-                </v-tooltip>
-              </span>
             </td>
             <td>
               <p v-for="(value, index) in g.gameDetails.relevantPlayerInfo.toxicityDTO.toxicityValues" :key="index">
@@ -91,6 +84,16 @@ import { computed } from 'vue';
 
 const lolGameService = useLolGameService();
 
+const getRowStyle = (g: any) => {
+  if (!g.gameDetails) {
+    return '';
+  }
+  return g.gameDetails.relevantPlayerInfo.win
+    ? { backgroundColor: '#54788e' } // Style for wins
+    : { backgroundColor: '#8e545f' };  // Style for losses
+};
+
+
 const categorizedGames = computed(() => {
   return lolGameService.matchHistoryState.LolGames.map((gameId) => {
     const gameDetails = lolGameService.gameState.gameDetails[gameId];
@@ -123,11 +126,29 @@ function formatDate(date: string): string {
 }
 
 function revealHeatmap(gameID: string): void {
-  console.log(gameID);
+  // reveals the specific heatmap container which contains the component, see LolView
+  const id = "heatmap-container-" + gameID;
+  const heatmapContainerElement = document.getElementById(id);
+  const darkerBackground = document.getElementById("complete-content-container");
+
+  if (heatmapContainerElement && darkerBackground) {
+    heatmapContainerElement.style.display = heatmapContainerElement.style.display === "none" ? "" : "none";
+    darkerBackground.style.display = heatmapContainerElement.style.display === "" ? "" : "none";
+  }
 }
+
 </script>
 
 <style>
+
+.v-table__wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.v-table__wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .below50kMastery{
   color: lightgreen;
@@ -149,26 +170,26 @@ function revealHeatmap(gameID: string): void {
   display: none;
 }
 
+/* Table Headers */
 th {
   font-size: 20px;
 }
 
-.win-circle {
+/* Win & Lose Circles */
+.win-circle, .lose-circle {
   height: 25px;
   width: 25px;
-  background-color: greenyellow;
   border-radius: 50%;
   display: inline-block;
+}
+
+.win-circle {
+  background-color: greenyellow;
 }
 
 .lose-circle {
-  height: 25px;
-  width: 25px;
   background-color: red;
-  border-radius: 50%;
-  display: inline-block;
 }
-
 
 .heatmap-button {
   padding-bottom: 10px;

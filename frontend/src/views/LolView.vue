@@ -6,16 +6,11 @@
   <div
   v-for="g in lolGameService.matchHistoryState.LolGames"
   v-show="!loadingService.loadingState.isLoading"
-  :key="g">
+  :key="g"
+  >
     <!-- DEATH HEATMAP -->
-    <div v-if="hasToxicityData(g)">
-        <DeathHeatmap
-          :g="g"
-          :teamColor="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.team"
-          :deaths-post10min-pre2min="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min"
-          :deaths-pre10min="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deathsPre10min"
-          :deaths2min-before-end="lolGameService.gameState.gameDetails[g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd">
-        </DeathHeatmap>
+    <div v-if="hasDeathData(g)">
+        <DeathHeatmap :g="g"></DeathHeatmap>
     </div>
     <!---------------->
   </div>
@@ -121,7 +116,7 @@ async function setParams() {
   return new Promise((resolve) => setTimeout(resolve, 1000))
 }
 
-function hasToxicityData(g: any) {
+function hasDeathData(g: any) {
   return lolGameService.gameState.gameDetails[g] &&
           lolGameService.gameState.gameDetails[g].relevantPlayerInfo &&
           (
@@ -166,6 +161,7 @@ async function getUserFromService() {
   margin-top: 20px;
   width: 85%;
   margin-left: 100px;
+  font-weight: bold;
 }
 
 .search-container-card {
@@ -205,7 +201,6 @@ async function getUserFromService() {
 .region-input {
   min-width: 100%;
 }
-
 
 .search-button {
   font-size: xxx-large;

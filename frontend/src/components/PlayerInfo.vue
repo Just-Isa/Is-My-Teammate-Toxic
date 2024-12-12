@@ -15,7 +15,7 @@
                         <span style="color:teal">{{ '#' + userService.userState.user.tag }}</span> - Level <span style="color:teal">{{ userService.userState.user.level }}</span>
                     </div>
                     <div class="text-h6 mb-5">
-                        <v-tooltip activator="parent" location="end">Above 1% is bad (keep toxic reasons in mind)</v-tooltip>
+                        <v-tooltip activator="parent" location="end">Above 1% is bad (keep toxicity reasons in mind)</v-tooltip>
                         Toxicity in
                         <span style="color: lightblue; display: inline;">{{ Object.keys(lolGameService.gameState.gameDetails).length }}</span>
                         games:

@@ -10,7 +10,7 @@
             <v-btn icon title="Home" value="" size="default" v-on:click="goToHome" :class="checkActiveRoute('home') ? 'active' : ''"><homegroup class="home-icon"/></v-btn>
             <v-btn icon title="Metrics" size="default" v-on:click="goToLeague" :class="checkActiveRoute('lol') ? 'active' : ''"><sizel class="league-icon"/></v-btn>
             <v-btn icon title="Mastery" size="default" v-on:click="goToMastery" :class="checkActiveRoute('mastery') ? 'active' : ''"><sizem class="league-icon"/></v-btn>
-            <v-btn :disabled="!checkRegionNameTag()" icon :title="!checkRegionNameTag() ? 'Quicklinks only active when searched!' : 'Quicklinks'" size="default" v-on:click="goToLinks" :class="checkActiveRoute('links') ? 'active' : ''"><openInNew class="link-icon"/></v-btn>
+            <v-btn v-if="checkRegionNameTag()" icon :title="!checkRegionNameTag() ? 'Quicklinks only active when searched!' : 'Quicklinks'" size="default" v-on:click="goToLinks" :class="checkActiveRoute('links') ? 'active' : ''"><openInNew class="link-icon"/></v-btn>
             <v-btn icon title="Sources"  size="default" v-on:click="goToSources" :class="checkActiveRoute('sources') ? 'active' : ''">src</v-btn>
 
             <toggle-theme class="swap-themes" size="default"/>
@@ -85,10 +85,7 @@ function goToLinks() {
 <style>
 .drawer {
   padding: 15px;
-}
-.layout {
-  position: absolute;
-  top:10px
+  border-right: 0;
 }
 
 .drawer-list {
@@ -97,14 +94,19 @@ function goToLinks() {
   gap: 10px;
 }
 
-.home-icon {
-  margin-bottom: 7px;
-  transform: scale(2);
+.layout {
+  position: absolute;
+  top:10px
 }
 
 .swap-themes {
   margin-top: 200%;
   margin-bottom: 7px;
+}
+
+.home-icon {
+  margin-bottom: 7px;
+  transform: scale(2);
 }
 
 .league-icon {

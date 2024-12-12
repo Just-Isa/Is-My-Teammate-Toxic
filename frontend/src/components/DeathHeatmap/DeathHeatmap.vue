@@ -5,11 +5,11 @@
           style="display: none;">
         <v-btn v-on:click="hideHeatmap(props.g)" class="close-heatmap" color="white" variant="outlined">close</v-btn>
         <!-- DEATHS PRE 2 MIN -->
-        <DeathHeatmapSkulls :deaths="props.deaths2minBeforeEnd" when="late-deaths"></DeathHeatmapSkulls>
+        <DeathHeatmapSkulls :deaths="deaths2minBeforeEnd" when="late-deaths"></DeathHeatmapSkulls>
         <!-- DEATHS POST 10 MIN AND PRE 2 MIN -->
-        <DeathHeatmapSkulls :deaths="props.deathsPost10minPre2min" when="midgame-deaths"></DeathHeatmapSkulls>
+        <DeathHeatmapSkulls :deaths="deathsPost10minPre2min" when="midgame-deaths"></DeathHeatmapSkulls>
         <!-- DEATHS PRE 10 MIN -->
-        <DeathHeatmapSkulls :deaths="props.deathsPre10min" when="early-deaths"></DeathHeatmapSkulls>
+        <DeathHeatmapSkulls :deaths="deathsPre10min" when="early-deaths"></DeathHeatmapSkulls>
         <div v-if="
           teamType[teamColor] == 'Blue'
           ">
@@ -31,7 +31,15 @@
 import HeatmapLegend from './HeatmapLegend.vue';
 import baseB from 'vue-material-design-icons/HomeFloorB.vue';
 import DeathHeatmapSkulls from './DeathHeatmapSkulls.vue';
-const props = defineProps(['g', 'teamColor', 'deaths2minBeforeEnd', 'deathsPost10minPre2min', 'deathsPre10min']);
+import { useLolGameService } from '@/services/LolGameService';
+const lolGameService = useLolGameService();
+
+const props = defineProps(['g']);
+
+const teamColor = lolGameService.gameState.gameDetails[props.g].relevantPlayerInfo.team
+const deathsPost10minPre2min = lolGameService.gameState.gameDetails[props.g].relevantPlayerInfo.toxicityDTO.deathsPost10minPre2min;
+const deathsPre10min = lolGameService.gameState.gameDetails[props.g].relevantPlayerInfo.toxicityDTO.deathsPre10min;
+const deaths2minBeforeEnd = lolGameService.gameState.gameDetails[props.g].relevantPlayerInfo.toxicityDTO.deaths2minBeforeEnd;
 
 const teamType : {[code: string] : string} =
   {
@@ -55,13 +63,14 @@ function hideHeatmap(gameID: string) {
 </script>
 
 <style>
+
 .heatmap-container {
   position: absolute;
   z-index: 15;
   min-height: 750px;
-  min-width: 755px;
+  min-width: 750px;
   left: 40%;
-  top: 20%;
+  top: 10%;
   margin: -20px 0 0 -150px;
   background-image: url('https://ddragon.leagueoflegends.com/cdn/10.18.1/img/map/map11.png');
   background-size: cover;

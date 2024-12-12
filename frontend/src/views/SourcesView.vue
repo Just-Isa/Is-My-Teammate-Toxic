@@ -5,14 +5,14 @@
       <div v-for="source in sources" class="type-container" :key="source.link">
           <v-card
           class="card"
-          max-width="500"
-          min-width="250"
+          max-width="400"
+          min-width="400"
           >
 
               <v-card-title class="card-title">
               {{ source.name }} <br>
 
-              <b>{{ source.link }} </b>
+              <b class="link" @click="goToLink(source.link)" :title="source.link">{{ source.link }} </b>
 
               </v-card-title>
 
@@ -43,13 +43,18 @@
 </script>
 
 <style>
+
 .container {
-  margin-top: 80px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   justify-content: space-around;
   align-items: center;
+}
+
+.link {
+  cursor: pointer;
 }
 
 .card {
