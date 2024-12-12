@@ -68,7 +68,6 @@
         </v-card-actions>
     </template>
     <template v-else>
-      {{ g.gameId }}
       <v-card-actions class="info-card-empty" v-on:click="lolGameService.getGame(g.gameId)">
         LOAD MORE
       </v-card-actions>
@@ -191,6 +190,12 @@ function revealHeatmap(gameID: string): void {
 
 .info-card-empty {
   cursor: pointer;
+  border: 1px solid white;
+  justify-content: center;
+}
+
+.info-card-empty:hover {
+  box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.1);
 }
 
 .heatmap-button {
