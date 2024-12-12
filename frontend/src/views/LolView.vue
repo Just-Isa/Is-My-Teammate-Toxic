@@ -55,27 +55,29 @@
   </div>
   <div v-show="!loadingService.loadingState.isLoading">
     <v-row>
-      <v-col cols="1"></v-col>
-      <v-col cols="11">
-      <LolGamesTable/>
+      <v-col cols="3"></v-col>
+      <v-col cols="6">
+        <LolGamesInfoList/>
       </v-col>
+      <v-col cols="3"></v-col>
     </v-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import DeathHeatmap from '../components/DeathHeatmap/DeathHeatmap.vue';
-import searchweb from 'vue-material-design-icons/SearchWeb.vue';
 import { useLolGameService } from "@/services/LolGameService";
-import { useLolChampsService } from '@/services/LolChampService';
-import LolGamesTable from '../components/LolGamesTable.vue';
 import { useUserService } from "@/services/UserService";
-import PlayerInfo from "../components/PlayerInfo.vue";
-import Navigation from "../components/Navigation.vue";
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useLolChampsService } from '@/services/LolChampService';
 import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
 import { useLoadingService } from '@/services/LoadingService';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import LolGamesTable from '../components/LolGamesTable.vue';
+import LolGamesInfoList from "@/components/LolGamesInfoList.vue";
+import PlayerInfo from "../components/PlayerInfo.vue";
+import Navigation from "../components/Navigation.vue";
+import searchweb from 'vue-material-design-icons/SearchWeb.vue';
+import DeathHeatmap from '../components/DeathHeatmap/DeathHeatmap.vue';
 
 const lolGameService = useLolGameService();
 const userService = useUserService();
@@ -155,17 +157,8 @@ async function getUserFromService() {
 </script>
 
 <style>
-.main-data-table {
-  text-align: center;
-  margin: 20px 100px 20px 100px;
-  margin-top: 20px;
-  width: 85%;
-  margin-left: 100px;
-  font-weight: bold;
-}
 
 .search-container-card {
-  margin: 50px 50px 50px 50px;
   max-height: 200px;
   padding: 30px;
   max-width: 400px;
@@ -173,8 +166,10 @@ async function getUserFromService() {
 }
 
 .search-and-info {
+  margin: 2% 0 2% 0;
   align-items: center;
   display: flex;
+  gap: 20px;
   flex-direction: row;
   justify-content: center;
 }
@@ -229,18 +224,6 @@ async function getUserFromService() {
     margin-bottom: 0;
   }
 
-  .search-inputs {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .search-inputs-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
   .summoner-name-input {
     max-width: 200px;
     min-width: 200px;
@@ -258,22 +241,6 @@ async function getUserFromService() {
     margin-top: 0px;
   }
 
-  .search-and-info {
-    margin-top: 50px;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    margin-left: 75px;
-  }
-
-  .main-data-table {
-    text-align: center;
-    margin-top: 20px;
-    width: 80%;
-    margin-left: 60px;
-  }
 }
 
 @media only screen and (max-width: 400px) {

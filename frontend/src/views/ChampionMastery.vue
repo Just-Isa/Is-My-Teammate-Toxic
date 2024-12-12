@@ -135,7 +135,7 @@
   </script>
 
 <style>
-  .main-data-table {
+.main-data-table {
   text-align: center;
   margin: 20px 100px 20px 100px;
   margin-top: 20px;
@@ -158,15 +158,11 @@
   justify-content: center;
 }
 
-
 .search-container-card {
-  margin-top: 50px;
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-bottom: 50px;
-  max-width: 400px;
   max-height: 200px;
   padding: 30px;
+  max-width: 400px;
+  min-width: 400px;
 }
 
 .search-inputs {
@@ -183,12 +179,12 @@
 }
 
 .search-and-info {
-  margin-top: 50px;
+  margin-bottom: 20px;
   align-items: center;
   display: flex;
+  gap: 20px;
   flex-direction: row;
   justify-content: center;
-  gap: 100px;
 }
 
 .summoner-name-input {
@@ -240,13 +236,13 @@
 }
 
   @media only screen and (max-width: 600px) {
-    .search-container-card {
-      max-width: 300px;
-      max-height: 300px;
-      padding: 30px;
-      backdrop-filter: blur(5px);
-      margin-bottom: 0;
-    }
+
+  .search-container-card {
+    max-height: 200px;
+    padding: 30px;
+    max-width: 400px;
+    min-width: 400px;
+  }
 
     .search-inputs {
       display: flex;
@@ -278,13 +274,12 @@
     }
 
     .search-and-info {
-      margin-top: 50px;
+      margin-bottom: 20px;
       align-items: center;
       display: flex;
-      flex-direction: column;
+      gap: 20px;
+      flex-direction: row;
       justify-content: center;
-      gap: 10px;
-      margin-left: 75px;
     }
 
     .main-data-table {

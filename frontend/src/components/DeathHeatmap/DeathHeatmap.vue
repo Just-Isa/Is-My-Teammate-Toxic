@@ -1,37 +1,38 @@
 <template>
+  <div class="dark-content-overlay" id="dark-content-overlay" style="display: none;"></div>
     <div
-          class="heatmap-container"
-          :id="'heatmap-container-'+props.g"
-          style="display: none;">
-        <v-btn v-on:click="hideHeatmap(props.g)" class="close-heatmap" color="white" variant="outlined">close</v-btn>
-        <!-- DEATHS PRE 2 MIN -->
-        <DeathHeatmapSkulls :deaths="deaths2minBeforeEnd" when="late-deaths"></DeathHeatmapSkulls>
-        <!-- DEATHS POST 10 MIN AND PRE 2 MIN -->
-        <DeathHeatmapSkulls :deaths="deathsPost10minPre2min" when="midgame-deaths"></DeathHeatmapSkulls>
-        <!-- DEATHS PRE 10 MIN -->
-        <DeathHeatmapSkulls :deaths="deathsPre10min" when="early-deaths"></DeathHeatmapSkulls>
-        <div v-if="
-          teamType[teamColor] == 'Blue'
-          ">
-          <baseB style="transform: translate(15px , 705px); font-size: 25px; width:220px; color: lightblue;"/>
-        </div>
-        <div v-else-if="
-          teamType[teamColor] == 'Red'
-          ">
-          <baseB style="transform: translate(715px,  10px); font-size: 25px; color: red;"/>
-        </div>
-        <div v-else style="color: white;">
-          {{ teamType[teamColor] }}
-        </div>
+      class="heatmap-container"
+      :id="'heatmap-container-'+props.g"
+      style="display: none;"
+      >
+      <v-btn v-on:click="hideHeatmap(props.g)" class="close-heatmap" color="white" variant="outlined">close</v-btn>
+      <!-- DEATHS PRE 2 MIN -->
+      <DeathHeatmapSkulls :deaths="deaths2minBeforeEnd" when="late-deaths"></DeathHeatmapSkulls>
+      <!-- DEATHS POST 10 MIN AND PRE 2 MIN -->
+      <DeathHeatmapSkulls :deaths="deathsPost10minPre2min" when="midgame-deaths"></DeathHeatmapSkulls>
+      <!-- DEATHS PRE 10 MIN -->
+      <DeathHeatmapSkulls :deaths="deathsPre10min" when="early-deaths"></DeathHeatmapSkulls>
+      <div v-if="
+        teamType[teamColor] == 'Blue'
+        ">
+        <baseB style="transform: translate(15px , 665px); font-size: 30px; width:220px; color: lightblue;"/>
+      </div>
+      <div v-else-if="
+        teamType[teamColor] == 'Red'
+        ">
+        <baseB style="transform: translate(670px,  200px); font-size: 30px; color: red;"/>
+      </div>
+      <div v-else style="color: white;">
+        {{ teamType[teamColor] }}
     </div>
-    <HeatmapLegend/>
+  </div>
 </template>
 
 <script setup lang="ts">
-import HeatmapLegend from './HeatmapLegend.vue';
 import baseB from 'vue-material-design-icons/HomeFloorB.vue';
 import DeathHeatmapSkulls from './DeathHeatmapSkulls.vue';
 import { useLolGameService } from '@/services/LolGameService';
+import { onMounted, onUnmounted } from 'vue';
 const lolGameService = useLolGameService();
 
 const props = defineProps(['g']);
@@ -48,34 +49,69 @@ const teamType : {[code: string] : string} =
   }
 
 function hideHeatmap(gameID: string) {
-  var id: string = "heatmap-container-"+gameID;
-  var heatmapContainerElement = document.getElementById(id);
-  var darkerBackroung = document.getElementById("complete-content-container");
-  var legend = document.getElementById("heatmap-legend");
-  if (heatmapContainerElement && darkerBackroung && legend) {
-    if (heatmapContainerElement.style.display == '') {
+  const id = `heatmap-container-${gameID}`;
+  const heatmapContainerElement = document.getElementById(id);
+  const darkerBackground = document.getElementById("dark-content-overlay");
+  const legend = document.getElementById("heatmap-legend");
+
+  if (heatmapContainerElement && darkerBackground) {
+    if (heatmapContainerElement.style.display === '') {
+      // Hide all elements and re-enable scrolling
       heatmapContainerElement.style.display = 'none';
-      darkerBackroung.style.display = 'none';
-      legend.style.display = 'none';
+      darkerBackground.style.display = 'none';
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
     }
   }
 }
+
+function handleClickOutside(event: MouseEvent) {
+  const heatmapContainer = document.getElementById('dark-content-overlay');
+  if (heatmapContainer && heatmapContainer.contains(event.target as Node)) {
+    console.log(event)
+    hideHeatmap(props.g);
+  } else {
+    return;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <style>
 
-.heatmap-container {
-  position: absolute;
-  z-index: 15;
-  min-height: 750px;
-  min-width: 750px;
-  left: 40%;
-  top: 10%;
-  margin: -20px 0 0 -150px;
-  background-image: url('https://ddragon.leagueoflegends.com/cdn/10.18.1/img/map/map11.png');
-  background-size: cover;
+.dark-content-overlay {
+  position:fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  z-index: 1000;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0.8;
 }
 
+.heatmap-container {
+  position: fixed;
+  z-index: 1001;
+  width: 750px;
+  height: 750px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url('https://ddragon.leagueoflegends.com/cdn/10.18.1/img/map/map11.png');
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 @media only screen and (max-width: 600px) {
   .top-bar {

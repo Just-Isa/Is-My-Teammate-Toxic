@@ -123,10 +123,6 @@ th {
       max-height: 400px;
     }
 
-    .heatmap-button {
-      display: none;
-    }
-
     .mobile-info {
       display: inline;
     }

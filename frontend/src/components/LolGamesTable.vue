@@ -1,5 +1,6 @@
+<!-- THIS IS AN OLD VERSION OF THE VISUALISATION, DEPRECATED AND WILL PROBABLY NEVER BE USED AGAIN!-->
+
 <template>
-  <div class="complete-content-container" id="complete-content-container" style="display: none;"></div>
   <div v-if="lolGameService.matchHistoryState.LolGames.length > 0">
     <v-table fixed-header height="550px" class="main-data-table">
       <thead>
@@ -148,22 +149,6 @@ function revealHeatmap(gameID: string): void {
 .v-table__wrapper {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.below50kMastery{
-  color: lightgreen;
-}
-
-.below500kAbove10kMastery{
-  color: lightpink
-}
-
-.below100kAbove50kMastery{
-  color: lightskyblue;
-}
-
-.above500kMastery{
-  color: red;
 }
 
 .mobile-info {

@@ -3,32 +3,28 @@
   <Navigation class="navbar"></Navigation>
   <div class="container">
       <div v-for="source in sources" class="type-container" :key="source.link">
-          <v-card
-          class="card"
-          max-width="400"
-          min-width="400"
+        <v-card
+        class="card"
+        max-width="400"
+        min-width="400"
+        >
+          <v-card-title class="card-title"
           >
-
-              <v-card-title class="card-title">
-              {{ source.name }} <br>
-
-              <b class="link" @click="goToLink(source.link)" :title="source.link">{{ source.link }} </b>
-
-              </v-card-title>
-
-              <v-card-actions>
-              <v-btn
-                  color="blue-lighten-2"
-                  variant="elevated"
-                  @click="goToLink(source.link)"
-                  size="x-large"
-                  class="card-button"
-              >
-                  Check it out!
-              </v-btn>
-
-              </v-card-actions>
-          </v-card>
+            {{ source.name }} <br>
+            <b class="link" @click="goToLink(source.link)" :title="source.link">{{ source.link }} </b>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn
+                color="blue-lighten-2"
+                variant="elevated"
+                @click="goToLink(source.link)"
+                size="x-large"
+                class="card-button"
+            >
+                Check it out!
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </div>
   </div>
 </template>

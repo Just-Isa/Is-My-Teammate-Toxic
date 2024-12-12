@@ -2,6 +2,7 @@
     <v-card
         class="player-info-container"
         variant="elevated"
+        min-height="200px"
         v-if="userService.userState.user.puuid"
     >
         <v-card-item>
