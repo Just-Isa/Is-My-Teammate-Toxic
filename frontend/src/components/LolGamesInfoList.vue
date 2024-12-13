@@ -32,9 +32,9 @@
               {{ g.gameDetails.relevantPlayerInfo.champName }}
 
               {{
-                gameType[g.gameDetails.relevantPlayerInfo.gameQueueType] !== 'ARAM'
+                gameType[g.gameDetails.relevantPlayerInfo.gameQueueType] !== 'ARAM' && (g.gameDetails.relevantPlayerInfo.lane as unknown as string) !== 'NONE'
                   ? (g.gameDetails.relevantPlayerInfo.lane as unknown as string).toLowerCase()
-                  : '---'
+                  : ''
               }}
               </v-col>
               <v-col cols="4">
