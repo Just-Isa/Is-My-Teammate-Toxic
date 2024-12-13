@@ -54,7 +54,6 @@
         <v-col cols="1"></v-col>
         <v-col cols="11">
           <MasteryTable />
-          <PlayerInfoMasteryBarChart />
         </v-col>
       </v-row>
     </div>
@@ -71,7 +70,6 @@
   import { useRoute } from 'vue-router';
   import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
   import PlayerInfoMastery from '@/components/Mastery/PlayerInfoMastery.vue';
-  import PlayerInfoMasteryBarChart from '@/components/Mastery/PlayerInfoMasteryBarChart.vue';
   import { useLoadingService } from '@/services/LoadingService';
 
   const lolGameService = useLolGameService();

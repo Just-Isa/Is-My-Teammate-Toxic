@@ -6,8 +6,6 @@
           <th class="text-center">Champion</th>
           <th class="text-center">Level</th>
           <th class="text-center">Points</th>
-          <th class="text-center">Chest</th>
-
         </tr>
       </thead>
       <tbody v-if="playerMasteryService.playerMasteryState.playerMastery">
@@ -29,16 +27,6 @@
             i.championPoints > 300000 && i.championPoints < 750000? 'below200kAbove100kMastery' :
             i.championPoints > 500000 ? 'above500kMastery' : ''">
             {{ i.championPoints }}
-          </td>
-          <td v-if="i.chestGranted">
-            <span class="lose-circle">
-              <v-tooltip activator="parent" location="end">Chest Aquired</v-tooltip>
-            </span>
-          </td>
-          <td v-else>
-            <span class="win-circle">
-              <v-tooltip activator="parent" location="end">Chest Available</v-tooltip>
-            </span>
           </td>
         </tr>
       </tbody>

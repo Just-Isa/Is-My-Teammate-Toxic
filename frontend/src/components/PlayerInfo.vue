@@ -59,7 +59,7 @@ const lolGameService = useLolGameService();
     max-height: 200px;
     max-width: 600px;
     min-width: 200px;
-    min-width: 200px;
+    min-height: 200px;
     margin: 25px 0 25px 0;
 }
 
