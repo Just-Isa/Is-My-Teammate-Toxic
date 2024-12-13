@@ -20,7 +20,7 @@
       <div v-else-if="
         teamType[teamColor] == 'Red'
         ">
-        <baseB style="transform: translate(705px,  -23px); font-size: 30px; color: red;"/>
+        <baseB style="transform: translate(705px,  15px); font-size: 30px; color: red;"/>
       </div>
       <div v-else style="color: white;">
         {{ teamType[teamColor] }}
