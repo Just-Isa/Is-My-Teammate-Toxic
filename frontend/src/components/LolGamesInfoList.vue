@@ -67,8 +67,13 @@
           </v-btn>
         </v-card-actions>
     </template>
+    <template v-else-if="loadingGames.has(g.gameId)">
+      <v-card-actions class="info-card-loading" v-on:click="getGame(g.gameId)">
+        <img src="../assets/loading-spin.svg">
+      </v-card-actions>
+    </template>
     <template v-else>
-      <v-card-actions class="info-card-empty" v-on:click="lolGameService.getGame(g.gameId)">
+      <v-card-actions class="info-card-empty" v-on:click="getGame(g.gameId)">
         LOAD MORE
       </v-card-actions>
     </template>
@@ -80,9 +85,15 @@
 import { useLolGameService } from '@/services/LolGameService';
 import { computed } from 'vue';
 import { useTheme } from 'vuetify/lib/framework.mjs';
+import { ref } from 'vue';
 
 const theme = useTheme();
 const lolGameService = useLolGameService();
+
+// Loading state for all the games that are currently being loaded
+const loadingGames = ref(new Set<string>());
+
+var loadingOneGame: boolean = false;
 
 const getRowStyle = (g: any) => {
   if (!g.gameDetails || g.gameDetails.relevantPlayerInfo === undefined) {
@@ -147,6 +158,19 @@ const formatDate = (date: any): string => {
   }
 };
 
+async function getGame(gameID: string) {
+  // adding the gameID to the loading set so that it gets displayed with the loading animation
+  loadingGames.value.add(gameID);
+  try {
+    await lolGameService.getGame(gameID);
+  } catch (e) {
+    console.log("What happened?")
+    return;
+  } finally {
+    loadingGames.value.delete(gameID);
+  }
+}
+
 function revealHeatmap(gameID: string): void {
   const id = "heatmap-container-" + gameID;
   const heatmapContainerElement = document.getElementById(id);
@@ -186,6 +210,13 @@ function revealHeatmap(gameID: string): void {
   margin: 1% 0 0 1%;
   font-size: 18px;
   font-weight: bold;
+}
+
+.info-card-loading {
+  display: flex;
+  justify-content: center;
+  transform: scale(0.5);
+  max-height: 80px;
 }
 
 .info-card-empty {

@@ -68,7 +68,6 @@ function hideHeatmap(gameID: string) {
 function handleClickOutside(event: MouseEvent) {
   const heatmapContainer = document.getElementById('dark-content-overlay');
   if (heatmapContainer && heatmapContainer.contains(event.target as Node)) {
-    console.log(event)
     hideHeatmap(props.g);
   } else {
     return;
