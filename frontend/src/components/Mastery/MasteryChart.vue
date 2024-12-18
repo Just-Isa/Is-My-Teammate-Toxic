@@ -134,7 +134,10 @@
         },
         legend: {
             textStyle: { color: themeService.current.value.dark ? "white" : "black" }
-        }
+        },
+        slices: {
+            0: { offset: 0.1 }, // Example: Customize slice 0
+        },
     };
 
 
