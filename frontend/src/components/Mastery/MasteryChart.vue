@@ -136,7 +136,12 @@
             textStyle: { color: themeService.current.value.dark ? "white" : "black" }
         },
         slices: {
-            0: { offset: 0.1 }, // Example: Customize slice 0
+            0: { offset: 0.09 },
+            1: { offset: 0.08 },
+            2: { offset: 0.06 },
+            3: { offset: 0.04 },
+            4: { offset: 0.02 },
+            5: { offset: 0.01 }
         },
     };
 
