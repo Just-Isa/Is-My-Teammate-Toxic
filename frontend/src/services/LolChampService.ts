@@ -41,6 +41,6 @@ async function getAllChamps() {
 export function useLolChampsService() {
     return {
         lolChampState: readonly(lolChampState),
-        getAllChamps
+        getAllChamps,
     }
 }

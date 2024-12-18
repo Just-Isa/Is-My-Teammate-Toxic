@@ -1,6 +1,6 @@
 <template>
   <div v-if="playerMasteryService.playerMasteryState.playerMastery.length > 0">
-    <v-table fixed-header height="550px" class="main-data-table">
+    <v-table fixed-header height="400px" class="main-data-table">
       <thead>
         <tr class="main-data-table-th text-center">
           <th class="text-center">Champion</th>
@@ -10,7 +10,7 @@
       </thead>
       <tbody v-if="playerMasteryService.playerMasteryState.playerMastery">
         <tr v-for="i in playerMasteryService.playerMasteryState.playerMastery" :key="i.championId">
-          <td>
+          <td class="champion-name-col">
             {{ lolChampsService.lolChampState.data[i.championId] }}
           </td>
           <td :class="
@@ -46,6 +46,11 @@ const playerMasteryService = usePlayerMasteryService();
 
 <style>
 
+.main-data-table {
+  text-align: center;
+  margin: 20px 0 50px 0px;
+  min-width: 1200px;
+}
 
 .below50kMastery{
   color: lightgreen;
@@ -86,16 +91,16 @@ th {
   border-radius: 50%;
   display: inline-block;
 }
+
+.champion-name-col {
+  width: 40%;
+}
+
 .heatmap-button {
   padding-bottom: 10px;
 }
 
 @media only screen and (max-width: 600px) {
-    .main-data-table {
-      max-width: 310px;
-      height: 400px;
-    }
-
     th {
       font-size: 18px;
     }

@@ -49,13 +49,23 @@
       </v-card>
       <PlayerInfoMastery />
     </div>
-    <div v-show="!loadingService.loadingState.isLoading">
-      <v-row>
-        <v-col cols="1"></v-col>
-        <v-col cols="11">
+    <div v-show="!loadingService.loadingState.isLoading"  v-if="playerMasteryService.playerMasteryState.playerMastery.length > 0">
+      <div class="mastery-info-container">
+        <div class="mastery-table-container">
           <MasteryTable />
-        </v-col>
-      </v-row>
+        </div>
+        <div class="mastery-charts">
+          <div class="mastery-chart-container">
+            <MasteryChart type="PieChart"/>
+          </div>
+          <div class="mastery-chart-container">
+            <MasteryChart type="BarChart"/>
+          </div>
+          <div class="mastery-chart-container">
+            <MasteryChart type="ColumnChart"/>
+          </div>
+        </div>
+      </div>
     </div>
   </template>
 
@@ -71,6 +81,7 @@
   import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
   import PlayerInfoMastery from '@/components/Mastery/PlayerInfoMastery.vue';
   import { useLoadingService } from '@/services/LoadingService';
+  import MasteryChart from '@/components/Mastery/MasteryChart.vue';
 
   const lolGameService = useLolGameService();
   const userService = useUserService();
@@ -133,13 +144,6 @@
   </script>
 
 <style>
-.main-data-table {
-  text-align: center;
-  margin: 20px 100px 20px 100px;
-  margin-top: 20px;
-  width: 85%;
-  margin-left: 100px;
-}
 
 .summoner-col {
   display: flex;
@@ -177,6 +181,7 @@
 }
 
 .search-and-info {
+  margin-top: 20px;
   margin-bottom: 20px;
   align-items: center;
   display: flex;
@@ -188,6 +193,23 @@
 .summoner-name-input {
   max-width: 250px;
   min-width: 250px;
+}
+
+.mastery-table-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mastery-charts {
+  justify-content: space-evenly;
+  margin-left: 5%;
+  display: flex;
+  gap: 10px;
+}
+
+.mastery-chart-container {
+  border: 1px solid #363636;
 }
 
 .region-input {
@@ -233,67 +255,23 @@
   transform: translate(0, 50%) scale(3);
 }
 
-  @media only screen and (max-width: 600px) {
-
-  .search-container-card {
-    max-height: 200px;
-    padding: 30px;
-    max-width: 400px;
-    min-width: 400px;
+  @media only screen and (max-width: 800px) {
+    .top-bar {
+      display: flex;
+      flex-direction: column;
+      max-width: 200px;
+    }
   }
 
-    .search-inputs {
+  @media only screen and (max-width: 1600px) {
+    .mastery-charts {
+      justify-content: space-evenly;
+      margin-left: 5%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-    }
-
-    .search-inputs-button {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;;
-    }
-
-    .summoner-name-input {
-      max-width: 200px;
-      min-width: 200px;
-    }
-
-    .region-input {
-      max-width: 200px;
-      min-width: 200px;
-    }
-
-    .search-button {
-      font-size: xxx-large;
-      padding: 0 0 8px 2px;
-      margin-left: 15px;
-      margin-top: 0px;
-    }
-
-    .search-and-info {
-      margin-bottom: 20px;
       align-items: center;
-      display: flex;
-      gap: 20px;
-      flex-direction: row;
-      justify-content: center;
-    }
-
-    .main-data-table {
-      text-align: center;
-      margin-top: 20px;
-      width: 80%;
-      margin-left: 60px;
+      gap: 10px;
     }
   }
 
-
-    @media only screen and (max-width: 400px) {
-      .top-bar {
-        display: flex;
-        flex-direction: column;
-        max-width: 200px;
-      }
-    }
-  </style>
+</style>
