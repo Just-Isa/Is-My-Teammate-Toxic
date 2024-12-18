@@ -48,7 +48,7 @@ const playerMasteryService = usePlayerMasteryService();
 
 .main-data-table {
   text-align: center;
-  margin: 20px 0 50px 0px;
+  margin: 20px 0 0 0;
   min-width: 1200px;
 }
 

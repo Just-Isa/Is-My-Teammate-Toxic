@@ -54,22 +54,35 @@
         <div class="mastery-table-container">
           <MasteryTable />
         </div>
-        <div class="mastery-charts">
-          <div class="mastery-chart-container">
-            <MasteryChart type="PieChart"/>
-          </div>
-          <div class="mastery-chart-container">
-            <MasteryChart type="BarChart"/>
-          </div>
-          <div class="mastery-chart-container">
-            <MasteryChart type="ColumnChart"/>
-          </div>
+        <div class="radio-input">
+          <label>
+            <input value="barchart" name="value-radio" id="barchart" type="radio" @click="setFocus('barchart')" selected="true"/>
+            <span>Bar</span>
+          </label>
+          <label>
+            <input value="piechart" name="value-radio" id="piechart" type="radio" @click="setFocus('piechart')"/>
+            <span>Pie</span>
+          </label>
+          <label>
+            <input value="columnchart" name="value-radio" id="columnchart" type="radio" @click="setFocus('columnchart')"/>
+            <span>Column</span>
+          </label>
+          <span class="selection"></span>
+        </div>
+        <div class="mastery-chart-container" v-show="focusedInput === 'piechart'">
+          <MasteryChart type="PieChart"/>
+        </div>
+        <div class="mastery-chart-container" v-show="focusedInput === 'barchart'">
+          <MasteryChart type="BarChart"/>
+        </div>
+        <div class="mastery-chart-container" v-show="focusedInput === 'columnchart'">
+          <MasteryChart type="ColumnChart"/>
         </div>
       </div>
     </div>
   </template>
 
-  <script setup lang="ts">
+<script setup lang="ts">
   import searchweb from 'vue-material-design-icons/SearchWeb.vue';
   import { useLolChampsService } from '@/services/LolChampService';
   import { useLolGameService } from "@/services/LolGameService";
@@ -96,6 +109,7 @@
   const regionFlipped: {[code: string] : string;} = {"EUN":"eun1", "EUW":"euw1", "NA":"na1"};
 
   var clickedSearch: boolean = false;
+  var focusedInput = ref("barchart");
 
   onMounted(async () => {
     inputRegion.value = regions['euw1'];
@@ -141,7 +155,11 @@
       alert("Check name and Region please")
     }
   }
-  </script>
+
+  function setFocus(id: string) {
+    focusedInput.value = id;
+  }
+</script>
 
 <style>
 
@@ -201,15 +219,10 @@
   width: 100%;
 }
 
-.mastery-charts {
-  justify-content: space-evenly;
-  margin-left: 5%;
-  display: flex;
-  gap: 10px;
-}
-
 .mastery-chart-container {
-  border: 1px solid #363636;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .region-input {
@@ -233,11 +246,6 @@
     size: 100%;
 }
 
-.close-heatmap {
-  position: fixed;
-  margin-top: 10px;
-  margin-left: 10px;
-}
 
 .complete-content-container {
   z-index: 14;
@@ -255,6 +263,77 @@
   transform: translate(0, 50%) scale(3);
 }
 
+.mastery-info-container {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* From Uiverse.io by MikeeMikee */
+.radio-input input {
+  display: none;
+}
+
+.radio-input {
+  --container_width: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #212121;
+  color: #fff;
+  width: var(--container_width);
+  overflow: hidden;
+  border: 2px solid #fff;
+}
+
+.radio-input label {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 14px;
+}
+
+.selection {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: calc(var(--container_width) / 3);
+  z-index: 0;
+  left: 0;
+  top: 0;
+  transition: 0.15s ease;
+}
+
+.radio-input label:has(input:checked) {
+  color: #000;
+}
+
+.radio-input label:has(input:checked) ~ .selection {
+  background-color: #683cb4;
+  display: inline-block;
+}
+
+.radio-input label:nth-child(1):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 0 / 3));
+}
+
+.radio-input label:nth-child(2):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 1 / 3));
+}
+
+.radio-input label:nth-child(3):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 2 / 3));
+}
+
+
   @media only screen and (max-width: 800px) {
     .top-bar {
       display: flex;
@@ -264,14 +343,6 @@
   }
 
   @media only screen and (max-width: 1600px) {
-    .mastery-charts {
-      justify-content: space-evenly;
-      margin-left: 5%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
   }
 
 </style>
