@@ -56,7 +56,7 @@
         </div>
         <div class="radio-input">
           <label>
-            <input value="barchart" name="value-radio" id="barchart" type="radio" @click="setFocus('barchart')" selected="true"/>
+            <input value="barchart" name="value-radio" id="barchart" type="radio" @click="setFocus('barchart')" v-model="focusedInput"/>
             <span>Bar</span>
           </label>
           <label>
@@ -69,13 +69,13 @@
           </label>
           <span class="selection"></span>
         </div>
-        <div class="mastery-chart-container" v-show="focusedInput === 'piechart'">
+        <div class="mastery-chart-container" v-if="focusedInput === 'piechart'">
           <MasteryChart type="PieChart"/>
         </div>
-        <div class="mastery-chart-container" v-show="focusedInput === 'barchart'">
+        <div class="mastery-chart-container" v-if="focusedInput === 'barchart'">
           <MasteryChart type="BarChart"/>
         </div>
-        <div class="mastery-chart-container" v-show="focusedInput === 'columnchart'">
+        <div class="mastery-chart-container" v-if="focusedInput === 'columnchart'">
           <MasteryChart type="ColumnChart"/>
         </div>
       </div>
@@ -276,6 +276,7 @@
 }
 
 .radio-input {
+  margin: 1% 0 1% 0;
   --container_width: 250px;
   position: relative;
   display: flex;
@@ -313,7 +314,7 @@
 }
 
 .radio-input label:has(input:checked) {
-  color: #000;
+  color: white;
 }
 
 .radio-input label:has(input:checked) ~ .selection {
