@@ -4,13 +4,13 @@
 - Spring Boot (Java 20)
 - Vue 3.0
 - Vuetify
-- stelar7
+- [![](https://jitpack.io/v/stelar7/R4J.svg)](https://jitpack.io/#stelar7/R4J)
 
 ## Tool to check certain metrics of a player ingame
 
 ## Includes extras like:
 - Quicklinks for all the big sites (op.gg, leagueofgraphs, ugg)
-- Mastery Point checkup 
+- Mastery Point checkup
 
 Aswell as:
 - A Deathheatmap (which shows the timing for the deaths by hovering on the respective skulls)

@@ -106,7 +106,8 @@ export enum GameQueueType {
     TEAMFIGHT_TACTICS_DOUBLE_UP_1V7_BOTS,
     TEAMFIGHT_TACTICS_DOUBLE_UP_WORKSHOP,
     TEAMFIGHT_TACTICS_FORTUNE_FAVOR,
-    QUICKPLAY_NORMAL
+    QUICKPLAY_NORMAL,
+    SWIFTPLAY
 }
 
 export interface IRelevantPlayerInfo {
@@ -146,7 +147,7 @@ export class GameInfo implements IGameInfo {
         gameDuration: number,
         gameType: GameQueueType,
         relevantPlayerInfo: IRelevantPlayerInfo
-    ){
+    ) {
         this.dateOfGame = dateOfGame;
         this.gameDuration = gameDuration;
         this.gameType = gameType;
@@ -166,7 +167,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
     gameQueueType: GameQueueType;
     toxicityDTO: IGetToxicitiyDTO;
 
-    constructor (
+    constructor(
         champName: string,
         champMastery: number,
         kills: number,
@@ -185,7 +186,7 @@ export class RelevantPlayerInfo implements IRelevantPlayerInfo {
         this.deaths = deaths;
         this.assists = assists;
         this.lane = lane;
-        this.team  = team;
+        this.team = team;
         this.win = win;
         this.gameQueueType = gameQueueType;
         this.toxicityDTO = toxicityDTO;
