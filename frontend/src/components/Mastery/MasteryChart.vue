@@ -14,7 +14,6 @@
 <script setup lang="ts">
     import { usePlayerMasteryService } from '@/services/PlayerMasteryService';
     import { useLolChampsService } from '@/services/LolChampService';
-    import { GChart } from 'vue-google-charts'
     import { useTheme } from 'vuetify/lib/framework.mjs';
     import { computed } from 'vue';
 
