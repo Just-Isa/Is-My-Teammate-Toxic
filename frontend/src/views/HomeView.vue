@@ -1,5 +1,5 @@
 <template>
-  <div class="headline">Get out of my head</div>
+  <div class="headline">Toxicity Tracker</div>
   <div class="quote">
     <pre>
       ⠀⠀⠀⠀⠀⢀⡴⠊⠉⠉⢉⠏⠻⣍⠑⢲⠢⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀
