@@ -10,7 +10,8 @@
 
 ## Includes extras like:
 - Quicklinks for all the big sites (op.gg, leagueofgraphs, ugg)
-- Mastery Point checkup
+- QR Code creation to quickly share ones metrics
+- Mastery Point checkup for champions
 
 Aswell as:
 - A Deathheatmap (which shows the timing for the deaths by hovering on the respective skulls)
