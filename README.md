@@ -3,7 +3,8 @@
 ## Using
 - Spring Boot (Java 20)
 - Vue 3.0
-- Vuetify [![](https://jitpack.io/v/stelar7/R4J.svg)](https://jitpack.io/#stelar7/R4J)
+- Vuetify
+- [![](https://jitpack.io/v/stelar7/R4J.svg)](https://jitpack.io/#stelar7/R4J)
 
 ## Tool to check certain metrics of a player ingame
 
